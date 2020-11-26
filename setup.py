@@ -1,8 +1,12 @@
+import sys
 from setuptools import setup
 
 
 setup_requires = []
-install_requires = ['Click', 'numpy', 'matplotlib']  # include 'ase' to use the visualization of vibration mode.
+
+install_requires = ['Click', 'numpy', 'matplotlib']
+# Optional: install_requires.append('ase')
+# include Atomic Simulation Environment (ASE) package to use the visualization of vibration mode.
 
 packages_interphon = ['InterPhon',
                       'InterPhon.core',
@@ -15,11 +19,21 @@ scripts_interphon = ['scripts/interphon.py', ]
 
 
 if __name__ == '__main__':
+
+    assert sys.version_info >= (3, 0), 'python>=3 is required'
+    with open('InterPhon.__init__.py', 'r') as init_file:
+        for line in init_file:
+            if "__version__" in line:
+                version = line.strip().split('=')[1]
+                break
+
     setup(name='InterPhon',
-          version='0.1',
-          description='This is the InterPhon package.',
+          version=version,
+          description='Package to calculate 2-D interface phonon within 3D electronic structure framework.',
+          url='',
           author='In Won Yeu',
           author_email='yiw0121@snu.ac.kr',
+          license='LGPLv2.1',
           packages=packages_interphon,
           install_requires=install_requires,  # The package written here will be installed with the current package.
           python_requires='>=3',
