@@ -10,5 +10,5 @@ util -> Collection of util modules to extend the utility.
 analysis -> Collection of analysis modules to characterize the phonon.
 """
 
-__version__ = "2020.11.04"
+__version__ = "0.1.1"
 __all__ = ["error", "inout", "core", "util", "analysis"]
