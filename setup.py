@@ -21,7 +21,7 @@ scripts_interphon = ['scripts/interphon.py', ]
 if __name__ == '__main__':
 
     assert sys.version_info >= (3, 0), 'python>=3 is required'
-    with open('InterPhon.__init__.py', 'r') as init_file:
+    with open('InterPhon/__init__.py', 'r') as init_file:
         for line in init_file:
             if "__version__" in line:
                 version = line.strip().split('=')[1]
