@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup_requires = []
 
-install_requires = ['Click', 'numpy', 'matplotlib']
+install_requires = ['Click', 'numpy', 'matplotlib', 'PyYAML']
 # Optional: install_requires.append('ase')
 # include Atomic Simulation Environment (ASE) package to use the visualization of vibration mode.
 
