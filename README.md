@@ -6,6 +6,8 @@ A Python Library to Calculate 2D Interface Phonon within 3D Electronic Structure
 
 Please clone this repository and install using:
 
-```git clone https://github.com/InWonYeu/interphon.git
+```
+git clone https://github.com/InWonYeu/interphon.git
 cd interphon/
-python setup.py install```
+python setup.py install
+```
