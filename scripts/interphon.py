@@ -1,12 +1,29 @@
 import os
 import click
 import glob
+import yaml
 try:
     from InterPhon.core import PreProcess, PostProcess
 except ImportError:  # parent class of ModuleNotFoundError
     print("\nInterPhon package should be in one of the following directories: \n 1) current folder \n "
           "2) standard library modules \n 3) third party modules \n")
     raise
+
+
+def iter_lattice_yaml(lattice_matrix):
+    for ind, val in enumerate(lattice_matrix, 1):
+        lattice = ('a{0}'.format(ind), '{0:>20.16f}, {1:>20.16f}, {2:20.16f}'.format(val[0], val[1], val[2]).strip())
+        yield lattice
+
+
+def iter_atom_yaml(unit_cell):
+    for ind, atom_type in enumerate(unit_cell.atom_type):
+        val = unit_cell.atom_cart[ind]
+        atom = {'index': ind,
+                'type': atom_type,
+                'position': '{0:>20.16f}, {1:>20.16f}, {2:20.16f}'.format(val[0], val[1], val[2]).strip(),
+                'selection': True if ind in unit_cell.atom_true else False}
+        yield atom
 
 
 @click.command()
@@ -467,6 +484,13 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
                 raise Exception('The length of "k_point" should be 3.')
         print('Mode Arguments:\n', mode_args)
 
+        information_post_process = {'user_arguments': user_args,
+                                    'files': files,
+                                    'dos_arguments': dos_args,
+                                    'thermal_arguments': thermal_args,
+                                    'band_arguments': band_args,
+                                    'mode_arguments': mode_args}
+
     # start process
     if _process == 'pre-process':
         print('\n#########################################')
@@ -475,14 +499,22 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
 
         # define process
         print('\n>>>>>> Defining pre-process for displacement...')
+
         pre = PreProcess()
 
         # define user arguments
         pre.set_user_arg(user_args)
+        _pre_user_arg = [{'displacement': pre.user_arg.displacement},
+                         {'enlargement': ', '.join([str(_) for _ in pre.user_arg.enlargement])},
+                         {'periodicity': ', '.join([str(_) for _ in pre.user_arg.periodicity])}]
 
         # define unit_cell
         pre.set_unit_cell(in_file=files.get('unit_cell_file'),
                           code_name=user_args.get('dft_code'))
+        _pre_unit_cell = [{'lattice_matrix': dict(iter_lattice_yaml(pre.unit_cell.lattice_matrix))},
+                          {'num_atom': int(pre.unit_cell.num_atom.sum())},
+                          {'selected_atom_index': ', '.join([str(_) for _ in pre.unit_cell.atom_true])},
+                          {'atoms': list(iter_atom_yaml(pre.unit_cell))}]
 
         # make a super_cell
         print('Writing supercell...')
@@ -495,6 +527,16 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
         print('Writing displaced supercells...')
         pre.write_displace_cell(out_file=files.get('unit_cell_file'),
                                 code_name=user_args.get('dft_code'))
+
+        # Record this pre-process
+        serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
+                                       {'dft_code_name': user_args.get('dft_code')},
+                                       {'user_arguments': _pre_user_arg},
+                                       {'unit_cell': _pre_unit_cell}]
+
+        with open('pre_process.yaml', 'w') as outfile:
+            yaml.dump(serialized_yaml_pre_process, outfile)
+
         print('Done.')
 
     else:
