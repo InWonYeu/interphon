@@ -24,7 +24,7 @@ if __name__ == '__main__':
     with open('InterPhon/__init__.py', 'r') as init_file:
         for line in init_file:
             if "__version__" in line:
-                version = line.strip().split('=')[1]
+                version = line.split()[2].strip('\"')
                 break
 
     setup(name='InterPhon',
