@@ -22,7 +22,7 @@ $ interphon --help
 ```
 
 - ### Pre-process
-By the InterPhon pre-process, a file of supercell (SUPERCELL) accommodating several unit cells and files of displaced supercell (POSCAR-0*) are generated:
+By the InterPhon pre-process, a file of supercell (**SUPERCELL**) accommodating several unit cells and files of displaced supercell (**POSCAR-0***) are generated:
 
 ```
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
@@ -34,9 +34,8 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 
 - ### Post-process
 After DFT force calculations for the displaced supercells (POSCAR-0*) are finished  
-in each folder of FORCE-0* (folder names are arbitrary—only the order of the folder numbers is important),  
-the evaluation of interfacial phonon can be executed by the following post-process  
-where the phonon properties are printed out in the forms of data files and graphics:
+in each folder of **FORCE-0* (folder names are arbitrary—only the order of the folder numbers is important)**,  
+the evaluation of interfacial phonon can be executed by the following ways:
 
 #### Density of states (DOS)
 ```
