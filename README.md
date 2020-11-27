@@ -21,7 +21,7 @@ In order to see all of the available options and their default values:
 $ interphon --help
 ```
 
-- ### Pre-process
+> ### Pre-process
 By the InterPhon pre-process, a file of supercell (**SUPERCELL**) accommodating several unit cells and files of displaced supercell (**POSCAR-0***) are generated:
 
 ```
@@ -31,27 +31,50 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 -> (2×2×1) supercell and displaced supercells  
 -> Periodic boundary conditions (1 or True) along the a1, a2 lattice directions, while open (0 or False) along the a3 direction
 
-- ### Post-process
+> ### Post-process
 After DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each folder of **FORCE-0*** *(folder names are arbitrary—only the order of the folder numbers is important)*, the evaluation of interfacial phonon can be executed by the following ways.
 
-#### Density of states (DOS):
+- #### Density of states (DOS):
 ```
 $ interphon -fc "FORCE-0*/vasprun.xml" -kdos KPOINTS_dos
 ```
 
-#### Thermal properties:
+- #### Thermal properties:
 ```
 $ interphon -fc "FORCE-0*/vasprun.xml" -kdos KPOINTS_dos -thermal
 ```
 
-#### Band:
+- #### Band:
 ```
 $ interphon -fc "FORCE-0*/vasprun.xml" -kband KPOINTS_band
 ```
 
-#### Phonon mode:
+- #### Phonon mode:
 ```
 $ interphon -fc "FORCE-0*/vasprun.xml" -kband KPOINTS_band -mode
 ```
 
 ‘KPOINTS_dos’ and ‘KPOINTS_band’ are files for the mesh sampling of k-points supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>)
+**KPOINTS_dos**
+```
+kpoint
+0
+MP  # Monkhorst-Pack grids, use the first character ‘G’ for Gamma-centered grids.
+9 9 1
+0.0 0.0 0.0
+```
+
+**KPOINTS_band**
+```
+kpoint
+41
+L
+0.00 0.00 0.00  # G
+0.00 0.50 0.00  # M
+
+0.00 0.50 0.00  # M
+0.333333 0.333333 0.00  # K
+
+0.333333 0.333333 0.00  # K
+0.00 0.00 0.00  # G
+```
