@@ -6,7 +6,7 @@ A Python Library to Calculate 2D Interface Phonon within 3D Electronic Structure
 
 Please clone this repository and install using:
 
-```
+- ```
 $ git clone https://github.com/inwonyeu/interphon.git
 $ cd interphon/
 $ python setup.py install
@@ -14,9 +14,9 @@ $ python setup.py install
 
 - ## Basic usage in conjunction with VASP
 
-InterPhon supports a lot of options to manage phonon computations and plotting styles. 
+- InterPhon supports a lot of options to manage phonon computations and plotting styles. 
 
-In order to see all of the available options and their default values:
+- In order to see all of the available options and their default values:
 
 ```
 $ interphon --help
@@ -24,7 +24,7 @@ $ interphon --help
 
   -- ### Pre-process
 
-  By the InterPhon pre-process, a file of supercell (SUPERCELL) accommodating several unit cells and files of displaced supercell (POSCAR-0*) are generated:
+  -- By the InterPhon pre-process, a file of supercell (SUPERCELL) accommodating several unit cells and files of displaced supercell (POSCAR-0*) are generated:
 
     --- #### (2×2×1) supercell and displaced supercells; the periodic boundary conditions (1 or True) along the a1, a2 lattice directions, while open (0 or False) along the a3 direction
     ```
