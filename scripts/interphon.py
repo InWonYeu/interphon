@@ -59,6 +59,7 @@ def iter_atom_yaml(unit_cell):
               required=True,
               show_default=True)
 @click.option('--unitcell', '-c',
+              default='POSCAR',
               # prompt='unit cell file',
               type=click.Path(exists=True),
               help='Unit cell file path.')
@@ -285,6 +286,9 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
             elif key in ('k_point_mode', 'kpt_mode'):
                 kpt_mode = value
 
+    if forces is not None:
+        process = False
+
     # check the number of arguments
     if process:
         _process = 'pre-process'
@@ -316,36 +320,58 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
         print('\tChecking post-arguments...')
         print('#########################################')
 
+        with open('pre_process.yaml') as yaml_file:
+            pre_record = yaml.load(yaml_file, Loader=yaml.FullLoader)
+
+        # Unit cell file
+        if unitcell == 'POSCAR':  # default
+            unitcell = pre_record[0].get('unit_cell_file')
+
+        # Supercell file
+        if supercell is None:
+            supercell = pre_record[1].get('supercell_file')
+
+        if dft == 'vasp':  # default
+            dft = pre_record[3].get('dft_code')
+
+        if displacement == '0.01':  # default
+            displacement = pre_record[4].get('user_arguments')[0].get('displacement')
+
+        if enlargement == '1 1 1':  # default
+            enlargement = pre_record[4].get('user_arguments')[1].get('enlargement')
+
+        if periodicity == '1 1 0':  # default
+            periodicity = pre_record[4].get('user_arguments')[2].get('periodicity')
+
         user_args = {'dft_code': dft,
                      'displacement': displacement,
                      'enlargement': enlargement,
                      'periodicity': periodicity}
 
-        files = {'unit_cell_file': os.path.abspath(unitcell)}
-
-        dos_args = {'flag': False}
-        thermal_args = {'flag': False}
-        band_args = {'flag': False}
-        mode_args = {'flag': False}
+        dos_args = {'flag': dos}
+        thermal_args = {'flag': thermal}
+        band_args = {'flag': band}
+        mode_args = {'flag': mode}
 
         # Check and fill the files dictionary
-        # Supercell file
-        if supercell is None:
-            raise Exception('Supercell file should be given')
-        else:
-            files['super_cell_file'] = os.path.abspath(supercell)
+        files = {'unit_cell_file': os.path.abspath(unitcell),
+                 'super_cell_file': os.path.abspath(supercell)}
 
         # K-point file
         if kpoint_dos is None:
             if kpoint_band is None:
                 raise Exception('K-points file should be given')
             else:
+                band_args['flag'] = True
                 files['k_point_file_band'] = os.path.abspath(kpoint_band)  # only Band
         else:
             if kpoint_band is None:
+                dos_args['flag'] = True
                 files['k_point_file_dos'] = os.path.abspath(kpoint_dos)  # only DOS
             else:
+                dos_args['flag'] = True
                 files['k_point_file_dos'] = os.path.abspath(kpoint_dos)
+                band_args['flag'] = True
                 files['k_point_file_band'] = os.path.abspath(kpoint_band)  # Both DOS and Band
 
         # Force file
@@ -372,9 +398,8 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
             print('{0} = {1}'.format(key.title(), value))
 
         print('\n[User Arguments for Phonon DOS]')
-        if dos:
+        if dos_args['flag']:
             # Check and fill the dos_args dictionary
-            dos_args['flag'] = dos
             dos_args['sigma'] = float(sigma)
             dos_args['num_dos'] = int(num_dos)
             dos_args['color'] = color_dos
@@ -427,17 +452,15 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
         print('DOS Arguments:\n', dos_args)
 
         print('\n[User Arguments for Thermal Property]')
-        if thermal:
+        if thermal_args['flag']:
             # Check and fill the thermal_args dictionary
-            thermal_args['flag'] = thermal
             thermal_args['temp'] = range(tmin, tmax, tstep)
             thermal_args['legend_loc'] = dos_args['legend_loc']
         print('Thermal Arguments:\n', thermal_args)
 
         print('\n[User Arguments for Phonon Band]')
-        if band:
+        if band_args['flag']:
             # Check and fill the band_args dictionary
-            band_args['flag'] = band
             band_args['color'] = color_band
             band_args['option'] = option_band
             band_args['bar_loc'] = bar_loc_band
@@ -473,9 +496,8 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
         print('Band Arguments:\n', band_args)
 
         print('\n[User Arguments for Phonon Mode]')
-        if mode:
+        if mode_args['flag']:
             # Check and fill the mode_args dictionary
-            mode_args['flag'] = mode
             mode_args['index'] = [int(ind) for ind in ind_mode.strip().split()]
             k_point = [float(kpt) for kpt in kpt_mode.strip().split()]
             if len(k_point) == 3:
@@ -505,8 +527,8 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
         # define user arguments
         pre.set_user_arg(user_args)
         _pre_user_arg = [{'displacement': pre.user_arg.displacement},
-                         {'enlargement': ', '.join([str(_) for _ in pre.user_arg.enlargement])},
-                         {'periodicity': ', '.join([str(_) for _ in pre.user_arg.periodicity])}]
+                         {'enlargement': ' '.join([str(_) for _ in pre.user_arg.enlargement])},
+                         {'periodicity': ' '.join([str(_) for _ in pre.user_arg.periodicity])}]
 
         # define unit_cell
         pre.set_unit_cell(in_file=files.get('unit_cell_file'),
@@ -517,20 +539,25 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
                           {'atoms': list(iter_atom_yaml(pre.unit_cell))}]
 
         # make a super_cell
-        print('Writing supercell...')
-        pre.set_super_cell(out_file=working_dir + '/SUPERCELL',
+        supercell_file = 'SUPERCELL'
+        print('Writing supercell... ---> {0}'.format(supercell_file))
+        pre.set_super_cell(out_file=working_dir + '/' + supercell_file,
                            comment='Supercell',
                            write_file=True,
                            code_name=user_args.get('dft_code'))
 
         # Build a set of super_cells with displacements
-        print('Writing displaced supercells...')
+        _displaced_supercell = os.path.basename(files.get('unit_cell_file')) + '-' \
+                               + '{{{0:0>4}..{1:0>4}}}'.format(1, len(pre.unit_cell.atom_true) * 6)
+        print('Writing displaced supercells... ---> {0}'.format(_displaced_supercell))
         pre.write_displace_cell(out_file=files.get('unit_cell_file'),
                                 code_name=user_args.get('dft_code'))
 
         # Record this pre-process
         serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
-                                       {'dft_code_name': user_args.get('dft_code')},
+                                       {'supercell_file': supercell_file},
+                                       {'displaced_supercell': _displaced_supercell},
+                                       {'dft_code': user_args.get('dft_code')},
                                        {'user_arguments': _pre_user_arg},
                                        {'unit_cell': _pre_unit_cell}]
 
