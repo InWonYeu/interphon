@@ -28,13 +28,17 @@ By the InterPhon pre-process, a file of supercell (SUPERCELL) accommodating seve
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 ```
 
-: (2×2×1) supercell and displaced supercells 
-: Periodic boundary conditions (1 or True) along the a1, a2 lattice directions, while open (0 or False) along the a3 direction
+-> (2×2×1) supercell and displaced supercells 
+
+-> Periodic boundary conditions (1 or True) along the a1, a2 lattice directions, while open (0 or False) along the a3 direction
 
 - ### Post-process
 After DFT force calculations for the displaced supercells (POSCAR-0*) are finished 
+
 in each folder of FORCE-0* (folder names are arbitrary—only the order of the folder numbers is important), 
+
 the evaluation of interfacial phonon can be executed by the following post-process 
+
 where the phonon properties are printed out in the forms of data files and graphics:
 
 #### Density of states (DOS)
