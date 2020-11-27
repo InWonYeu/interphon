@@ -33,9 +33,7 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 -> Periodic boundary conditions (1 or True) along the a1, a2 lattice directions, while open (0 or False) along the a3 direction
 
 - ### Post-process
-After DFT force calculations for the displaced supercells (POSCAR-0*) are finished  
-in each folder of **FORCE-0* (folder names are arbitrary—only the order of the folder numbers is important)**,  
-the evaluation of interfacial phonon can be executed by the following ways:
+After DFT force calculations for the displaced supercells (POSCAR-0*) are finished in each folder of **FORCE-0*** *(folder names are arbitrary—only the order of the folder numbers is important)*, the evaluation of interfacial phonon can be executed by the following ways:
 
 #### Density of states (DOS)
 ```
