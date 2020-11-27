@@ -53,8 +53,9 @@ $ interphon -fc "FORCE-0*/vasprun.xml" -kband KPOINTS_band
 ```
 $ interphon -fc "FORCE-0*/vasprun.xml" -kband KPOINTS_band -mode
 ```
-
+---------------------------------------
 ‘KPOINTS_dos’ and ‘KPOINTS_band’ are files for the mesh sampling of k-points supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>)
+
 **KPOINTS_dos**
 ```
 kpoint
