@@ -556,7 +556,7 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
         # Record this pre-process
         serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
                                        {'supercell_file': supercell_file},
-                                       {'displaced_supercell': _displaced_supercell},
+                                       {'displaced_supercell_files': _displaced_supercell},
                                        {'dft_code': user_args.get('dft_code')},
                                        {'user_arguments': _pre_user_arg},
                                        {'unit_cell': _pre_unit_cell}]
