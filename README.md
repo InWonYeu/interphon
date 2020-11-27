@@ -22,14 +22,14 @@ $ interphon --help
 ```
 
 > ### Pre-process
-By the InterPhon pre-process, a file of supercell (**SUPERCELL**) accommodating several unit cells and files of displaced supercell (**POSCAR-0***) are generated:
+By the InterPhon pre-process, a file of supercell (**SUPERCELL**) accommodating several unit cells and files of displaced supercells (**POSCAR-0***) are generated:
 
 ```
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 ```
 
 -> (2×2×1) supercell and displaced supercells  
--> Periodic boundary conditions (1 or True) along the a1, a2 lattice directions, while open (0 or False) along the a3 direction
+-> Periodic boundary conditions (1 or True) along a1, a2 lattice directions, while open (0 or False) along a3 direction
 
 > ### Post-process
 After DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each folder of **FORCE-0*** *(folder names are arbitrary—only the order of the folder numbers is important)*, the evaluation of interfacial phonon can be executed by the following ways.
@@ -54,9 +54,9 @@ $ interphon -fc "FORCE-0*/vasprun.xml" -kband KPOINTS_band
 $ interphon -fc "FORCE-0*/vasprun.xml" -kband KPOINTS_band -mode
 ```
 
-where ‘KPOINTS_dos’ and ‘KPOINTS_band’ are files for the mesh sampling of k-points supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>)
+where ‘KPOINTS_dos’ and ‘KPOINTS_band’ are files for the mesh sampling of k-points supported in VASP format. (<https://www.vasp.at/wiki/index.php/KPOINTS>)
 
-***KPOINTS_dos:***
+***KPOINTS_dos (file name is arbitrary):***
 ```
 kpoint
 0
@@ -65,7 +65,7 @@ MP  # Monkhorst-Pack grids, use the first character ‘G’ for Gamma-centered g
 0.0 0.0 0.0
 ```
 
-***KPOINTS_band:***
+***KPOINTS_band (file name is arbitrary):***
 ```
 kpoint
 41
