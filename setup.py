@@ -5,8 +5,8 @@ from setuptools import setup
 setup_requires = []
 
 install_requires = ['Click', 'numpy', 'matplotlib', 'PyYAML']
-# Optional: install_requires.append('ase')
-# include Atomic Simulation Environment (ASE) package to use the visualization of vibration mode.
+# Optional: (include Atomic Simulation Environment (ASE) package to use the visualization of vibration mode)
+# install_requires.append('ase')
 
 packages_interphon = ['InterPhon',
                       'InterPhon.core',
@@ -21,6 +21,7 @@ scripts_interphon = ['scripts/interphon.py', ]
 if __name__ == '__main__':
 
     assert sys.version_info >= (3, 0), 'python>=3 is required'
+    
     with open('InterPhon/__init__.py', 'r') as init_file:
         for line in init_file:
             if "__version__" in line:
