@@ -14,7 +14,7 @@ $ python setup.py install
 
 ## Basic usage in conjunction with VASP
 
-InterPhon supports a lot of options to manage phonon computations and plotting styles. 
+InterPhon supports a lot of options to manage phonon computations and plotting styles.  
 In order to see all of the available options and their default values:
 
 ```
@@ -28,8 +28,7 @@ By the InterPhon pre-process, a file of supercell (**SUPERCELL**) accommodating 
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 ```
 
--> (2×2×1) supercell and displaced supercells 
-
+-> (2×2×1) supercell and displaced supercells  
 -> Periodic boundary conditions (1 or True) along the a1, a2 lattice directions, while open (0 or False) along the a3 direction
 
 - ### Post-process
