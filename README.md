@@ -81,3 +81,4 @@ L
 ```
 
 ## Learn more
+Detailed manual will be available soon.
