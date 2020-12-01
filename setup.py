@@ -33,7 +33,7 @@ if __name__ == '__main__':
           description='Package to calculate 2-D interface phonon within 3D electronic structure framework.',
           url='',
           author='In Won Yeu',
-          author_email='yiw0121@snu.ac.kr',
+          author_email='yeuiw@kist.re.kr',
           license='LGPLv2.1',
           packages=packages_interphon,
           install_requires=install_requires,  # The package written here will be installed with the current package.
