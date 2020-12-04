@@ -1,21 +1,18 @@
 # InterPhon
-
-A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework  
-
+A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework
+- - -
 
 ## Installation
-
 Please clone this repository and install using:
 
 ```
 $ git clone https://github.com/inwonyeu/interphon.git
 $ cd interphon/
 $ python setup.py install
-```  
-
+```
+- - -
 
 ## Basic usage in conjunction with VASP
-
 InterPhon supports a range of options to manage phonon computations and plotting styles.  
 In order to see all of the available options and their default values:
 
@@ -54,11 +51,10 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 - ***Phonon mode:***
 ```
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
-```  
-
+```
+- - -
 
 ## Important files
-
 ### 1. DFT input file
 Within InterPhon, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
 Phonon evaluation proceeds only in the selected atoms.  
@@ -110,6 +106,19 @@ L  # Line path
 0.333333 0.333333 0.00  # K
 0.00 0.00 0.00  # G
 ```
+- - -
 
-## Learn more
-Detailed manual will be available soon.
+## General usage & Learn more
+For use with DFT programs other than VASP,
+
+### 1. Pre-process
+```
+$ interphon -dft [dft_code] -c [input_file] -enlarge "2 2 1" -pbc "1 1 0"
+```
+
+### 2. Post-process
+```
+$ interphon [force_files] -kdos KPOINTS_dos
+```
+
+### More detailed manual will be available soon.
