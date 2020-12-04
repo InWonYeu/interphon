@@ -32,7 +32,7 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 -> Periodic boundary conditions (1 or True) along a1, a2 lattice directions, while open (0 or False) along a3 direction
 
 ### 2. Post-process
-After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder *(folder names are arbitrary—only the order of the folder numbers is important)*, the evaluation of interfacial phonons can be executed by the following ways.
+After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder, the evaluation of interfacial phonons can be executed by the following ways:
 
 - ***Density of states (DOS):***
 ```
@@ -54,7 +54,35 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 ```
 
-where ‘KPOINTS_dos’ and ‘KPOINTS_band’ are files for the mesh sampling of k-points supported in VASP format. (<https://www.vasp.at/wiki/index.php/KPOINTS>)
+## Important files
+
+### 1. DFT input file
+Within InterPhon, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).  
+Phonon evaluation proceeds only in the selected atoms. 
+See below example of Cu(111) surface where the top three layers are selected as the surface region.
+
+***POSCAR (VASP format):***
+```
+Unknown
+1.00000000000000
+   2.5712952614000000    0.0000000000000000    0.0000000000000000
+   1.2856476307000000    2.2268070170000001    0.0000000000000000
+   0.0000000000000000    0.0000000000000000   27.7901687622000004
+Cu
+7
+Selective dynamics
+Cartesian
+   0.0000000000000000    0.0000000000000000    6.2983610849999998   F   F   F
+   2.5712951080000002    1.4845379230000000    8.3978147799999991   F   F   F
+   1.2856475540000001    0.7422689609999999   10.5098654109999998   F   F   F
+   0.0000000000000000    0.0000000000000000   12.6153545979999997   F   F   F
+   2.5712951080000002    1.4845379230000000   14.7267644020000006   T   T   T
+   1.2856475540000001    0.7422689609999999   16.8249826169999999   T   T   T
+   0.0000000000000000    0.0000000000000000   18.9121107990000006   T   T   T
+```
+
+### 2. K-points file
+The above ‘KPOINTS_dos’ and ‘KPOINTS_band’ files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
 
 ***KPOINTS_dos (file name is arbitrary):***
 ```
@@ -69,7 +97,7 @@ MP  # Monkhorst-Pack grids, use the first character ‘G’ for Gamma-centered g
 ```
 kpoint
 41
-L
+L  # Line path
 0.00 0.00 0.00  # G
 0.00 0.50 0.00  # M
 
