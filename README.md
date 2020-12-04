@@ -1,6 +1,6 @@
 # InterPhon
 
-A Python Library to Calculate 2D Interface Phonon within 3D Electronic Structure Framework
+A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework
 
 ## Installation
 
@@ -14,15 +14,16 @@ $ python setup.py install
 
 ## Basic usage in conjunction with VASP
 
-InterPhon supports a lot of options to manage phonon computations and plotting styles.  
+InterPhon supports a range of options to manage phonon computations and plotting styles.  
 In order to see all of the available options and their default values:
 
 ```
 $ interphon --help
 ```
 
-> ### Pre-process
-By the InterPhon pre-process, a file of supercell (**SUPERCELL**) accommodating several unit cells and files of displaced supercells (**POSCAR-0***) are generated:
+
+> ### **Pre-process**
+In the InterPhon pre-process, a file of supercell (**SUPERCELL**) and files of displaced supercells (**POSCAR-0***) are generated:
 
 ```
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
@@ -31,8 +32,9 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 -> (2×2×1) supercell and displaced supercells  
 -> Periodic boundary conditions (1 or True) along a1, a2 lattice directions, while open (0 or False) along a3 direction
 
-> ### Post-process
-After DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each folder of **FORCE-0*** *(folder names are arbitrary—only the order of the folder numbers is important)*, the evaluation of interfacial phonon can be executed by the following ways.
+
+> ### **Post-process**
+After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder *(folder names are arbitrary—only the order of the folder numbers is important)*, the evaluation of interfacial phonons can be executed by the following ways.
 
 - ***Density of states (DOS):***
 ```
