@@ -2,6 +2,7 @@
 
 A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework
 
+</br>
 ## Installation
 
 Please clone this repository and install using:
@@ -12,6 +13,7 @@ $ cd interphon/
 $ python setup.py install
 ```
 
+</br>
 ## Basic usage in conjunction with VASP
 
 InterPhon supports a range of options to manage phonon computations and plotting styles.  
@@ -54,14 +56,15 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 ```
 
+</br>
 ## Important files
 
 ### 1. DFT input file
-Within InterPhon, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).  
-Phonon evaluation proceeds only in the selected atoms. 
+Within InterPhon, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
+Phonon evaluation proceeds only in the selected atoms.  
 See below example of Cu(111) surface where the top three layers are selected as the surface region.
 
-***POSCAR (VASP format):***
+**POSCAR (VASP format):**
 ```
 Unknown
 1.00000000000000
@@ -82,9 +85,9 @@ Cartesian
 ```
 
 ### 2. K-points file
-The above ‘KPOINTS_dos’ and ‘KPOINTS_band’ files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
+The above **KPOINTS_dos** and **KPOINTS_band** files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
 
-***KPOINTS_dos (file name is arbitrary):***
+**KPOINTS_dos (file name is arbitrary):**
 ```
 kpoint
 0
@@ -93,7 +96,7 @@ MP  # Monkhorst-Pack grids, use the first character ‘G’ for Gamma-centered g
 0.0 0.0 0.0
 ```
 
-***KPOINTS_band (file name is arbitrary):***
+**KPOINTS_band (file name is arbitrary):**
 ```
 kpoint
 41
