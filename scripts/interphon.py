@@ -27,9 +27,13 @@ def iter_atom_yaml(unit_cell):
 
 
 @click.command()
-@click.argument('argument_file',
-                type=click.Path(exists=True),
+@click.argument('force_files',
+                nargs=-1,
+                # type=click.File('rb'),
                 required=False)
+@click.option('--option_file', '-option',
+              type=click.Path(exists=True),
+              help='File of option collections.')
 @click.option('--preprocess/--postprocess', '-pre/-post', 'process',
               default=True,
               required=True,
@@ -66,9 +70,6 @@ def iter_atom_yaml(unit_cell):
 @click.option('--supercell', '-sc',
               type=click.Path(exists=True),
               help='Super cell file.')
-@click.option('--forces', '-fc',
-              type=click.STRING,
-              help='Force files.')
 # Options for DOS write and plot
 @click.option('--density_of_state', '-dos', 'dos', is_flag=True,
               default=False,
@@ -189,14 +190,14 @@ def iter_atom_yaml(unit_cell):
               type=click.STRING,
               help='The K-point of phonon mode(kpoint, index).',
               show_default=True)
-def main(argument_file, process, dft, displacement, enlargement, periodicity,
-         unitcell, supercell, forces, kpoint_dos,
+def main(force_files, option_file, process, dft, displacement, enlargement, periodicity,
+         unitcell, supercell, kpoint_dos,
          dos, sigma, num_dos, atom_dos, legend_dos, elimit, color_dos, option_dos, orientation_dos, legend_loc_dos,
          thermal, tmin, tmax, tstep,
          band, kpoint_band, k_label_band, atom_band, color_band, option_band, bar_label_band, bar_loc_band,
          mode, ind_mode, kpt_mode):
-    if argument_file is not None:
-        with open(argument_file, 'r') as infile:
+    if option_file is not None:
+        with open(option_file, 'r') as infile:
             lines = infile.readlines()
 
         arg_dict = {}
@@ -221,8 +222,6 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
                 unitcell = value
             elif key in ('supercell', 'sc'):
                 supercell = value
-            elif key in ('forces', 'fc'):
-                forces = value
             elif key in ('kpoint_dos', 'kdos'):
                 kpoint_dos = value
             elif key in ('sigma', 'sig'):
@@ -286,7 +285,7 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
             elif key in ('k_point_mode', 'kpt_mode'):
                 kpt_mode = value
 
-    if forces is not None:
+    if force_files is not None:
         process = False
 
     # check the number of arguments
@@ -375,15 +374,18 @@ def main(argument_file, process, dft, displacement, enlargement, periodicity,
                 files['k_point_file_band'] = os.path.abspath(kpoint_band)  # Both DOS and Band
 
         # Force file
-        if forces is None:
+        if force_files is None:
             raise Exception('Force files should be given')
         else:
-            force_path = glob.glob(forces)
-            force_path.sort()
-            if not force_path:
-                raise Exception('Path "{0}" does not exist.'.format(forces))
+            if len(force_files) > 1:
+                files['force_file'] = force_files
             else:
-                files['force_file'] = force_path
+                force_path = glob.glob(force_files[0])
+                force_path.sort()
+                if not force_path:
+                    raise Exception('Path "{0}" does not exist.'.format(force_files))
+                else:
+                    files['force_file'] = force_path
 
         working_dir = os.path.dirname(files.get('unit_cell_file'))
 
