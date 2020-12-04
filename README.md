@@ -21,9 +21,7 @@ In order to see all of the available options and their default values:
 $ interphon --help
 ```
 
-
-
-1. ### **Pre-process**
+### 1. Pre-process
 In the InterPhon pre-process, a file of supercell (**SUPERCELL**) and files of displaced supercells (**POSCAR-0***) are generated:
 
 ```
@@ -33,9 +31,7 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 -> (2×2×1) supercell and displaced supercells  
 -> Periodic boundary conditions (1 or True) along a1, a2 lattice directions, while open (0 or False) along a3 direction
 
-
-
-2. ### **Post-process**
+### 2. Post-process
 After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder *(folder names are arbitrary—only the order of the folder numbers is important)*, the evaluation of interfacial phonons can be executed by the following ways.
 
 - ***Density of states (DOS):***
