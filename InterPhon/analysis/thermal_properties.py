@@ -127,5 +127,5 @@ class ThermalProperty(object):
         ax.legend(loc=legend_location, fontsize='xx-large')
 
         fig.tight_layout()
-        plt.savefig('thermal.png', dpi=300, format='png', bbox_inches='tight')
+        plt.savefig('thermal_properties.png', dpi=300, format='png', bbox_inches='tight')
         plt.show()

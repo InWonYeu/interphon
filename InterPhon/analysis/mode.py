@@ -42,7 +42,7 @@ class Mode(object):
                     line[7] = "Cartesian configuration= %4d" % ind + '\n'
                     lines.extend(line[7:])
 
-            with open(out_folder + '/XDATCAR_phonon_mode_{0}_at_{1}'.format(mode_ind, self.k_point), 'w') as outfile:
+            with open(out_folder + '/XDATCAR_phonon_mode_{0}_{1}'.format(mode_ind, self.k_point), 'w') as outfile:
                 outfile.write("%s" % "".join(lines))
 
     def plot(self, out_folder, unit_cell, code_name='vasp'):
