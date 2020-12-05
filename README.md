@@ -1,6 +1,6 @@
 # InterPhon
 A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework
-- - -
+<br />
 
 ## Installation
 Please clone this repository and install using:
@@ -10,7 +10,7 @@ $ git clone https://github.com/inwonyeu/interphon.git
 $ cd interphon/
 $ python setup.py install
 ```
-- - -
+<br />
 
 ## Basic usage in conjunction with VASP
 InterPhon supports a range of options to manage phonon computations and plotting styles.  
@@ -52,7 +52,7 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 ```
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 ```
-- - -
+<br />
 
 ## Important files
 ### 1. DFT input file
@@ -106,7 +106,7 @@ L  # Line path
 0.333333 0.333333 0.00  # K
 0.00 0.00 0.00  # G
 ```
-- - -
+<br />
 
 ## General usage & Learn more
 For use with DFT programs other than VASP,
