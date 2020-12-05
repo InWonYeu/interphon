@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     setup(name='InterPhon',
           version=version,
-          description='Package to calculate 2-D interface phonon within 3D electronic structure framework.',
+          description='A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework',
           url='',
           author='In Won Yeu',
           author_email='yeuiw@kist.re.kr',
