@@ -1,6 +1,6 @@
 import os
-import click
 import glob
+import click
 import yaml
 try:
     from InterPhon.core import PreProcess, PostProcess
@@ -45,13 +45,13 @@ def iter_atom_yaml(unit_cell):
               required=True,
               show_default=True)
 @click.option('--displacement', '-disp',
-              default='0.01',
+              default='0.02',
               type=click.STRING,
               help='Displacement length (unit: Angst).',
               required=True,
               show_default=True)
 @click.option('--enlargement', '-enlarge',
-              default='1 1 1',
+              default='2 2 1',
               type=click.STRING,
               help='Extension ratio along each a, b, c lattice.',
               required=True,
@@ -285,7 +285,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
             elif key in ('k_point_mode', 'kpt_mode'):
                 kpt_mode = value
 
-    if force_files is not None:
+    if force_files:
         process = False
 
     # check the number of arguments
@@ -333,10 +333,10 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
         if dft == 'vasp':  # default
             dft = pre_record[3].get('dft_code')
 
-        if displacement == '0.01':  # default
+        if displacement == '0.02':  # default
             displacement = pre_record[4].get('user_arguments')[0].get('displacement')
 
-        if enlargement == '1 1 1':  # default
+        if enlargement == '2 2 1':  # default
             enlargement = pre_record[4].get('user_arguments')[1].get('enlargement')
 
         if periodicity == '1 1 0':  # default
@@ -508,13 +508,6 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                 raise Exception('The length of "k_point" should be 3.')
         print('Mode Arguments:\n', mode_args)
 
-        information_post_process = {'user_arguments': user_args,
-                                    'files': files,
-                                    'dos_arguments': dos_args,
-                                    'thermal_arguments': thermal_args,
-                                    'band_arguments': band_args,
-                                    'mode_arguments': mode_args}
-
     # start process
     if _process == 'pre-process':
         print('\n#########################################')
@@ -581,6 +574,9 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
             # define user arguments
             post.set_user_arg(dict_args=user_args)
+            _post_user_arg = [{'displacement': post.user_arg.displacement},
+                              {'enlargement': ' '.join([str(_) for _ in post.user_arg.enlargement])},
+                              {'periodicity': ' '.join([str(_) for _ in post.user_arg.periodicity])}]
             print('Index of selected atoms:\n', post.unit_cell.atom_true)
 
             # define reciprocal lattice
@@ -593,7 +589,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                                     code_name=user_args.get('dft_code'))
 
             # set k-points
-            print('Setting k-points...')
+            print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_dos'))))
             if not files.get('k_point_file_dos', False):
                 raise Exception('K-points file for DOS should be given')
             else:
@@ -603,7 +599,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
             print('Constructing dynamical matrix(q) and Evaluating phonon...')
             post.eval_phonon()
 
-            print('DOS analysis is in progress...')
+            print('DOS analysis is in progress... ---> total_dos.dat and projected_dos.dat')
             from InterPhon.analysis import DOS
             post.dos = DOS(process=post, sigma=dos_args.get('sigma'), num_dos=dos_args.get('num_dos'))
             post.dos.set()
@@ -617,7 +613,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                           legend_location=dos_args.get('legend_loc'),)
 
             if thermal_args.get('flag', False):
-                print('Thermal analysis is in progress...')
+                print('Thermal analysis is in progress... ---> thermal_properties.dat')
                 from InterPhon.analysis import ThermalProperty
                 post.thermal = ThermalProperty(process=post, temp=thermal_args.get('temp'))
                 post.thermal.set()
@@ -636,6 +632,9 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
             # define user arguments
             post_band.set_user_arg(dict_args=user_args)
+            _post_user_arg = [{'displacement': post_band.user_arg.displacement},
+                              {'enlargement': ' '.join([str(_) for _ in post_band.user_arg.enlargement])},
+                              {'periodicity': ' '.join([str(_) for _ in post_band.user_arg.periodicity])}]
             if not dos_args.get('flag', False):
                 print('Index of selected atoms:\n', post_band.unit_cell.atom_true)
 
@@ -650,7 +649,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                                          code_name=user_args.get('dft_code'))
 
             # set k-points
-            print('Setting k-points...')
+            print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_band'))))
             if not files.get('k_point_file_band', False):
                 raise Exception('K-points file for Band should be given')
             else:
@@ -660,7 +659,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
             print('Constructing dynamical matrix(q) and Evaluating phonon...')
             post_band.eval_phonon()
 
-            print('Band analysis is in progress...')
+            print('Band analysis is in progress... ---> band.dat')
             from InterPhon.analysis import Band
             post_band.band = Band(process=post_band)
             post_band.band.set()
@@ -692,7 +691,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                                              legend_location=dos_args.get('legend_loc'),)
 
             if mode_args.get('flag', False):
-                print('Mode analysis is in progress...')
+                print('Mode analysis is in progress... ---> XDATCAR_phonon_[mode_index]_[k_point]')
                 from InterPhon.analysis import Mode
                 post_band.mode = Mode(process=post_band)
                 post_band.mode.set(mode_inds=(0,), k_point=(0.0, 0.0, 0.0))
@@ -700,6 +699,52 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                 post_band.mode.plot(out_folder=working_dir,
                                     unit_cell=files.get('unit_cell_file'),
                                     code_name=user_args.get('dft_code'))
+
+        # Record this post-process
+        _post_files = []
+        for key, value in files.items():
+            if isinstance(value, str):
+                value = os.path.basename(value)
+            _post_files.append({key: value})
+
+        _dos_args = []
+        for key, value in dos_args.items():
+            if (not isinstance(value, bool)) and (not isinstance(value, int)) and (not isinstance(value, float)):
+                if not isinstance(value, list):
+                    value = str(value)
+            _dos_args.append({key: value})
+
+        _thermal_args = []
+        for key, value in thermal_args.items():
+            if (not isinstance(value, bool)) and (not isinstance(value, int)) and (not isinstance(value, float)):
+                if not isinstance(value, list):
+                    value = str(value)
+            _thermal_args.append({key: value})
+
+        _band_args = []
+        for key, value in band_args.items():
+            if (not isinstance(value, bool)) and (not isinstance(value, int)) and (not isinstance(value, float)):
+                if not isinstance(value, list):
+                    value = str(value)
+            _band_args.append({key: value})
+
+        _mode_args = []
+        for key, value in mode_args.items():
+            if (not isinstance(value, bool)) and (not isinstance(value, int)) and (not isinstance(value, float)):
+                if not isinstance(value, list):
+                    value = str(value)
+            _mode_args.append({key: value})
+
+        serialized_yaml_post_process = [{'files': _post_files},
+                                        {'dft_code': user_args.get('dft_code')},
+                                        {'user_arguments': _post_user_arg},
+                                        {'dos_arguments': _dos_args},
+                                        {'thermal_arguments': _thermal_args},
+                                        {'band_arguments': _band_args},
+                                        {'mode_arguments': mode_args}]
+
+        with open('post_process.yaml', 'w') as outfile:
+            yaml.dump(serialized_yaml_post_process, outfile)
 
         print('Done.')
 
