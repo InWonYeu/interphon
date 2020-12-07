@@ -242,9 +242,11 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
         arg_dict = {}
         for line in lines:
-            key = line.strip().split('=')[0]
-            value = line.strip().split('=')[1]
-            arg_dict[key.strip().lower()] = value.strip()
+            if '=' in line:
+                _line = line.strip().split('#')[0]
+                key = _line.strip().split('=')[0]
+                value = _line.strip().split('=')[1]
+                arg_dict[key.strip().lower()] = value.strip()
 
         for key, value in arg_dict.items():
             if key in ('dft', 'dft_code'):
