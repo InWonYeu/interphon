@@ -22,7 +22,7 @@ $ interphon --help
 ```
 
 ### 1. Pre-process
-In the ***InterPhon*** pre-process, a file of supercell (`**SUPERCELL**`) and files of displaced supercells (`POSCAR-0*`) are generated:
+In the ***InterPhon*** pre-process, a file of supercell (`SUPERCELL`) and files of displaced supercells (`POSCAR-0*`) are generated:
 
 ```
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
