@@ -14,7 +14,7 @@ $ python setup.py install
 <br />
 
 ## Basic usage in conjunction with VASP
-InterPhon supports a range of options to manage phonon computations and plotting styles.  
+***InterPhon*** supports a range of options to manage phonon computations and plotting styles.  
 In order to see all of the available options and their default values:
 
 ```
@@ -22,14 +22,14 @@ $ interphon --help
 ```
 
 ### 1. Pre-process
-In the InterPhon pre-process, a file of supercell (**SUPERCELL**) and files of displaced supercells (**POSCAR-0***) are generated:
+In the ***InterPhon*** pre-process, a file of supercell (**SUPERCELL**) and files of displaced supercells (**POSCAR-0***) are generated:
 
 ```
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 ```
 
 -> (2×2×1) supercell and displaced supercells  
--> Periodic boundary conditions (1 or True) along a1, a2 lattice directions, while open (0 or False) along a3 direction
+-> Periodic boundary conditions (1 or True) along the a_1, a_2 lattice directions and open (0 or False) along a_3 direction
 
 ### 2. Post-process
 After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder, the evaluation of interfacial phonons can be executed by the following ways:
@@ -57,8 +57,7 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 
 ## Important files
 ### 1. DFT input file
-Within InterPhon, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
-Phonon evaluation proceeds only in the selected atoms.  
+***InterPhon*** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface and Phonon evaluation proceeds only in the selected atoms. The interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
 See below example of Cu(111) surface where the top three layers are selected as the surface region.
 
 **POSCAR (VASP format):**
@@ -82,7 +81,7 @@ Cartesian
 ```
 
 ### 2. K-points file
-The above **KPOINTS_dos** and **KPOINTS_band** files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
+The abovementioned arguments of **KPOINTS_dos** and **KPOINTS_band** files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
 
 **KPOINTS_dos (file name is arbitrary):**
 ```
