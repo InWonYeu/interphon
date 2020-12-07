@@ -1,5 +1,5 @@
 # InterPhon
-A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework.  
+**A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework.**  
 If you have used ***InterPhon***, please cite the following article:
 
 ```
