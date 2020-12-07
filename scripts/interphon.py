@@ -742,7 +742,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                 print('Mode analysis is in progress... ---> XDATCAR_phonon_[mode_index]_[k_point]')
                 from InterPhon.analysis import Mode
                 post_band.mode = Mode(process=post_band)
-                post_band.mode.set(mode_inds=(0,), k_point=(0.0, 0.0, 0.0))
+                post_band.mode.set(mode_inds=mode_args.get('index'), k_point=mode_args.get('k_point'))
                 post_band.mode.write(out_folder=working_dir)
                 post_band.mode.plot(out_folder=working_dir,
                                     unit_cell=files.get('unit_cell_file'),
