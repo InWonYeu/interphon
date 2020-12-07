@@ -29,7 +29,7 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 ```
 
 -> (2×2×1) supercell and displaced supercells  
--> Periodic boundary conditions (1 or True) along the a<sub>1</sub>, a<sub>2</sub> lattice directions and open (0 or False) along a<sub>3</sub> direction
+-> Periodic boundary conditions (1 or True) along the a<sub>1</sub>, a<sub>2</sub> lattice directions and open (0 or False) along the a<sub>3</sub> direction
 
 ### 2. Post-process
 After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder, the evaluation of interfacial phonons can be executed by the following ways:
