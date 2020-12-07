@@ -242,7 +242,7 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
         arg_dict = {}
         for line in lines:
-            if '=' in line:
+            if line.strip().split('#')[0]:
                 _line = line.strip().split('#')[0]
                 key = _line.strip().split('=')[0]
                 value = _line.strip().split('=')[1]
