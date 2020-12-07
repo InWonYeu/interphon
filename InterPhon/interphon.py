@@ -138,7 +138,7 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
               help='Legends for the projected atoms.')
 @click.option('--energy_limit', '-elimit', 'elimit',
               type=click.STRING,
-              help='Energy (eV) limitation of DOS and Band plot.')
+              help='Energy (THz) limitation of DOS and Band plot.')
 @click.option('--tdos_color_dos', '-color_dos', 'color_dos',
               default='tab:orange',
               type=click.STRING,
