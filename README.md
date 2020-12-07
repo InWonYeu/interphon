@@ -22,7 +22,7 @@ $ interphon --help
 ```
 
 ### 1. Pre-process
-In the ***InterPhon*** pre-process, a file of supercell (<span style="background-color; font-weight: bold;">SUPERCELL</span>) and files of displaced supercells (<span style="background-color; font-weight: bold;">POSCAR-0</span>) are generated:
+In the ***InterPhon*** pre-process, a file of supercell (`SUPERCELL`) and files of displaced supercells (`POSCAR-0*`) are generated:
 
 ```
 $ interphon -enlarge "2 2 1" -pbc "1 1 0"
@@ -32,7 +32,7 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 -> Periodic boundary conditions (1 or True) along the a<sub>1</sub>, a<sub>2</sub> lattice directions and open (0 or False) along the a<sub>3</sub> direction
 
 ### 2. Post-process
-After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder, the evaluation of interfacial phonons can be executed by the following ways:
+After the DFT force calculations for the displaced supercells (`POSCAR-0*`) are finished in each `FORCE-0*` folder, the evaluation of interfacial phonons can be executed by the following ways:
 
 - ***Density of states (DOS):***
 ```
@@ -81,7 +81,7 @@ Cartesian
 ```
 
 ### 2. K-points file
-The abovementioned arguments of **KPOINTS_dos** and **KPOINTS_band** files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
+The abovementioned arguments of `KPOINTS_dos` and `KPOINTS_band` files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
 
 **KPOINTS_dos (file name is arbitrary):**
 ```
