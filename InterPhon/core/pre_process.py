@@ -130,15 +130,17 @@ class PreProcess(object):
         for i, ind_T in enumerate(self.unit_cell.atom_true):
             for j, displace in enumerate(np.eye(3, dtype=float)):
 
+                # Forward Displacement
                 _dis_super_cell.atom_cart[_enlarge * ind_T, 0:3] = \
                     _current_position[_enlarge * ind_T, 0:3] + self.user_arg.displacement * displace
                 _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(6 * i + 2 * j + 1),
-                                                comment='Displacement Forward', code_name=code_name)
+                                                comment='Forward Displacement', code_name=code_name)
 
+                # Backward Displacement
                 _dis_super_cell.atom_cart[_enlarge * ind_T, 0:3] = \
                     _current_position[_enlarge * ind_T, 0:3] - self.user_arg.displacement * displace
                 _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(6 * i + 2 * j + 2),
-                                                comment='Displacement Backward', code_name=code_name)
+                                                comment='Backward Displacement', code_name=code_name)
 
     def __deepcopy__(self, memodict: dict = {}) -> object:
         import copy
