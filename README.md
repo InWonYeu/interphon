@@ -29,7 +29,7 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 ```
 
 -> (2×2×1) supercell and displaced supercells  
--> Periodic boundary conditions (1 or True) along the a_1, a_2 lattice directions and open (0 or False) along a_3 direction
+-> Periodic boundary conditions (1 or True) along the a<sub>1</sub>, a<sub>2</sub> lattice directions and open (0 or False) along a<sub>3</sub> direction
 
 ### 2. Post-process
 After the DFT force calculations for the displaced supercells (**POSCAR-0***) are finished in each **FORCE-0*** folder, the evaluation of interfacial phonons can be executed by the following ways:
@@ -57,7 +57,7 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 
 ## Important files
 ### 1. DFT input file
-***InterPhon*** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface and Phonon evaluation proceeds only in the selected atoms. The interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
+***InterPhon*** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface and phonon evaluation proceeds only in the selected atoms. The interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
 See below example of Cu(111) surface where the top three layers are selected as the surface region.
 
 **POSCAR (VASP format):**
