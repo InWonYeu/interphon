@@ -2,6 +2,7 @@ import os
 import glob
 import click
 import yaml
+import numpy as np
 try:
     from InterPhon.core import PreProcess, PostProcess
 except ImportError:  # parent class of ModuleNotFoundError
@@ -24,6 +25,45 @@ def iter_atom_yaml(unit_cell):
                 'position': '{0:>20.16f}, {1:>20.16f}, {2:20.16f}'.format(val[0], val[1], val[2]).strip(),
                 'selection': True if ind in unit_cell.atom_true else False}
         yield atom
+
+
+def check_file_order(process, unit_cell_file, force_file, dft_code):
+    assert len(process.unit_cell.atom_true * 6) == len(force_file), \
+        "The number of force files is not consistent with pre-process"
+
+    from InterPhon.core import UnitCell
+    _dis_super_cell = UnitCell()
+    _dis_super_position = process.super_cell.atom_cart.copy()
+    _current_position = process.super_cell.atom_cart.copy()
+
+    _enlarge = 1
+    for ind, value in enumerate(process.user_arg.periodicity):
+        if value:
+            _enlarge = _enlarge * process.user_arg.enlargement[ind]
+
+    for i, ind_T in enumerate(process.unit_cell.atom_true):
+        for j, displace in enumerate(np.eye(3, dtype=float)):
+            # Forward Displacement
+            _dis_super_position[_enlarge * ind_T, 0:3] = \
+                _current_position[_enlarge * ind_T, 0:3] + process.user_arg.displacement * displace
+
+            _dis_super_cell.read_unit_cell(os.path.dirname(force_file[6 * i + 2 * j]) + '/' + unit_cell_file,
+                                           code_name=dft_code)
+
+            assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
+                "The force files are not consistent with the {0} of pre-process".format(
+                    unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(process.unit_cell.atom_true) * 6))
+
+            # Backward Displacement
+            _dis_super_position[_enlarge * ind_T, 0:3] = \
+                _current_position[_enlarge * ind_T, 0:3] - process.user_arg.displacement * displace
+
+            _dis_super_cell.read_unit_cell(os.path.dirname(force_file[6 * i + 2 * j + 1]) + '/' + unit_cell_file,
+                                           code_name=dft_code)
+
+            assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
+                "The force files are not consistent with the {0} of pre-process".format(
+                    unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(process.unit_cell.atom_true) * 6))
 
 
 @click.command()
@@ -585,6 +625,10 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
             # construct Born-von Karman force constants
             print('Setting force constants...')
+            check_file_order(post,
+                             os.path.basename(files.get('unit_cell_file')),
+                             files.get('force_file'),
+                             user_args.get('dft_code'))
             post.set_force_constant(force_files=files.get('force_file'),
                                     code_name=user_args.get('dft_code'))
 
@@ -645,6 +689,10 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
             # construct Born-von Karman force constants
             print('Setting force constants...')
+            check_file_order(post_band,
+                             os.path.basename(files.get('unit_cell_file')),
+                             files.get('force_file'),
+                             user_args.get('dft_code'))
             post_band.set_force_constant(force_files=files.get('force_file'),
                                          code_name=user_args.get('dft_code'))
 
