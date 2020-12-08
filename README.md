@@ -4,7 +4,8 @@ If you have used ***InterPhon***, please cite the following article:
 
 ```
 "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", 
-In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, doi: [Link]
+In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, 
+submitted
 ```
 <br />
 
@@ -15,6 +16,10 @@ Please clone this repository and install using:
 $ git clone https://github.com/inwonyeu/interphon.git
 $ cd interphon/
 $ python setup.py install
+```
+Or install via pip:
+```
+$ pip install interphon
 ```
 <br />
 
