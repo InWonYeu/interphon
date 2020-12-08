@@ -31,7 +31,7 @@ if __name__ == '__main__':
     setup(name='InterPhon',
           version=version,
           description='A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework',
-          url='',
+          url='https://github.com/inwonyeu/interphon',
           author='In Won Yeu',
           author_email='yeuiw@kist.re.kr',
           license='LGPLv2.1',
