@@ -2,3 +2,4 @@ Click
 numpy
 matplotlib
 PyYAML
+# ase
