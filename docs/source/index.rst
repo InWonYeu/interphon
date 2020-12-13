@@ -21,9 +21,9 @@ Currently supports:
    :maxdepth: 2
    :caption: Contents:
 
-introduction
-installation
-tutorials
+   introduction
+   installation
+   tutorials
 
 Indices and tables
 ==================
