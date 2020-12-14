@@ -1,0 +1,58 @@
+.. _label_pre_process:
+
+================================
+Phonon calculations: Pre-process
+================================
+
+Overview
+********
+
+After finishing the :ref:`label_preparation_before_phonon_calculations` for a targeted unit cell, phonon computations are progressed
+by evaluating the dynamical matrix and its eigenvalue-eigenvector pairs.
+
+To obtain the dynamical matrix elements of a targeted unit cell,
+atomic forces in response to a set of atomic displacements are required and the forces should be evaluated
+using supercell consisting of several unit cells.
+
+In this pre-process execution, files of supercells with atomic displacements as well as a file of supercell without displacement are generated.
+DFT force calculations are subsequently required for the displaced supercells to evaluate phonon characteristics (:ref:`label_post_process`).
+The required atomic displacements are automatically determined according to the statement of constraints on atom movements,
+which is supposed to be set by users within the :ref:`label_dft_structure_file`.
+
+Pre-process execution
+*********************
+First, go to the folder where a relaxed unit cell (``POSCAR`` is used as an example) file resides.
+Then, execute ``InterPhon`` pre-process by one of the following :ref:`label_pre_process_command_line` and :ref:`label_pre_process_python_interpreter`.
+If done successfully, a file of supercell (``SUPERCELL``), files of displaced supercells (``POSCAR-0*``),
+and :ref:`label_pre_process_record_file` (``pre_process.yaml``) will be generated.
+
+.. _label_pre_process_command_line:
+
+1. Command line
+---------------
+To make (4×4×1) supercell and set periodic boundary conditions along the :math:`a_1`, :math:`a_2` lattice directions
+and open boundary conditions along the :math:`a_3` direction,
+
+General long format::
+
+    $ interphon --dft_code ['vasp' or 'espresso' or 'aims'] --unitcell [DFT_unit_cell_file] --displacement 0.02 --enlargement "4 4 1" --periodicity "1 1 0"
+
+General Short format::
+
+    $ interphon -dft ['vasp' or 'espresso' or 'aims'] -c [DFT_unit_cell_file] -disp 0.02 -enlarge "4 4 1" -pbc "1 1 0"
+
+Short usage (using default setting)::
+
+    $ interphon -enlarge "4 4 1" -pbc "1 1 0"
+
+.. _label_pre_process_python_interpreter:
+
+2. Python interpreter
+---------------------
+>>> from InterPhon.core import PreProcess
+>>> user_args = {'dft_code': 'vasp', 'displacement': 0.02, 'enlargement': "4 4 1", 'periodicity': "1 1 0"}
+>>> pre_process = PreProcess()
+>>> pre_process.set_user_arg(user_args)
+>>> pre_process.set_unit_cell(in_file='POSCAR', code_name=user_args.get('dft_code'))
+>>> pre_process.set_super_cell(out_file='SUPERCELL', code_name=user_args.get('dft_code'))
+>>> pre_process.write_displace_cell(out_file='POSCAR', code_name=user_args.get('dft_code'))

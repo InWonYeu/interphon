@@ -2,9 +2,12 @@
 Preparation
 ===========
 
+.. _label_preparation_before_phonon_calculations:
+
 Preparation before phonon calculations
 **************************************
-Based on the below derivation of :ref:`label_phonon_formalism`, the optimization of structure must precede phonon calculations.
+Based on the below derivation of :ref:`label_phonon_formalism`, the optimization of structure must be done
+before the beginning of phonon calculations (:ref:`label_pre_process`).
 The structure optimization (*i.e.*, optimizing the positions of constituent atoms into equilibrium) is carried out by relaxation calculation.
 It is generally recommended to use a strict force criterion for the relaxation convergence (*e.g.*, corresponding to EDIFFG_ tag in VASP).
 This is because highly accurate values of forces acting on each atom are required for phonon evaluation.

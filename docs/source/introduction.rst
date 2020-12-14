@@ -5,8 +5,8 @@ Introduction
 ``InterPhon`` allows efficient extraction of interfacial phonons at arbitrary reciprocal points in 1D or 2D
 Brillouin zone, automatically processing the information obtained by 3D-based DFT codes.
 
-The only requirements for package execution are a DFT input file representing the structure of interest
-and the corresponding output files providing the forces acting on each atom.
+The only requirements for package execution are a :ref:`label_dft_structure_file` representing the structure of interest
+and the corresponding :ref:`label_dft_force_file` providing the forces acting on each atom.
 
 Overview
 ********

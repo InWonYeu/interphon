@@ -2,8 +2,8 @@
 Option tags
 ===========
 
-Basic options
-*************
+Basic tags
+**********
 
 Density of states (DOS) tags
 ****************************
