@@ -46,10 +46,12 @@ is numerically evaluated using the midpoint method within the FDM scheme:
 where :math:`F_{ls\alpha}(R_{l's'\beta}+u)` is the force on the atom at :math:`R_{ls}` along :math:`\alpha` direction
 in response to the displacement of the atom at :math:`R_{l's'}` by :math:`u` along :math:`\beta` direction.
 
+.. _label_dynamical_matrix:
+
 The periodic boundary condition (PBC) of crystals imposes translational invariance on :math:`K_{ls\alpha,l's'\beta}`
 (*i.e.*, :math:`\sum_{l'} K_{ls\alpha,l's'\beta} = \sum_{l'} K_{0s\alpha,l's'\beta}`) and plae wave nature on :math:`u_{ls\alpha}` (:math:`=u^0_{s\alpha} e^{i(qR_{ls}-wt)}`)
 as for a sound wave. Finally, by making several transformations,
-the eigenvalue equation of the dynamical matrix with elements of :math:`D_{s\alpha,s'\beta}(q)` is obtained:
+the eigenvalue equation of the :ref:`dynamical matrix <label_dynamical_matrix>` with elements of :math:`D_{s\alpha,s'\beta}(q)` is obtained:
 
 .. math::
    w^2 v^0_{s\alpha} = \sum_{s'\beta} D_{s\alpha,s'\beta}(q) v^0_{s'\beta},

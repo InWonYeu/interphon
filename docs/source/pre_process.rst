@@ -8,9 +8,9 @@ Overview
 ********
 
 After finishing the :ref:`label_preparation_before_phonon_calculations` for a targeted unit cell, phonon computations are progressed
-by evaluating the dynamical matrix and its eigenvalue-eigenvector pairs.
+by evaluating the :ref:`dynamical matrix <label_dynamical_matrix>` and its eigenvalue-eigenvector pairs.
 
-To obtain the dynamical matrix elements of a targeted unit cell,
+To obtain the :ref:`dynamical matrix <label_dynamical_matrix>` elements of a targeted unit cell,
 atomic forces in response to a set of atomic displacements are required and the forces should be evaluated
 using supercell consisting of several unit cells.
 
@@ -37,11 +37,11 @@ General long format::
 
     $ interphon --dft_code ['vasp' or 'espresso' or 'aims'] --unitcell [DFT_unit_cell_file] --displacement 0.02 --enlargement "4 4 1" --periodicity "1 1 0"
 
-General Short format::
+General short format::
 
     $ interphon -dft ['vasp' or 'espresso' or 'aims'] -c [DFT_unit_cell_file] -disp 0.02 -enlarge "4 4 1" -pbc "1 1 0"
 
-Short usage (using default setting)::
+Simple usage with the help of default setting of :ref:`label_option_tags`::
 
     $ interphon -enlarge "4 4 1" -pbc "1 1 0"
 

@@ -1,3 +1,5 @@
+.. _label_option_tags:
+
 ===========
 Option tags
 ===========
