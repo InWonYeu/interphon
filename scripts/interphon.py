@@ -612,7 +612,8 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
             # define process
             print('\n>>>>>> Defining process for DOS...')
             post = PostProcess(in_file_unit_cell=files.get('unit_cell_file'),
-                               in_file_super_cell=files.get('super_cell_file'))
+                               in_file_super_cell=files.get('super_cell_file'),
+                               code_name=user_args.get('dft_code'))
 
             # define user arguments
             post.set_user_arg(dict_args=user_args)
@@ -674,7 +675,8 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                 post_band = deepcopy(post)
             else:
                 post_band = PostProcess(in_file_unit_cell=files.get('unit_cell_file'),
-                                        in_file_super_cell=files.get('super_cell_file'))
+                                        in_file_super_cell=files.get('super_cell_file'),
+                                        code_name=user_args.get('dft_code'))
 
             # define user arguments
             post_band.set_user_arg(dict_args=user_args)
