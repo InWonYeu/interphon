@@ -93,28 +93,29 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
 @click.option('--enlargement', '-enlarge',
               default='2 2 1',
               type=click.STRING,
-              help='Extension ratio along each a, b, c lattice.',
+              help='Extension ratio along each a, b, c lattice direction.',
               required=True,
               show_default=True)
 @click.option('--periodicity', '-pbc',
               default='1 1 0',
               type=click.STRING,
-              help='Periodic (True) or not (False) along each a, b, c lattice direction.',
+              help='Periodic (True or 1) or not (False or 0) along each a, b, c lattice direction.',
               required=True,
               show_default=True)
 @click.option('--unitcell', '-c',
               default='POSCAR',
               # prompt='unit cell file',
               type=click.Path(exists=True),
-              help='Unit cell file path.')
+              help='Unit cell file.')
 @click.option('--supercell', '-sc',
               type=click.Path(exists=True),
-              help='Super cell file.')
+              help='Supercell file.')
 # Options for DOS write and plot
 @click.option('--density_of_state', '-dos', 'dos', is_flag=True,
               default=False,
               required=True,
-              show_default=True)
+              show_default=True,
+              help='Flag to DOS.')
 @click.option('--kpoint_dos', '-kdos',
               type=click.Path(exists=True),
               help='K-point file for DOS.')
@@ -132,7 +133,7 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
               show_default=True)
 @click.option('--projection_atom_dos', '-atom_dos', 'atom_dos',
               type=click.STRING,
-              help='The Index of atoms to be projected.')
+              help='The Index of atoms to be projected in DOS plot.')
 @click.option('--projection_legend_dos', '-legend_dos', 'legend_dos',
               type=click.STRING,
               help='Legends for the projected atoms.')
@@ -164,7 +165,8 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
 @click.option('--thermal_property', '-thermal', 'thermal', is_flag=True,
               default=False,
               required=True,
-              show_default=True)
+              show_default=True,
+              help='Flag to thermal property.')
 @click.option('--temperature_minimum', '-tmin', 'tmin',
               default=0,
               type=click.INT,
@@ -187,7 +189,8 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
 @click.option('--phonon_band', '-band', 'band', is_flag=True,
               default=False,
               required=True,
-              show_default=True)
+              show_default=True,
+              help='Flag to phonon band')
 @click.option('--kpoint_band', '-kband',
               type=click.Path(exists=True),
               help='K-point file for Band.')
@@ -196,7 +199,7 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
               help='The label of high-symmetry k-points.')
 @click.option('--projection_atom_band', '-atom_band', 'atom_band',
               type=click.STRING,
-              help='The Index of atoms to be projected.')
+              help='The Index of atoms to be projected in Band plot.')
 @click.option('--total_color_band', '-color_band', 'color_band',
               default='tab:orange',
               type=click.STRING,
@@ -219,7 +222,8 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
 @click.option('--phonon_mode', '-mode', 'mode', is_flag=True,
               default=False,
               required=True,
-              show_default=True)
+              show_default=True,
+              help='Flag to phonon mode')
 @click.option('--index_mode', '-ind_mode', 'ind_mode',
               default='0',
               type=click.STRING,
