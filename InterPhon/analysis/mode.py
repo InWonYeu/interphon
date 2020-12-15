@@ -26,7 +26,7 @@ class Mode(object):
 
         self.mode = self.process.v_q[_ind_k, :, :]
 
-    def write(self, out_folder):
+    def write(self, out_folder='.'):
         _current_position_true = self.process.unit_cell.atom_cart.copy()[self.process.unit_cell.atom_true]
         _mass_weight = self.process.unit_cell.mass_true.reshape((-1, 3)) / self.process.unit_cell.mass_true.max()
         for mode_ind in self.mode_inds:
@@ -45,7 +45,7 @@ class Mode(object):
             with open(out_folder + '/XDATCAR_phonon_mode_{0}_{1}'.format(mode_ind, self.k_point), 'w') as outfile:
                 outfile.write("%s" % "".join(lines))
 
-    def plot(self, out_folder, unit_cell, code_name='vasp'):
+    def plot(self, out_folder='.', unit_cell='POSCAR', code_name='vasp'):
         try:
             from ase.io.trajectory import Trajectory
             from ase.io import read, iread

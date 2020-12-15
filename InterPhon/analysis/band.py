@@ -26,7 +26,7 @@ class Band(object):
                     self.projected_w[ind_kpt, ind_freq, ind_mode] = \
                         1 * (abs(self.process.v_q[ind_kpt, ind_freq, ind_mode]) ** 2)
 
-    def write(self, out_folder):
+    def write(self, out_folder='.'):
         with open(out_folder + '/band.dat', 'w') as outfile:
             comment = "Phonon Band"
             outfile.write("%s" % comment + '\n')
@@ -41,7 +41,7 @@ class Band(object):
                 outfile.write("%s" % line + '\n')
 
     def plot(self,
-             k_labels,
+             k_labels=[],
              atoms=None,
              elimit=None,
              color='tab:orange',
@@ -196,7 +196,7 @@ class Band(object):
             plt.show()
 
     def plot_with_dos(self,
-                      k_labels,
+                      k_labels=[],
                       band_atoms=None,
                       elimit=None,
                       band_color='tab:orange',

@@ -3,7 +3,7 @@ from InterPhon.util import tetrahedron_1d, tetrahedron_2d, tetrahedron_3d
 
 
 class DOS(object):
-    def __init__(self, process, sigma: float = 0.0, num_dos: int = 200):
+    def __init__(self, process, sigma: float = 0.1, num_dos: int = 200):
         self.process = process
         self.sigma = sigma
         self.num_dos = num_dos
@@ -79,7 +79,7 @@ class DOS(object):
 
             self._tdos = self._pdos.sum(axis=0)
 
-    def write(self, out_folder):
+    def write(self, out_folder='.'):
         with open(out_folder + '/total_dos.dat', 'w') as outfile:
             if self.sigma == 0.0:
                 comment = "Total phonon DOS by Linear Tetrahedron Method"

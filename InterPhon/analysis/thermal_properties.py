@@ -2,7 +2,7 @@ import numpy as np
 
 
 class ThermalProperty(object):
-    def __init__(self, process, temp):
+    def __init__(self, process, temp=range(0, 1000, 10)):
         self.process = process
         self.temp = np.array(temp)
         self.free_energy = np.zeros(self.temp.shape)
@@ -68,7 +68,7 @@ class ThermalProperty(object):
             self.free_energy = np.insert(tmp_free_energy, zero_index, zero_point_energy)
             self.entropy = np.insert(tmp_entropy, zero_index, 0.0)
 
-    def write(self, out_folder):
+    def write(self, out_folder='.'):
         with open(out_folder + '/thermal_properties.dat', 'w') as outfile:
             comment = "Thermal Properties / atom"
             outfile.write("%s" % comment + '\n')
