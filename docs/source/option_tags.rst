@@ -4,38 +4,416 @@
 Option tags
 ===========
 
+As listed below, ``InterPhon`` supports a range of option tags to manage phonon computations and plotting styles.
+In order to see all of the available options and their default values in command line::
+
+    $ interphon --help
+
+Because it is not convenient to enter many options in command line,
+It is also supported to pass a bunch of options through a file ``Option_file`` (file name is arbitrary)::
+
+    $ interphon --option_file Option_file
+
+or::
+
+    $ interphon -option Option_file
+
+The general format of ``Option_file`` is::
+
+    [option tag 1] = [option value 1]
+    [option tag 2] = [option value 2]
+    [option tag 3] = [option value 3]
+    ...
+
+and example of ``Option_file`` is::
+
+    DFT = vasp
+    DISP = 0.02
+    ENLARGE = 4 4 1
+    PBC = 1 1 0
+
+    OPTION_DOS = stack  # A plot option of DOS
+    NDOS = 1000  # The number of DOS points
+    ELIMIT = -1 8  # Energy (THz) limitation of DOS and Band plot
+    ATOM_DOS = 6, 5, 4  # The Index of atoms to be projected in DOS plot. Among the selected atoms as interface, the atom in 6th, 5th, and 4th lines is located in the topmost layer (1st layer), 2nd layer, and 3rd layer, respectively
+    COLOR_DOS = black  # The color of total DOS line
+    LEGEND_DOS = 1st layer, 2nd layer, 3rd layer  # Legends for the projected atoms in DOS
+
+    OPTION_band = projection  # A plot option of band
+    ATOM_BAND = 6  # The Index of atoms to be projected in band plot
+    K_LABEL_BAND = G M K G  # The label of high-symmetry k-points
+    BAR_LABEL_BAND = 1st layer  # The label of colorbar for the projected atoms
+
+.. note::
+   Option tags can be either long or short name, irrespective of lowercase and uppercase letters.
+
 Basic tags
 **********
+
+1. ––option_file, –option
+-------------------------
+::
+
+    help = File of option collections
+    value type = File path
+
+    usage:
+    $ interphon -option Option_file
+
+2. ––dft_code, –dft
+-------------------
+::
+
+    help = DFT code name
+    value type = str (one of vasp, espresso, aims)
+    default = vasp
+
+    usage:
+    $ interphon -dft vasp
+
+3. ––displacement, –disp
+------------------------
+::
+
+    help = Displacement length (unit: Angst)
+    value type = float
+    default = 0.02
+
+    usage:
+    $ interphon -disp 0.02
+
+4. ––enlargement, –enlarge
+--------------------------
+::
+
+    help = Extension ratio along each a, b, c lattice direction
+    value type = str
+    default = '2 2 1'
+
+    usage:
+    $ interphon -enlarge "2 2 1"
+
+5. ––periodicity, –pbc
+----------------------
+::
+
+    help = Periodic (True or 1) or not (False or 0) along each a, b, c lattice direction
+    value type = str
+    default = '1 1 0'
+
+    usage:
+    $ interphon -pbc "1 1 0"
+
+6. ––unitcell, –c
+-----------------
+::
+
+    help = Unit cell file
+    value type = File path
+    default = POSCAR
+
+    usage:
+    $ interphon -c POSCAR
+
+7. ––supercell, –sc
+-------------------
+::
+
+    help = Supercell file
+    value type = File path
+
+    usage:
+    $ interphon -sc SUPERCELL
 
 Density of states (DOS) tags
 ****************************
 
+1. ––density_of_state, –dos
+---------------------------
+::
+
+    help = Flag to DOS
+    value type = bool
+    default = False (automatically changed to True if the option -kdos is given)
+
+    usage:
+    $ interphon -dos
+
+2. ––kpoint_dos, –kdos
+----------------------
+::
+
+    help = K-point file for DOS
+    value type = File path
+
+    usage:
+    $ interphon -kdos KPOINTS_dos
+
+3. ––sigma, –sig
+----------------
+::
+
+    help = Sigma of gaussian smearing (0.0: tetrahedron method)
+    value type = float
+    default = 0.1
+
+    usage:
+    $ interphon -sig 0.1
+
+4. ––number_dos, –ndos
+----------------------
+::
+
+    help = The number of DOS points
+    value type = int
+    default = 200
+
+    usage:
+    $ interphon -ndos 200
+
+5. ––projection_atom_dos, –atom_dos
+-----------------------------------
+::
+
+    help = The Index of atoms to be projected in DOS plot
+    value type = str
+
+    usage:
+    $ interphon -atom_dos "1 2 3, 4 5 6"
+
+6. ––projection_legend_dos, –legend_dos
+---------------------------------------
+::
+
+    help = Legends for the projected atoms
+    value type = str
+
+    usage:
+    $ interphon -legend_dos "1st layer, 2nd layer"
+
+7. ––energy_limit, –elimit
+--------------------------
+::
+
+    help = Energy (THz) limitation of DOS and Band plot
+    value type = str
+
+    usage:
+    $ interphon -elimit "-1 8"
+
+8. ––tdos_color_dos, –color_dos
+-------------------------------
+::
+
+    help = The color of total DOS line
+    value type = str
+    default = tab:orange (should be supported in matplotlib)
+
+    usage:
+    $ interphon -color_dos tab:orange
+
+9. ––projection_option_dos, –option_dos
+---------------------------------------
+::
+
+    help = Option for DOS projection plot
+    value type = str (one of plain, line, stack)
+    default = plain
+
+    usage:
+    $ interphon -option_dos plain
+
+10. ––image_orientation_dos, –orientation_dos
+---------------------------------------------
+::
+
+    help = Orientation of DOS plot
+    value type = str (one of horizontal, vertical)
+    default = horizontal
+
+    usage:
+    $ interphon -orientation_dos horizontal
+
+11. ––legend_location_dos, –legend_loc_dos
+------------------------------------------
+::
+
+    help = Location of DOS legend
+    value type = str (one of best, upper right, upper left, lower left, lower right, right, center left, center right, lower center, upper center, center)
+    default = best
+
+    usage:
+    $ interphon -legend_loc_dos "upper right"
+
 Thermal properties tags
 ***********************
+
+1. ––thermal_property, –thermal
+-------------------------------
+::
+
+    help = Flag to thermal property
+    value type = bool
+    default = False
+
+    usage:
+    $ interphon -thermal
+
+2. ––temperature_minimum, –tmin
+-------------------------------
+::
+
+    help = Temperature minimum (unit: K)
+    value type = int
+    default = 0
+
+    usage:
+    $ interphon -tmin 0
+
+3. ––temperature_maximum, –tmax
+-------------------------------
+::
+
+    help = Temperature maximum (unit: K)
+    value type = int
+    default = 1000
+
+    usage:
+    $ interphon -tmax 1000
+
+4. ––temperature_step, –tstep
+-----------------------------
+::
+
+    help = Temperature step (unit: K)
+    value type = int
+    default = 10
+
+    usage:
+    $ interphon -tstep 10
 
 Band structures tags
 ********************
 
+1. ––phonon_band, –band
+-----------------------
+::
+
+    help = Flag to phonon band
+    value type = bool
+    default = False (automatically changed to True if the option -kband is given)
+
+    usage:
+    $ interphon -band
+
+2. ––kpoint_band, –kband
+------------------------
+::
+
+    help = K-point file for Band
+    value type = File path
+
+    usage:
+    $ interphon -kband KPOINTS_band
+
+3. ––kpoint_label_band, –k_label_band
+-------------------------------------
+::
+
+    help = The label of high-symmetry k-points
+    value type = str
+
+    usage:
+    $ interphon -k_label_band "G M K G"
+
+4. ––projection_atom_band, –atom_band
+-------------------------------------
+::
+
+    help = The Index of atoms to be projected in Band plot
+    value type = str
+
+    usage:
+    $ interphon -atom_band "1 2 3"
+
+5. ––total_color_band, –color_band
+----------------------------------
+::
+
+    help = The color of Band line
+    value type = str
+    default = tab:orange
+
+    usage:
+    $ interphon -color_band tab:orange
+
+6. ––projection_option_band, –option_band
+-----------------------------------------
+::
+
+    help = Option for Band projection plot
+    value type = str (one of plain, projection)
+    default = plain
+
+    usage:
+    $ interphon -option_band plain
+
+7. ––colorbar_label_band, –bar_label_band
+-----------------------------------------
+::
+
+    help = The label of colorbar for projection plot
+    value type = str
+
+    usage:
+    $ interphon -bar_label_band "1st layer"
+
+8. ––colorbar_location_band, –bar_loc_band
+------------------------------------------
+::
+
+    help = Location of colorbar
+    value type = str (one of right, bottom)
+    default = right
+
+    usage:
+    $ interphon -bar_loc_band right
+
 phonon modes tags
 *****************
 
-In order to plot a band structure, one must define a set of :math:`k`-points following a desired :math:`k`-path in momentum space. PyProcar’s :math:`k`-path generation utility enables a the user to automatically generate a suitable and sufficient :math:`k`-path given the crystal structure, typically read from the POSCAR file (VASP).
+1. ––phonon_mode, –mode
+-----------------------
+::
 
-General format::
+    help = Flag to phonon mode
+    value type = bool
+    default = False
 
-	pyprocar.kpath(infile, outfile, grid-size, with-time-reversal, recipe, threshold, symprec, angle-tolerance,supercell_matrix)
+    usage:
+    $ interphon -mode
 
-Usage::
+2. ––index_mode, –ind_mode
+--------------------------
+::
 
-	pyprocar.kpath('POSCAR','KPOINTS',40,True,'hpkot',1e-07,1e-05,-1.0,np.eye(3))
+    help = The index of phonon mode
+    value type = int
+    default = 0 (0: the lowest band line, 1: second lowest band line, etc.)
 
-or using the default options, a POSCAR would suffice::
+    usage:
+    $ interphon -ind_mode 0
 
-    pyprocar.kpath('POSCAR')
+3. ––k_point_mode, –kpt_mode
+----------------------------
+::
 
-This information is automatically written to a KPOINTS file. The retrieved :math:`k`-path can be used for other DFT codes with slight modifications.
+    help = The K-point of phonon mode
+    value type = str
+    default = '0.0 0.0 0.0' (corresponding to Gamma point)
 
-More details regarding these parameters can be found in the `SeeK-path manual <https://seekpath.readthedocs.io/en/latest/module_guide/index.html>`_.
-The :math:`k`-path generation utility within PyProcar is based on the Python library **seekpath** developed by Hinuma et al::
+    usage:
+    $ interphon -kpt_mode "0.0 0.0 0.0"
 
-	Y. Hinuma, G. Pizzi, Y. Kumagai, F. Oba, I. Tanaka, Band structure diagram paths based on crystallography, Computational Materials Science 128 (2017) 140–184.doi:10.1016/j.commatsci.2016.10.015.
+.. note::
+   A k-point given by the option –kpt_mode should be included in k-points of band line path.
