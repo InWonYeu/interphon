@@ -20,22 +20,23 @@ class PostProcess(PreProcess):
     """
     num_figure = 0
 
-    def __init__(self, in_file_unit_cell: FilePath, in_file_super_cell: FilePath,
+    def __init__(self, in_file_unit_cell: FilePath, in_file_super_cell: FilePath, code_name: str = 'vasp',
                  user_arg=PostArgument(), unit_cell=UnitCell(), super_cell=SuperCell()):
         """
         Constructor of PostProcess class.
 
         :param in_file_unit_cell: (str) Path of unit cell input file.
         :param in_file_super_cell: (str) Path of super cell input file.
+        :param code_name: (str) Specification of the file-format.
         :param user_arg: (instance) of PreArgument class.
         :param unit_cell: (instance) of UnitCell class.
         :param super_cell: (instance) of SuperCell class.
         """
 
         super(PostProcess, self).__init__(user_arg, unit_cell, super_cell)
-        self.unit_cell.read_unit_cell(in_file_unit_cell)
+        self.unit_cell.read_unit_cell(in_file_unit_cell, code_name=code_name)
         self.unit_cell.set_mass_true()
-        self.super_cell.read_unit_cell(in_file_super_cell)
+        self.super_cell.read_unit_cell(in_file_super_cell, code_name=code_name)
 
         self.reciprocal_matrix = np.empty((3, 3))
         self.force_constant = np.empty((len(self.super_cell.atom_type) * 3,
