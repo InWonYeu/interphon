@@ -117,17 +117,5 @@ L  # Line path
 ```
 <br />
 
-## General usage & Learn more
-For use with DFT programs other than VASP,
-
-### 1. Pre-process
-```
-$ interphon -dft [dft_code] -c [input_file] -enlarge "2 2 1" -pbc "1 1 0"
-```
-
-### 2. Post-process
-```
-$ interphon [force_files] -kdos KPOINTS_dos
-```
-
-### More detailed manual will be available soon.
+## Learn more
+If you want to learn more about ***InterPhon***, please visit <https://interphon.readthedocs.io/>
