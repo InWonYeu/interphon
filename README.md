@@ -6,7 +6,12 @@ If you have used ***InterPhon***, please cite the following article (<https://ar
 "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", 
 In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, arXiv:2012.04198 (2020)
 ```
+
+The description below is a basic usage guide.
+If you want to learn more about ***InterPhon***, please visit <https://interphon.readthedocs.io/>
 <br />
+<br />
+
 
 ## Installation
 Please clone this repository and install using:
@@ -115,19 +120,3 @@ L  # Line path
 0.333333 0.333333 0.00  # K
 0.00 0.00 0.00  # G
 ```
-<br />
-
-## General usage & Learn more
-For use with DFT programs other than VASP,
-
-### 1. Pre-process
-```
-$ interphon -dft [dft_code] -c [input_file] -enlarge "2 2 1" -pbc "1 1 0"
-```
-
-### 2. Post-process
-```
-$ interphon [force_files] -kdos KPOINTS_dos
-```
-
-### More detailed manual will be available soon.
