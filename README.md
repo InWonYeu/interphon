@@ -7,10 +7,10 @@ If you have used ***InterPhon***, please cite the following article (<https://ar
 In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, arXiv:2012.04198 (2020)
 ```
 
-Below descriptions are basic usage guide.  
+The description below is a basic usage guide.
 If you want to learn more about ***InterPhon***, please visit <https://interphon.readthedocs.io/>
 <br />
-
+<br />
 
 ## Installation
 Please clone this repository and install using:
