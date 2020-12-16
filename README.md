@@ -6,7 +6,11 @@ If you have used ***InterPhon***, please cite the following article (<https://ar
 "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", 
 In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, arXiv:2012.04198 (2020)
 ```
+
+Below descriptions are basic usage guide.  
+If you want to learn more about ***InterPhon***, please visit <https://interphon.readthedocs.io/>
 <br />
+
 
 ## Installation
 Please clone this repository and install using:
@@ -115,7 +119,3 @@ L  # Line path
 0.333333 0.333333 0.00  # K
 0.00 0.00 0.00  # G
 ```
-<br />
-
-## Learn more
-If you want to learn more about ***InterPhon***, please visit <https://interphon.readthedocs.io/>
