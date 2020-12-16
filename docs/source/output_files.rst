@@ -4,7 +4,7 @@ Output files
 
 Taking the previously mentioned ``Option_file`` :ref:`example <label_option_file_example>`
 and ``POSCAR`` :ref:`example of Cu(111) surface <label_Cu(111)_surface_example>`,
-examples of the ***InterPhon*** output are shown below.
+examples of the **InterPhon** output are shown below.
 
 Outputs of Pre-process
 **********************

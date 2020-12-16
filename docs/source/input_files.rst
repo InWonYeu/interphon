@@ -6,7 +6,7 @@ Input files
 
 DFT structure file
 ******************
-Within ***InterPhon***, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
+Within **InterPhon**, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
 Phonon evaluation proceeds only in the selected atoms.
 
 .. _label_Cu(111)_surface_example:

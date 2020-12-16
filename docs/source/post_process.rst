@@ -24,7 +24,7 @@ Post-process execution
 As an example, let's assume the :ref:`label_dft_force_file` is ``vasprun.xml`` in VASP format
 and each force file resides in *Phonon root/FORCE-0** folders.
 First, go to the *Phonon root* folder where the ``POSCAR`` file resides.
-Then, execute ***InterPhon*** post-process by one of the following ways: :ref:`label_post_process_command_line` and :ref:`label_post_process_python_interpreter`.
+Then, execute **InterPhon** post-process by one of the following ways: :ref:`label_post_process_command_line` and :ref:`label_post_process_python_interpreter`.
 If done successfully, files of :ref:`phonon properties <label_post_process_property_file>` (``band.dat``, ``band.png``, etc.)
 and :ref:`Post-process record file <label_pre_process_record_file>` (``post_process.yaml``) will be generated.
 

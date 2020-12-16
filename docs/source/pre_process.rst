@@ -24,7 +24,7 @@ Pre-process execution
 *********************
 As an example, let's assume a relaxed unit cell file is ``POSCAR`` in VASP format.
 First, go to the folder where the ``POSCAR`` file resides and this folder will be referred to as *Phonon root*.
-Then, execute ***InterPhon*** pre-process by one of the following ways: :ref:`label_pre_process_command_line` and :ref:`label_pre_process_python_interpreter`.
+Then, execute **InterPhon** pre-process by one of the following ways: :ref:`label_pre_process_command_line` and :ref:`label_pre_process_python_interpreter`.
 If done successfully, a file of supercell (``SUPERCELL``), files of displaced supercells (``POSCAR-0*``),
 and :ref:`Pre-process record file <label_pre_process_record_file>` (``pre_process.yaml``) will be generated.
 

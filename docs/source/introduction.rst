@@ -2,7 +2,7 @@
 Introduction
 ============
 
-***InterPhon*** allows efficient extraction of interfacial phonons at arbitrary reciprocal points in 1D or 2D
+**InterPhon** allows efficient extraction of interfacial phonons at arbitrary reciprocal points in 1D or 2D
 Brillouin zone, by automatically processing the information obtained by 3D-based DFT codes.
 
 The only requirements for package execution are a :ref:`label_dft_structure_file` representing the structure of interest
@@ -22,15 +22,15 @@ the bonding environment of most of the atoms located far from the interface is s
 that of the bulk atoms, presenting the same vibrations as the ideal bulk.
 Deviation of vibrations from bulk occurs only on the atoms in the vicinity of the interface.
 Therefore, to alleviate the excessive computational cost,
-***InterPhon*** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface.
+**InterPhon** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface.
 
 Strategy
 ********
 
-Phonon evaluation of ***InterPhon*** is based on direct approach using the finite displacement method (FDM).
+Phonon evaluation of **InterPhon** is based on direct approach using the finite displacement method (FDM).
 
 In contrast to conventional phonon codes for 3D bulk systems such as Phonopy_ and PHON_, where generate the dynamical matrix of
-all constituent atoms in a unit cell by requiring the ‘complete FDM’, ***InterPhon***, which requires ‘selective FDM’,
+all constituent atoms in a unit cell by requiring the ‘complete FDM’, **InterPhon**, which requires ‘selective FDM’,
 generates the dynamical matrix of a subset of the constituent atoms in a unit cell and does not assume 3D periodicity.
 
 .. _Phonopy: https://phonopy.github.io/phonopy/
@@ -39,7 +39,7 @@ generates the dynamical matrix of a subset of the constituent atoms in a unit ce
 Architecture
 ************
 
-The ``InterPhon`` package comprises following five sub-packages:
+The **InterPhon** package comprises following five sub-packages:
 
 - ``error`` package consists of error modules defined by developer to guide users.
 

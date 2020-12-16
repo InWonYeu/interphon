@@ -4,7 +4,7 @@
 Option tags
 ===========
 
-As listed below, ***InterPhon*** supports a range of option tags to manage phonon computations and plotting styles.
+As listed below, **InterPhon** supports a range of option tags to manage phonon computations and plotting styles.
 In order to see all of the available options and their default values in command line::
 
     $ interphon --help
