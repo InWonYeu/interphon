@@ -6,10 +6,12 @@ Input files
 
 DFT structure file
 ******************
-Within ``InterPhon``, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
+Within ***InterPhon***, the interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
 Phonon evaluation proceeds only in the selected atoms.
 
-See below example of Cu(111) surface where the top three layers are selected as the surface region.
+.. _label_Cu(111)_surface_example:
+
+See below :ref:`example of Cu(111) surface <label_Cu(111)_surface_example>` where the top three layers are selected as the surface region.
 A part of the DFT structure file is shown in VASP, Quantum ESPRESSO, and FHI-aims format.
 
 **VASP**::
@@ -76,7 +78,7 @@ The force information is used to fill the :ref:`dynamical matrix <label_dynamica
 
 K-point file
 ************
-The :ref:`label_kpoint_file`, which is supported in VASP KPOINTS_ format, is used for the mesh sampling of k-points.
+The K-point file, which is supported in VASP KPOINTS_ format, is used for the mesh sampling of k-points.
 
 .. _KPOINTS: https://www.vasp.at/wiki/index.php/KPOINTS
 
@@ -101,3 +103,4 @@ The :ref:`label_kpoint_file`, which is supported in VASP KPOINTS_ format, is use
 
     0.333333 0.333333 0.00  # K
     0.00 0.00 0.00  # G
+

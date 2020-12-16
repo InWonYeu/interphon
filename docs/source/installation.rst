@@ -15,29 +15,28 @@ Requirements
 Installation using pip
 **********************
 
-Install ``InterPhon`` via pip_, which gets the source code from PyPI_::
+Install ***InterPhon*** via pip_, which gets the source code from PyPI_::
 
     $ pip install interphon
 
 .. _PyPI: https://pypi.org/project/InterPhon/
 .. _PIP: https://pip.pypa.io/en/stable/
-.. _GitHub: https://github.com/InWonYeu/interphon
 
-Installation from source
-************************
+Installation from source code
+*****************************
 
 .. :Git clone:
 
-Alternatively, get the source from GitHub_ by git clone and setup::
+Alternatively, get the source code from `InterPhon GitHub <https://github.com/InWonYeu/interphon>`_ by git clone and setup::
 
     $ git clone https://github.com/inwonyeu/interphon.git
     $ cd interphon/
     $ python setup.py install
 
-Test installation
+Installation test
 *****************
 
-Once the ``InterPhon`` package is successfully installed, you can import ``InterPhon`` within Python interpreter::
+Once the ***InterPhon*** package is successfully installed, you can import ***InterPhon*** within Python interpreter::
 
     >>> import InterPhon
 

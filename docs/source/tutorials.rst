@@ -2,7 +2,7 @@
 Tutorials
 =========
 
-The following tutorials explain the basic usage of ``InterPhon``.
+The following tutorials explain the method of ***InterPhon*** usage.
 
 .. toctree::
 

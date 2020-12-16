@@ -4,13 +4,13 @@
 Option tags
 ===========
 
-As listed below, ``InterPhon`` supports a range of option tags to manage phonon computations and plotting styles.
+As listed below, ***InterPhon*** supports a range of option tags to manage phonon computations and plotting styles.
 In order to see all of the available options and their default values in command line::
 
     $ interphon --help
 
 Because it is not convenient to enter many options in command line,
-It is also supported to pass a bunch of options through a file ``Option_file`` (file name is arbitrary)::
+it is supported to pass a bunch of options through a file ``Option_file`` (file name is arbitrary)::
 
     $ interphon --option_file Option_file
 
@@ -25,7 +25,9 @@ The general format of ``Option_file`` is::
     [option tag 3] = [option value 3]
     ...
 
-and example of ``Option_file`` is::
+.. _label_option_file_example:
+
+and :ref:`example <label_option_file_example>` of ``Option_file`` is::
 
     DFT = vasp
     DISP = 0.02
@@ -35,9 +37,9 @@ and example of ``Option_file`` is::
     OPTION_DOS = stack  # A plot option of DOS
     NDOS = 1000  # The number of DOS points
     ELIMIT = -1 8  # Energy (THz) limitation of DOS and Band plot
-    ATOM_DOS = 6, 5, 4  # The Index of atoms to be projected in DOS plot. Among the selected atoms as interface, the atom in 6th, 5th, and 4th lines is located in the topmost layer (1st layer), 2nd layer, and 3rd layer, respectively
+    ATOM_DOS = 6, 5 4  # The Index of atoms to be projected in DOS plot. Among the selected atoms as interface, the atom in 6th, 5th, and 4th lines is located in the topmost layer (1st layer), 2nd layer, and 3rd layer, respectively
     COLOR_DOS = black  # The color of total DOS line
-    LEGEND_DOS = 1st layer, 2nd layer, 3rd layer  # Legends for the projected atoms in DOS
+    LEGEND_DOS = 1st layer, 2nd + 3rd layer  # Legends for the projected atoms in DOS
 
     OPTION_band = projection  # A plot option of band
     ATOM_BAND = 6  # The Index of atoms to be projected in band plot
@@ -47,8 +49,10 @@ and example of ``Option_file`` is::
 .. note::
    Option tags can be either long or short name, irrespective of lowercase and uppercase letters.
 
-Basic tags
-**********
+.. _label_basic_option_tags:
+
+Basic option tags
+*****************
 
 1. ––option_file, –option
 -------------------------
@@ -125,8 +129,8 @@ Basic tags
     usage:
     $ interphon -sc SUPERCELL
 
-Density of states (DOS) tags
-****************************
+Density of state (DOS) option tags
+**********************************
 
 1. ––density_of_state, –dos
 ---------------------------
@@ -212,6 +216,8 @@ Density of states (DOS) tags
     usage:
     $ interphon -color_dos tab:orange
 
+.. _label_dos_option_dos:
+
 9. ––projection_option_dos, –option_dos
 ---------------------------------------
 ::
@@ -245,8 +251,8 @@ Density of states (DOS) tags
     usage:
     $ interphon -legend_loc_dos "upper right"
 
-Thermal properties tags
-***********************
+Thermal property option tags
+****************************
 
 1. ––thermal_property, –thermal
 -------------------------------
@@ -292,8 +298,8 @@ Thermal properties tags
     usage:
     $ interphon -tstep 10
 
-Band structures tags
-********************
+Band structure option tags
+**************************
 
 1. ––phonon_band, –band
 -----------------------
@@ -347,6 +353,8 @@ Band structures tags
     usage:
     $ interphon -color_band tab:orange
 
+.. _label_band_option_band:
+
 6. ––projection_option_band, –option_band
 -----------------------------------------
 ::
@@ -379,8 +387,8 @@ Band structures tags
     usage:
     $ interphon -bar_loc_band right
 
-phonon modes tags
-*****************
+phonon mode option tags
+***********************
 
 1. ––phonon_mode, –mode
 -----------------------
@@ -415,5 +423,5 @@ phonon modes tags
     usage:
     $ interphon -kpt_mode "0.0 0.0 0.0"
 
-.. note::
-   A k-point given by the option –kpt_mode should be included in k-points of band line path.
+.. caution::
+   The k-point given by the option –kpt_mode should be included in k-points of band line path.

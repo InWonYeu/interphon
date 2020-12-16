@@ -24,25 +24,25 @@ Post-process execution
 As an example, let's assume the :ref:`label_dft_force_file` is ``vasprun.xml`` in VASP format
 and each force file resides in *Phonon root/FORCE-0** folders.
 First, go to the *Phonon root* folder where the ``POSCAR`` file resides.
-Then, execute ``InterPhon`` post-process by one of the following ways: :ref:`label_post_process_command_line` and :ref:`label_post_process_python_interpreter`.
-If done successfully, files of phonon properties (``band.dat``, ``band.png``, etc.),
-and :ref:`label_post_process_record_file` (``post_process.yaml``) will be generated.
+Then, execute ***InterPhon*** post-process by one of the following ways: :ref:`label_post_process_command_line` and :ref:`label_post_process_python_interpreter`.
+If done successfully, files of :ref:`phonon properties <label_post_process_property_file>` (``band.dat``, ``band.png``, etc.)
+and :ref:`Post-process record file <label_pre_process_record_file>` (``post_process.yaml``) will be generated.
 
 .. note::
-   :ref:`label_pre_process_record_file` (``pre_process.yaml``) and supercell file (``SUPERCELL``),
-   which are generated in previous :ref:`pre-process <label_pre_process>`,
-   and the :ref:`label_dft_structure_file` of a targeted unit cell should reside in the *Phonon root* folder.
+   :ref:`Post-process record file <label_pre_process_record_file>` (``pre_process.yaml``) and supercell file (``SUPERCELL``),
+   which are generated in previous :ref:`Pre-process <label_pre_process>`,
+   should reside in the *Phonon root* folder with the :ref:`label_dft_structure_file` of a targeted unit cell.
 
 .. _label_post_process_command_line:
 
 1. Command line
 ---------------
-The following commands is for the simultaneous analysis on all of the supported phonon properties.
+The following commands is for the simultaneous analysis for all of the supported phonon properties.
 If you don't need some analyses, exclude corresponding flag options (:ref:`label_option_tags`).
 
 .. note::
 
-   The :ref:`label_kpoint_file` (``KPOINTS_dos`` and ``KPOINTS_band`` below, file name is arbitrary),
+   The :ref:`label_kpoint_file` (``KPOINTS_dos`` and ``KPOINTS_band`` below),
    which is supported in VASP KPOINTS_ format, is required for the mesh sampling of k-points.
 
 .. _KPOINTS: https://www.vasp.at/wiki/index.php/KPOINTS
