@@ -82,6 +82,30 @@ Usage::
 ---------------------------------------------------
 ::
 
+    - files:
+      - unit_cell_file: POSCAR
+      - super_cell_file: SUPERCELL
+      - k_point_file_dos: KPOINTS_dos
+      - force_file:
+        - FORCE-0001\vasprun.xml
+        - FORCE-0002\vasprun.xml
+        - FORCE-0003\vasprun.xml
+        - FORCE-0004\vasprun.xml
+        - FORCE-0005\vasprun.xml
+        - FORCE-0006\vasprun.xml
+        - FORCE-0007\vasprun.xml
+        - FORCE-0008\vasprun.xml
+        - FORCE-0009\vasprun.xml
+        - FORCE-0010\vasprun.xml
+        - FORCE-0011\vasprun.xml
+        - FORCE-0012\vasprun.xml
+        - FORCE-0013\vasprun.xml
+        - FORCE-0014\vasprun.xml
+        - FORCE-0015\vasprun.xml
+        - FORCE-0016\vasprun.xml
+        - FORCE-0017\vasprun.xml
+        - FORCE-0018\vasprun.xml
+    - dft_code: vasp
     - user_arguments:
       - displacement: 0.02
       - enlargement: 4 4 1
