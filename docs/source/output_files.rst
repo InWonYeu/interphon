@@ -194,6 +194,9 @@ Usage::
 
 .. image:: images/Cu_111_band_dos.png
 
+.. _label_ase_visualization:
+
 6. `ASE Visualization <https://wiki.fysik.dtu.dk/ase/ase/visualize/visualize.html#module-ase.visualize>`_ of `Trajectory <https://wiki.fysik.dtu.dk/ase/ase/io/io.html#module-ase.io>`_ along with ``XDATCAR``
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+``XDATCAR`` file is the general output of molecular dynamics and the file format can be visualized directly by `VMD <https://www.ks.uiuc.edu/Research/vmd/>`_.
