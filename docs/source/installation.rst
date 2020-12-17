@@ -10,7 +10,15 @@ Requirements
 * `Numpy <https://numpy.org/doc/stable/>`_
 * `Matplotlib <https://matplotlib.org/>`_
 * `PyYAML <https://pyyaml.org/>`_
-* `(Optional) ASE <https://wiki.fysik.dtu.dk/ase/index.html>`_
+* (Optional) ASE_
+
+.. note::
+    The :ref:`visualization of phonon mode <label_ase_visualization>` works with ASE_.
+    If you want this function, append 'ase' to install_requires in ``setup.py``::
+
+        install_requires.append('ase')
+
+.. _ASE: https://wiki.fysik.dtu.dk/ase/index.html
 
 Installation using pip
 **********************
