@@ -86,6 +86,7 @@ Usage::
       - unit_cell_file: POSCAR
       - super_cell_file: SUPERCELL
       - k_point_file_dos: KPOINTS_dos
+      - k_point_file_band: KPOINTS_band
       - force_file:
         - FORCE-0001\vasprun.xml
         - FORCE-0002\vasprun.xml
