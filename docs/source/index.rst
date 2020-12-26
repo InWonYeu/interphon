@@ -17,6 +17,14 @@ Currently supported DFT codes:
 2. Quantum ESPRESSO
 3. FHI-aims
 
+News
+****
+
+* `InterPhon version 0.2.3 <https://github.com/InWonYeu/interphon/tree/v0.2.3>`_ released (16 December 2020)
+* `InterPhon version 0.2.2 <https://github.com/InWonYeu/interphon/tree/v0.2.2>`_ released (16 December 2020)
+* `InterPhon version 0.2.1 <https://github.com/InWonYeu/interphon/tree/v0.2.1>`_ released (15 December 2020)
+* `InterPhon version 0.1.0 <https://github.com/InWonYeu/interphon/tree/v0.1.0>`_ released (09 December 2020)
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -24,6 +32,7 @@ Currently supported DFT codes:
    introduction
    installation
    tutorials
+   how_to_cite
 
 Indices and tables
 ==================
