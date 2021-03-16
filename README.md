@@ -8,7 +8,7 @@ In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, arXi
 ```
 
 The description below is a basic usage guide.
-If you want to learn more about ***InterPhon***, please visit <https://interphon.readthedocs.io/>
+If you want to learn more about ***InterPhon***, please find the user manual at <https://interphon.readthedocs.io/>
 <br />
 <br />
 
