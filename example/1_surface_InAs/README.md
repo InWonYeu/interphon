@@ -1,4 +1,4 @@
-## This is the data used to obtain the results in **"Surface reconstruction: InAs(111)A and (111)B"** ##
+## This is the data used to obtain the results in Section **"Surface reconstruction: InAs(111)A and (111)B"** ##
 
 The contents of the DFT output file (`vasprun.xml`) have been deleted except for force-related information to reduce the file size.
 
