@@ -519,10 +519,10 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                 band_args['k_label'] = [label for label in k_label_band.strip().split()]
 
             if atom_band is None:
-                if option_dos != 'plain':
+                if option_band != 'plain':
                     print('Caution:')
                     print('"atom_band" should be given, in the Index of selected atoms, to plot projected Band.')
-                    print('"option_band" is changed from "{0}" to "plain".'.format(option_dos))
+                    print('"option_band" is changed from "{0}" to "plain".'.format(option_band))
                     band_args['option'] = 'plain'
                 band_args['atom'] = None
             else:
