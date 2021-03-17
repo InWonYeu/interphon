@@ -1,0 +1,10 @@
+KDOS = KPOINTS_dos  # Monkhorst-Pack 18×18×1
+OPTION_DOS = plain
+NDOS = 1000
+ELIMIT = -2 16
+COLOR_DOS = tab:orange
+
+KBAND = KPOINTS_band  # Line path along G-M-K-G
+OPTION_BAND = plain
+COLOR_BAND = tab:orange
+K_LABEL_BAND = G M K G
