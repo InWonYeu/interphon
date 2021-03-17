@@ -1,0 +1,12 @@
+KDOS = KPOINTS_dos  # Monkhorst-Pack 12×12×1
+OPTION_DOS = line
+NDOS = 1000
+ELIMIT = -1 17
+ATOM_DOS = 28, 16 17 18 19 20 21 22 23 24 25 26 27
+COLOR_DOS = tab:green
+LEGEND_DOS = Oxygen, Cu layers
+
+KBAND = KPOINTS_band  # Line path along G-M-K-G
+OPTION_BAND = plain
+COLOR_BAND = tab:green
+K_LABEL_BAND = G M K G
