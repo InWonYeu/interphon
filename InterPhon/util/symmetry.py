@@ -92,10 +92,10 @@ W_candidate = [np.array([[0, 1, 0],
 
 unit_cell = UnitCell()
 unit_cell.read_unit_cell('./POSCAR')
-# print(unit_cell.atom_type)
+print(unit_cell.atom_type)
+print(unit_cell.atom_true)
 
-atom_true = unit_cell.atom_direct[unit_cell.atom_true, :].transpose()
-# print(atom_true)
+atom_true_original = unit_cell.atom_direct[unit_cell.atom_true, :].transpose()
 
 G_metric = np.dot(unit_cell.lattice_matrix[0:2, 0:2], np.transpose(unit_cell.lattice_matrix[0:2, 0:2]))  # metric tensor
 # print(G_metric)
@@ -109,8 +109,7 @@ for ind, rot in enumerate(W_candidate):
 
 w_for_given_rot = []
 for ind in rot_ind:
-    # print(W_candidate[ind])
-    atom_true_rot = np.dot(W_candidate[ind], atom_true)
+    atom_true_rot = np.dot(W_candidate[ind], atom_true_original)
 
     # print(atom_true_rot)
     # if np.allclose(atom_true_rot, atom_true):
@@ -119,23 +118,33 @@ for ind in rot_ind:
     #     print('False')
 
     w_candidate = [np.array([0.0, 0.0, 0.0])]
-    for atom_ind in range(atom_true.shape[1]):
-        other_atom = list(range(atom_true.shape[1]))
-        other_atom.remove(atom_ind)
-        for other_ind in other_atom:
-            w = atom_true[:, other_ind] - atom_true_rot[:, atom_ind]
-            if w[2] == 0.0:
-                w_candidate.append(w)
+    # for atom_ind in range(atom_true.shape[1]):
+    for index, value in enumerate(unit_cell.atom_true):
+        other_atom_ind = [i for i in unit_cell.atom_true]
+        other_atom_ind.remove(value)
+        for other_index, other_ind in enumerate(other_atom_ind):
+            if unit_cell.atom_type[other_ind] == unit_cell.atom_type[value]:
+                w = atom_true_original[:, other_index] - atom_true_rot[:, index]
+                if w[2] == 0.0:
+                    w_candidate.append(w)
     # print('w_candidate=', w_candidate)
 
     trans_for_given_rot = []
     for w in w_candidate:
         atom_transform = atom_true_rot + w.reshape([3, 1])
-        delta_x = atom_transform - atom_true  # It will be replaced by atom-to-atom comparison
-        delta_x_cart = np.dot(np.transpose(unit_cell.lattice_matrix), delta_x - np.rint(delta_x))
+        same_index = []
+        for index, value in enumerate(unit_cell.atom_true):
+            same_atom_type = [val for val in unit_cell.atom_true if unit_cell.atom_type[val] == unit_cell.atom_type[value]]
+            for index_original, value_original in enumerate(same_atom_type):
+                delta_x = atom_transform[:, index] - atom_true_original[:, index_original]  # atom-to-atom comparison
+                delta_x_cart = np.dot(np.transpose(unit_cell.lattice_matrix), delta_x - np.rint(delta_x))
 
-        # print(del_x.shape)
-        if np.allclose(delta_x_cart, np.zeros([3, 3]), atol=1e-06):  # [3, num_atoms] It will be replaced [3, ]
+                if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
+                    same_index.append(index_original)
+                    break
+                # else:
+                #     continue
+        if len(same_index) == len(unit_cell.atom_true):
             trans_for_given_rot.append(w)
 
     w_for_given_rot.append(trans_for_given_rot)
