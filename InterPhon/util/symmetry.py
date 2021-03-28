@@ -95,7 +95,7 @@ unit_cell.read_unit_cell('./POSCAR')
 print(unit_cell.atom_type)
 print(unit_cell.atom_true)
 
-atom_true_original = unit_cell.atom_direct[unit_cell.atom_true, :].transpose()
+atom_true_original = np.transpose(unit_cell.atom_direct[unit_cell.atom_true, :])
 
 G_metric = np.dot(unit_cell.lattice_matrix[0:2, 0:2], np.transpose(unit_cell.lattice_matrix[0:2, 0:2]))  # metric tensor
 # print(G_metric)
@@ -108,6 +108,7 @@ for ind, rot in enumerate(W_candidate):
 # print(rot_ind)
 
 w_for_given_rot = []
+same_index = []
 for ind in rot_ind:
     atom_true_rot = np.dot(W_candidate[ind], atom_true_original)
 
@@ -124,32 +125,39 @@ for ind in rot_ind:
         other_atom_ind.remove(value)
         for other_index, other_ind in enumerate(other_atom_ind):
             if unit_cell.atom_type[other_ind] == unit_cell.atom_type[value]:
-                w = atom_true_original[:, other_index] - atom_true_rot[:, index]
+                w = np.round_(atom_true_original[:, other_index] - atom_true_rot[:, index], 6)
                 if w[2] == 0.0:
-                    w_candidate.append(w)
+                    w_, _ = np.modf(w)
+                    if not np.allclose(w_, np.zeros([3, ]), atol=1e-06):
+                        w_candidate.append(w_)
     # print('w_candidate=', w_candidate)
+    # print(np.array(w_candidate).shape)
 
     trans_for_given_rot = []
+    _same_index = []
     for w in w_candidate:
         atom_transform = atom_true_rot + w.reshape([3, 1])
-        same_index = []
+        __same_index = []
         for index, value in enumerate(unit_cell.atom_true):
-            same_atom_type = [val for val in unit_cell.atom_true if unit_cell.atom_type[val] == unit_cell.atom_type[value]]
-            for index_original, value_original in enumerate(same_atom_type):
-                delta_x = atom_transform[:, index] - atom_true_original[:, index_original]  # atom-to-atom comparison
-                delta_x_cart = np.dot(np.transpose(unit_cell.lattice_matrix), delta_x - np.rint(delta_x))
+            same_atom_type = [ind_ for ind_, val_ in enumerate(unit_cell.atom_true)
+                              if unit_cell.atom_type[val_] == unit_cell.atom_type[value]]
+
+            for _, same_atom_index in enumerate(same_atom_type):
+                delta_x = atom_transform[:, index] - atom_true_original[:, same_atom_index]  # atom-to-atom comparison
+                delta_x_cart = np.matmul(np.transpose(unit_cell.lattice_matrix), delta_x - np.rint(delta_x))
 
                 if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
-                    same_index.append(index_original)
+                    __same_index.append(unit_cell.atom_true[same_atom_index])
                     break
-                # else:
-                #     continue
-        if len(same_index) == len(unit_cell.atom_true):
+
+        if len(__same_index) == len(unit_cell.atom_true):
             trans_for_given_rot.append(w)
+            _same_index.append(__same_index)
 
     w_for_given_rot.append(trans_for_given_rot)
+    same_index.append(_same_index)
 print(w_for_given_rot)
-# print(np.array(w_for_given_rot).shape)
+print(same_index)
 
 look_up_table = np.array([0, 0, 0, 0, 0, 0])  # num of following point-group operations: m, 1, 2, 3, 4, 6
 for ind_ind, ind in enumerate(rot_ind):
