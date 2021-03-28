@@ -91,7 +91,7 @@ W_candidate = [np.array([[0, 1, 0],
                ]
 
 unit_cell = UnitCell()
-unit_cell.read_unit_cell('./POSCAR')
+unit_cell.read_unit_cell('./POSCAR_InAs_A')
 print(unit_cell.atom_type)
 print(unit_cell.atom_true)
 
@@ -111,12 +111,6 @@ w_for_given_rot = []
 same_index = []
 for ind in rot_ind:
     atom_true_rot = np.dot(W_candidate[ind], atom_true_original)
-
-    # print(atom_true_rot)
-    # if np.allclose(atom_true_rot, atom_true):
-    #     print('True')
-    # else:
-    #     print('False')
 
     w_candidate = [np.array([0.0, 0.0, 0.0])]
     # for atom_ind in range(atom_true.shape[1]):
@@ -147,8 +141,9 @@ for ind in rot_ind:
                 delta_x_cart = np.matmul(np.transpose(unit_cell.lattice_matrix), delta_x - np.rint(delta_x))
 
                 if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
-                    __same_index.append(unit_cell.atom_true[same_atom_index])
-                    break
+                    if same_atom_index not in __same_index:
+                        __same_index.append(same_atom_index)
+                        break
 
         if len(__same_index) == len(unit_cell.atom_true):
             trans_for_given_rot.append(w)
@@ -160,10 +155,10 @@ print(w_for_given_rot)
 print(same_index)
 
 look_up_table = np.array([0, 0, 0, 0, 0, 0])  # num of following point-group operations: m, 1, 2, 3, 4, 6
-for ind_ind, ind in enumerate(rot_ind):
+for ind_ind, _rot_ind in enumerate(rot_ind):
     if w_for_given_rot[ind_ind]:
-        print(W_candidate[ind])
-        look_up = (np.trace(W_candidate[ind][0:2, 0:2]), np.linalg.det(W_candidate[ind][0:2, 0:2]))
+        # print(W_candidate[ind])
+        look_up = (np.trace(W_candidate[_rot_ind][0:2, 0:2]), np.linalg.det(W_candidate[_rot_ind][0:2, 0:2]))
         if look_up == (0.0, -1.0):
             look_up_table[0] += 1
         elif look_up == (2.0, 1.0):
@@ -189,9 +184,9 @@ elif np.allclose(look_up_table, np.array([1, 1, 0, 0, 0, 0])):
 elif np.allclose(look_up_table, np.array([2, 1, 1, 0, 0, 0])):
     print('Point group = 2mm')
 elif np.allclose(look_up_table, np.array([2, 2, 0, 0, 0, 0])):
-    print('Point group = cm')
+    print('Point group = m (cm)')
 elif np.allclose(look_up_table, np.array([4, 2, 2, 0, 0, 0])):
-    print('Point group = c2mm')
+    print('Point group = 2mm (c2mm)')
 elif np.allclose(look_up_table, np.array([0, 1, 1, 0, 2, 0])):
     print('Point group = 4')
 elif np.allclose(look_up_table, np.array([4, 1, 1, 0, 2, 0])):
@@ -207,3 +202,14 @@ elif np.allclose(look_up_table, np.array([6, 1, 1, 2, 0, 2])):
 else:
     print('What is this point group?')
     assert False
+
+not_require = []
+for ind_ind, _rot_ind in enumerate(rot_ind):
+    if w_for_given_rot[ind_ind]:
+        for _, _same in enumerate(same_index[ind_ind]):
+            for __ind, __same in enumerate(_same):
+                if __ind < __same:
+                    if __same not in not_require:
+                        not_require.append(__same)
+                        print(ind_ind)
+print(not_require)
