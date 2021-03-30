@@ -123,16 +123,20 @@ class PostProcess(PreProcess):
                     # print(same_index_select[_point_group_ind])
 
                     # print(self.super_cell.atom_true)
+                    W_in_cart = np.identity(3)
+                    W_in_cart[0:2, 0:2] = np.transpose(self.unit_cell.lattice_matrix)[0:2, 0:2] @ \
+                                          W_select[_point_group_ind][0:2, 0:2] @ \
+                                          np.linalg.inv(np.transpose(self.unit_cell.lattice_matrix)[0:2, 0:2])
                     for _index, _same_index in enumerate(same_index_select[_point_group_ind][0]):
                         self.force_constant[3 * self.super_cell.atom_true[_index]: 3 * (self.super_cell.atom_true[_index] + 1), 3 * _not_require: 3 * (_not_require + 1)] \
-                            = W_select[_point_group_ind] \
+                            = W_in_cart \
                               @ self.force_constant[3 * self.super_cell.atom_true[_same_index]: 3 * (self.super_cell.atom_true[_same_index] + 1),
                                 3 * same_index_select[_point_group_ind][0][_not_require]: 3 * (same_index_select[_point_group_ind][0][_not_require] + 1)] \
-                              @ np.linalg.inv(W_select[_point_group_ind])
+                              @ np.linalg.inv(W_in_cart)
 
-                    _test = 2
-                    print(self.force_constant[3 * self.super_cell.atom_true[0]: 3 * (self.super_cell.atom_true[3] + 1), 3 * _test: 3 * (_test + 1)])
-                    assert False
+                    # _test = 2
+                    # print(self.force_constant[3 * self.super_cell.atom_true[0]: 3 * (self.super_cell.atom_true[3] + 1), 3 * _test: 3 * (_test + 1)])
+                    # assert False
         else:
             ################
             if code_name == 'vasp':
