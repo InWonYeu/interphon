@@ -173,42 +173,41 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
     same_supercell_index_select = []
     look_up_table = np.array([0, 0, 0, 0, 0, 0])  # num of following point-group operations: m, 1, 2, 3, 4, 6
     for ind_ind, _rot_ind in enumerate(rot_ind):
-        _same_supercell_index = []
         if w_for_given_rot[ind_ind]:
             W_select.append(W_candidate[_rot_ind])
             w_select.append(w_for_given_rot[ind_ind])
-            print(w_for_given_rot[ind_ind])
             same_index_select.append(same_index[ind_ind])
 
             if super_cell.atom_true is not None:
-                transform_super_cell = deepcopy(super_cell)
+                satom_true_original = np.transpose(super_cell.atom_direct[super_cell.atom_true, :])
+                satom_true_rot = np.dot(W_candidate[_rot_ind], satom_true_original)
+                print(_rot_ind, W_candidate[_rot_ind])
 
-                transform_super_cell.atom_direct = np.transpose(
-                    np.dot(W_candidate[_rot_ind], np.transpose(transform_super_cell.atom_direct)) + w_for_given_rot[ind_ind][0].reshape([3, 1]) + __super_direct.reshape([3, 1]))
+                _same_supercell_index = []
+                for w in w_for_given_rot[ind_ind]:
+                    satom_transform = satom_true_rot + w.reshape([3, 1]) + __super_direct.reshape([3, 1])
 
-                # atom-to-atom super cell comparison
-                __same_supercell_index = []
-                for index, value in enumerate(super_cell.atom_true):
-                    same_atom_type = [ind_ for ind_, val_ in enumerate(super_cell.atom_true)
-                                      if super_cell.atom_type[val_] == super_cell.atom_type[value]]
+                    # atom-to-atom super cell comparison
+                    __same_supercell_index = []
+                    for index, value in enumerate(super_cell.atom_true):
+                        same_satom_type = [ind_ for ind_, val_ in enumerate(super_cell.atom_true)
+                                           if super_cell.atom_type[val_] == super_cell.atom_type[value]]
 
-                    for _, same_atom_index in enumerate(same_atom_type):
-                        # found_flag = False
-                        delta_x = np.transpose(transform_super_cell.atom_direct)[:, super_cell.atom_true[index]] \
-                                  - np.transpose(super_cell.atom_direct)[:, super_cell.atom_true[same_atom_index]]
-                        delta_x_cart = np.matmul(np.transpose(super_cell.lattice_matrix),
-                                                 delta_x - np.rint(delta_x))
+                        for _, same_satom_index in enumerate(same_satom_type):
+                            # found_flag = False
+                            delta_x = satom_transform[:, index] - satom_true_original[:, same_satom_index]
+                            delta_x_cart = np.matmul(np.transpose(super_cell.lattice_matrix), delta_x - np.rint(delta_x))
 
-                        if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
-                            # found_flag = True
-                            if same_atom_index not in __same_supercell_index:
-                                __same_supercell_index.append(same_atom_index)
-                                break
+                            if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
+                                # found_flag = True
+                                if same_satom_index not in __same_supercell_index:
+                                    __same_supercell_index.append(same_satom_index)
+                                    break
 
-                    if len(__same_supercell_index) == len(unit_cell.atom_true):
-                        _same_supercell_index.append(__same_supercell_index)
+                        if len(__same_supercell_index) == len(unit_cell.atom_true):
+                            _same_supercell_index.append(__same_supercell_index)
 
-            same_supercell_index_select.append(_same_supercell_index)
+                same_supercell_index_select.append(_same_supercell_index)
 
             look_up = (np.trace(W_candidate[_rot_ind][0:2, 0:2]), np.linalg.det(W_candidate[_rot_ind][0:2, 0:2]))
             if look_up == (0.0, -1.0):
@@ -262,7 +261,7 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
     for _ind, _ in enumerate(unit_cell.atom_true):
         if require:
             found_flag = False
-            for W_ind, same in enumerate(same_index_select):
+            for W_ind, same in enumerate(same_index_select):  # 여기서 same_supercell_index_select 도 같이 shuffle
                 if same[0][_ind] in require:
                     point_group_ind.append(W_ind)
                     not_require.append(_ind)
@@ -272,20 +271,5 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
                 require.append(_ind)
         else:
             require.append(_ind)
-
-    # for W_ind, _ in enumerate(W_select):
-    #     for _, _same in enumerate(same_index_select[W_ind]):
-    #         for __ind, __same in enumerate(_same):
-    #             if __ind < __same:
-    #                 if __ind not in not_require:
-    #                     not_require.append(__ind)
-    #                     point_group_ind.append(W_ind)
-
-    # not_require = np.array(not_require)
-    # point_group_ind = np.array(point_group_ind)
-    # _sorted_indices = np.argsort(not_require)
-    #
-    # not_require = not_require[_sorted_indices]
-    # point_group_ind = point_group_ind[_sorted_indices]
 
     return W_select, w_select, same_index_select, point_group_ind, require, not_require, same_supercell_index_select

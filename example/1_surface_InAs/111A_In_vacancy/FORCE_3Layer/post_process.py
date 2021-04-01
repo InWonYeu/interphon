@@ -136,6 +136,8 @@ class PostProcess(PreProcess):
                 for _point_group_ind, _not_require in zip(point_group_ind, not_require):
                     W_in_cart = np.identity(3)
                     transformation_matrix = np.linalg.inv(np.transpose(self.unit_cell.lattice_matrix)[0:2, 0:2])
+                    print(_point_group_ind, W_select[_point_group_ind])
+                    print(len(self.super_cell.atom_true), self.super_cell.atom_true)
                     W_in_cart[0:2, 0:2] = np.linalg.inv(transformation_matrix) \
                                           @ W_select[_point_group_ind][0:2, 0:2] \
                                           @ transformation_matrix
@@ -150,7 +152,7 @@ class PostProcess(PreProcess):
 
                 _test = 2
                 print(self.force_constant.shape)
-                print(self.force_constant[3 * self.super_cell.atom_true[0]: 3 * (self.super_cell.atom_true[3] + 1), 3 * _test: 3 * (_test + 1)])
+                print(self.force_constant[3 * self.super_cell.atom_true[4]: 3 * (self.super_cell.atom_true[7] + 1), 3 * _test: 3 * (_test + 1)])
         else:
             ######## Block on updating ########
             if code_name == 'vasp':
