@@ -7,7 +7,7 @@ from InterPhon.core.super_cell import SuperCell
 from InterPhon.core.post_check import PostArgument
 from InterPhon.core.pre_process import PreProcess
 from InterPhon.inout import vasp, aims, espresso
-from symmetry import symmetry_2d
+import symmetry
 
 
 class PostProcess(PreProcess):
@@ -106,13 +106,11 @@ class PostProcess(PreProcess):
 
         if _ind_pbc.shape[0] == 2:
             W_select, w_select, same_index_select, point_group_ind, require, not_require, same_supercell_index_select \
-                = symmetry_2d(self.unit_cell, self.super_cell, self.user_arg)
+                = symmetry.symmetry_2d(self.unit_cell, self.super_cell, self.user_arg)
             # print('W_select:', W_select)
             # print('w_select:', w_select)
             print('same_index_select:', same_index_select)
             print('same_supercell_index_select:', np.array(same_supercell_index_select).shape)
-            for _same in same_supercell_index_select:
-                print(_same[0])
             print("point_group_ind: ", point_group_ind)
             print("not_require: ", not_require)
             print("require: ", require)
@@ -141,7 +139,16 @@ class PostProcess(PreProcess):
                 for _point_group_ind, _not_require in zip(point_group_ind, not_require):
                     W_in_cart = np.linalg.inv(transform_matrix) @ W_select[_point_group_ind] @ transform_matrix
 
-                    for _super_index, _super_same_index in enumerate(same_supercell_index_select[_point_group_ind][_not_require]):
+                    for _super_index, _super_same_index in enumerate(same_supercell_index_select[_point_group_ind]):
+                        if _super_index < 4:
+                            print(self.force_constant.copy()[3 * self.super_cell.atom_true[_super_same_index]: 3 * (self.super_cell.atom_true[_super_same_index] + 1),
+                                3 * same_index_select[_point_group_ind][0][_not_require]: 3 * (same_index_select[_point_group_ind][0][_not_require] + 1)])
+                            print(W_in_cart \
+                              @ self.force_constant.copy()[3 * self.super_cell.atom_true[_super_same_index]: 3 * (self.super_cell.atom_true[_super_same_index] + 1),
+                                3 * same_index_select[_point_group_ind][0][_not_require]: 3 * (same_index_select[_point_group_ind][0][_not_require] + 1)] \
+                              @ np.linalg.inv(W_in_cart))
+                        else:
+                            assert False
                         self.force_constant[3 * self.super_cell.atom_true[_super_index]: 3 * (self.super_cell.atom_true[_super_index] + 1),
                         3 * _not_require: 3 * (_not_require + 1)] \
                             = W_in_cart \
@@ -151,7 +158,7 @@ class PostProcess(PreProcess):
 
                 _test = 2
                 print(self.force_constant.shape)
-                print(self.force_constant[3 * self.super_cell.atom_true[4]: 3 * (self.super_cell.atom_true[7] + 1), 3 * _test: 3 * (_test + 1)])
+                print(self.force_constant[3 * self.super_cell.atom_true[0]: 3 * (self.super_cell.atom_true[3] + 1), 3 * _test: 3 * (_test + 1)])
         else:
             ######## Block on updating ########
             if code_name == 'vasp':

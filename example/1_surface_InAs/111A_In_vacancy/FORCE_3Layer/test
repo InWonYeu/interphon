@@ -1,0 +1,21 @@
+from symmetry import symmetry_2d
+from InterPhon.core import UnitCell
+import post_process
+import glob
+force_path = glob.glob('FORCE-0*/vasprun.xml')
+force_path.sort()
+
+user_args = {'dft_code': 'vasp', 'displacement': 0.02, 'enlargement': "2 2 1", 'periodicity': "1 1 0"}
+post_dos = post_process.PostProcess('POSCAR', 'SUPERCELL', code_name=user_args.get('dft_code'))
+post_dos.set_user_arg(user_args)
+post_dos.set_reciprocal_lattice()
+post_dos.set_force_constant(force_path, code_name=user_args.get('dft_code'))
+
+post_dos.set_k_points('KPOINTS_dos')
+post_dos.eval_phonon()
+
+from InterPhon.analysis import DOS
+post_dos.dos = DOS(post_dos)
+post_dos.dos.set()
+post_dos.dos.write()
+post_dos.dos.plot()
