@@ -107,11 +107,13 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
                                                   float(y) / user_arg.enlargement[1],
                                                   float(z) / user_arg.enlargement[2]])
                 k = k + 1
-    __super_direct = _super_direct[0, 0:3]
+    # print(_super_direct)
+    # for __super_direct in _super_direct:
+    #     print(__super_direct)
 
     # metric tensor
-    atom_true_original = np.transpose(unit_cell.atom_direct[unit_cell.atom_true, :])
-    G_metric = np.dot(unit_cell.lattice_matrix[0:2, 0:2], np.transpose(unit_cell.lattice_matrix[0:2, 0:2]))
+    G_metric = np.dot(unit_cell.lattice_matrix.copy()[0:2, 0:2],
+                      np.transpose(unit_cell.lattice_matrix.copy()[0:2, 0:2]))
 
     rot_ind = []
     for ind, rot in enumerate(W_candidate):
@@ -120,6 +122,7 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
             rot_ind.append(ind)
     # print(rot_ind)
 
+    atom_true_original = np.transpose(unit_cell.atom_direct.copy()[unit_cell.atom_true, :])
     w_for_given_rot = []
     same_index = []
     for ind in rot_ind:
@@ -142,7 +145,6 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
 
         trans_for_given_rot = []
         _same_index = []
-
         for w in w_candidate:
             atom_transform = atom_true_rot + w.reshape([3, 1])
 
@@ -152,13 +154,13 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
                                   if unit_cell.atom_type[val_] == unit_cell.atom_type[value]]
 
                 for _, same_atom_index in enumerate(same_atom_type):
-                    delta_x = atom_transform[:, index] - atom_true_original[:, same_atom_index]  # atom-to-atom comparison
-                    delta_x_cart = np.matmul(np.transpose(unit_cell.lattice_matrix), delta_x - np.rint(delta_x))
+                    delta_x = atom_transform[:, index] - atom_true_original[:, same_atom_index]  # atom-to-atom compare
+                    delta_x_cart = np.matmul(np.transpose(unit_cell.lattice_matrix.copy()), delta_x - np.rint(delta_x))
 
                     if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
-                        if same_atom_index not in __same_index:
-                            __same_index.append(same_atom_index)
-                            break
+                        # if same_atom_index not in __same_index:
+                        __same_index.append(same_atom_index)
+                        # break
 
                 if len(__same_index) == len(unit_cell.atom_true):
                     trans_for_given_rot.append(w)
@@ -229,7 +231,7 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
     for _ind, _ in enumerate(unit_cell.atom_true):
         if require:
             found_flag = False
-            for W_ind, same in enumerate(same_index_select):  # 여기서 same_supercell_index_select 도 같이 shuffle
+            for W_ind, same in enumerate(same_index_select):
                 if same[0][_ind] in require:
                     point_group_ind.append(W_ind)
                     not_require.append(_ind)
@@ -240,15 +242,18 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
         else:
             require.append(_ind)
 
+    satom_true_original = np.transpose(super_cell.atom_direct.copy()[super_cell.atom_true, :])  # [3, satom_true]
     same_supercell_index_select = []
     for _W_ind, _W_select in enumerate(W_select):
-        _same_supercell_index = []
+        atom_in_primitive = np.transpose(unit_cell.atom_direct.copy()[unit_cell.atom_true, :])
+        atom_in_primitive_rot = np.dot(_W_select, atom_in_primitive)
 
         # find nearest-neighbor for each atom in the primitive unit cell
-        for _atom_index, _atom_true in enumerate(unit_cell.atom_true):
-            satom_true_original = np.transpose(super_cell.atom_direct[super_cell.atom_true, :]).copy()  # [3, satom_true]
+        _same_supercell_index = []
+        for _atom_index, _ in enumerate(unit_cell.atom_true):
+            _atom_in_primitive = atom_in_primitive[:, _atom_index] / user_arg.enlargement
+            _atom_in_primitive_rot = atom_in_primitive_rot[:, _atom_index] / user_arg.enlargement  # [3, ] matrix
 
-            _atom_in_primitive = unit_cell.atom_direct[_atom_true] / user_arg.enlargement  # [3, ] matrix
             __same_supercell_index = []
             for _satom_index, value in enumerate(super_cell.atom_true):
                 _distance = satom_true_original[:, _satom_index] - _atom_in_primitive
@@ -256,38 +261,42 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
                     for _second in (-1.0, 0.0, 1.0):
                         _tmp_distance = _distance + _first * np.array([1, 0, 0]) + _second * np.array([0, 1, 0])
                         if np.dot(_distance, _distance) > np.dot(_tmp_distance, _tmp_distance):
-                            satom_true_original[:, _satom_index] = satom_true_original[:, _satom_index].copy() \
+                            satom_true_original[:, _satom_index] = satom_true_original.copy()[:, _satom_index] \
                                                                    + _first * np.array([1, 0, 0]) \
                                                                    + _second * np.array([0, 1, 0])
-                _min_vector = satom_true_original[:, _satom_index] - _atom_in_primitive
 
-                _atom_in_primitive_rot = np.dot(_W_select, _atom_in_primitive)
+                _min_vector = satom_true_original[:, _satom_index] - _atom_in_primitive
                 _min_vector_rot = np.dot(_W_select, _min_vector)
+
                 for w in w_select[_W_ind]:
-                    _atom_in_primitive_transform = _atom_in_primitive_rot + w.reshape([3, 1])
+                    _atom_in_primitive_transform = _atom_in_primitive_rot + w.reshape([3, ])
 
                     same_satom_type = [ind_ for ind_, val_ in enumerate(super_cell.atom_true)
                                        if super_cell.atom_type[val_] == super_cell.atom_type[value]]
 
-                    _num_found = 0
-                    for _, same_satom_index in enumerate(same_satom_type):
-                        delta_x = _atom_in_primitive_rot + _min_vector_rot - satom_true_original[:, same_satom_index]
-                        delta_x_cart = np.matmul(np.transpose(super_cell.lattice_matrix), delta_x - np.rint(delta_x))
+                    for __super_direct in _super_direct:
+                        for _, same_satom_index in enumerate(same_satom_type):
+                            delta_x = _atom_in_primitive_transform + _min_vector_rot + __super_direct \
+                                      - satom_true_original[:, same_satom_index]
+                            delta_x_cart = np.matmul(np.transpose(super_cell.lattice_matrix), delta_x - np.rint(delta_x))
 
-                        if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
-                            if same_satom_index not in __same_supercell_index:
+                            if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
+                                # if same_satom_index not in __same_supercell_index:
                                 __same_supercell_index.append(same_satom_index)
-                                break
+                                #    break
 
-                    if len(__same_supercell_index) == len(super_cell.atom_true):
-                        _same_supercell_index.append(__same_supercell_index)
+                        if len(__same_supercell_index) == len(super_cell.atom_true):
+                            _same_supercell_index.append(__same_supercell_index)
+                            break
 
-        previous = _same_supercell_index[0]
-        for _test in _same_supercell_index:
-            if not np.allclose(np.array(previous), np.array(_test)):
-                assert False
-            previous = _test
-        print("Done without error")
+        print("_same_supercell_index ({0})".format(len(_same_supercell_index)))
+
+        # previous = _same_supercell_index[0]
+        # for _test in _same_supercell_index:
+        #     if not np.allclose(np.array(previous), np.array(_test)):
+        #         assert False
+        #     previous = _test
+        # print("Done without error")
         same_supercell_index_select.append(_same_supercell_index)
 
     return W_select, w_select, same_index_select, point_group_ind, require, not_require, same_supercell_index_select

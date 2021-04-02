@@ -135,20 +135,17 @@ class PostProcess(PreProcess):
                         self.force_constant[:, require[_ind_file // 6] * 3 + (_ind_file % 6) // 2] \
                             = _dif_force.reshape([self.force_constant.shape[0], ])
 
-                original_basis = np.transpose(self.unit_cell.lattice_matrix).copy()
-                print(original_basis)
-                original_basis = original_basis / np.linalg.norm(original_basis, axis = 0)
-                print(original_basis)
+                original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
+                original_basis = original_basis / np.linalg.norm(original_basis, axis=0)
                 transform_matrix = np.linalg.inv(original_basis)
                 for _point_group_ind, _not_require in zip(point_group_ind, not_require):
-                    W_in_cart = np.identity(3)
                     W_in_cart = np.linalg.inv(transform_matrix) @ W_select[_point_group_ind] @ transform_matrix
 
                     for _super_index, _super_same_index in enumerate(same_supercell_index_select[_point_group_ind][_not_require]):
                         self.force_constant[3 * self.super_cell.atom_true[_super_index]: 3 * (self.super_cell.atom_true[_super_index] + 1),
                         3 * _not_require: 3 * (_not_require + 1)] \
                             = W_in_cart \
-                              @ self.force_constant[3 * self.super_cell.atom_true[_super_same_index]: 3 * (self.super_cell.atom_true[_super_same_index] + 1),
+                              @ self.force_constant.copy()[3 * self.super_cell.atom_true[_super_same_index]: 3 * (self.super_cell.atom_true[_super_same_index] + 1),
                                 3 * same_index_select[_point_group_ind][0][_not_require]: 3 * (same_index_select[_point_group_ind][0][_not_require] + 1)] \
                               @ np.linalg.inv(W_in_cart)
 
