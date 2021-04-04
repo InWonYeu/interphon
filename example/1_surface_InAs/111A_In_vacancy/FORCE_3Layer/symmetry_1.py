@@ -242,14 +242,14 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
         else:
             require.append(_ind)
 
-    atom_in_primitive = np.transpose(unit_cell.atom_direct.copy()[unit_cell.atom_true, :])
+    atom_in_primitive = np.transpose(unit_cell.atom_direct.copy()[unit_cell.atom_true, :])  # [3, atom_true]
     satom_true_original = np.transpose(super_cell.atom_direct.copy()[super_cell.atom_true, :])  # [3, satom_true]
     same_supercell_index_select = []
     for _W_ind, _W_select in enumerate(W_select):
         _same_supercell_index = []
-        for _atom_index, _ in enumerate(unit_cell.atom_true):
-            _atom_in_primitive = atom_in_primitive[:, _atom_index] / user_arg.enlargement
-            _atom_in_primitive_rot = np.dot(_W_select, _atom_in_primitive)  # [3, ] matrix
+        for _atom_index, _image_index in enumerate(same_index_select[_W_ind][0]):
+            _satom_in_primitive = satom_true_original[:, _atom_index * 4]  # [3, ]
+            _satom_in_primitive_rot = satom_true_original[:, _image_index * 4]  # [3, ]
 
             __same_supercell_index = []
             for _satom_index, value in enumerate(super_cell.atom_true):
@@ -263,17 +263,17 @@ def symmetry_2d(unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgume
                 #                                                    + _first * np.array([1, 0, 0]) \
                 #                                                    + _second * np.array([0, 1, 0])
 
-                _min_vector = satom_true_original[:, _satom_index] - _atom_in_primitive
+                _min_vector = satom_true_original[:, _satom_index] - _satom_in_primitive
                 _min_vector_rot = np.dot(_W_select, _min_vector)
 
                 for w in w_select[_W_ind]:
-                    _atom_in_primitive_transform = _atom_in_primitive_rot + w.reshape([3, ])
+                    _satom_in_primitive_transform = _satom_in_primitive_rot + w.reshape([3, ])
 
                     same_satom_type = [ind_ for ind_, val_ in enumerate(super_cell.atom_true)
                                        if super_cell.atom_type[val_] == super_cell.atom_type[value]]
 
                     for _, same_satom_index in enumerate(same_satom_type):
-                        delta_x = _atom_in_primitive_transform + _min_vector_rot - satom_true_original[:, same_satom_index]
+                        delta_x = _satom_in_primitive_transform + _min_vector_rot - satom_true_original[:, same_satom_index]
                         delta_x_cart = np.matmul(np.transpose(super_cell.lattice_matrix), delta_x - np.rint(delta_x))
 
                         if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
