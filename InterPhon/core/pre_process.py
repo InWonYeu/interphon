@@ -128,6 +128,7 @@ class PreProcess(object):
                 _enlarge = _enlarge * self.user_arg.enlargement[ind]
 
         for i, ind_T in enumerate(self.unit_cell.atom_true):
+            _dis_super_cell.atom_cart = self.super_cell.atom_cart.copy()
             for j, displace in enumerate(np.eye(3, dtype=float)):
 
                 # Forward Displacement
