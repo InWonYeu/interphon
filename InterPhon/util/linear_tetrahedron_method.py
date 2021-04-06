@@ -1,6 +1,5 @@
 """
-The demonstrated formula below is described in Supplementary Information.
-For more details, see the following references:
+For more details on the demonstrated formula below, see the following references:
 
 Ref 1) Extensions of the tetrahedron method for evaluating spectral properties of solids, 
 Journal of Physics C 12, 2991 (1979).
