@@ -1,7 +1,7 @@
 import numpy as np
 from typing import List, Dict
 from InterPhon.util import MatrixLike, AtomType, SelectIndex, FilePath, File, KptPath
-from InterPhon.util import k_points
+from InterPhon.util import k_points, Symmetry2D
 from .unit_cell import UnitCell
 from .super_cell import SuperCell
 from .post_check import PostArgument
@@ -84,7 +84,7 @@ class PostProcess(PreProcess):
             self.reciprocal_matrix[i, 0:3] = 2 * np.pi * np.cross(self.unit_cell.lattice_matrix[(i + 1) % 3, 0:3],
                                                                   self.unit_cell.lattice_matrix[(i + 2) % 3, 0:3]) / _volume
 
-    def set_force_constant(self, force_files: FilePath, code_name: str = 'vasp') -> None:
+    def set_force_constant(self, force_files: FilePath, code_name: str = 'vasp', sym_flag: bool = False) -> None:
         """
         Method of PostProcess class.
         Process to set the instance variable (self.force_constant).
@@ -94,40 +94,56 @@ class PostProcess(PreProcess):
 
         :param force_files: (str) Path of DFT output files which contain atomic forces.
         :param code_name: (str) Specification of the file-format.
+        :param sym_flag: (str) Specify whether to use symmetry operation.
         :return: (None)
         """
         if code_name == 'vasp':
-            for _ind_file, _force_file in enumerate(force_files):
-                if _ind_file % 2 == 0:
-                    _forward_matrix = vasp.read_output_lines(_force_file, len(self.super_cell.atom_type))
+            if sym_flag:
+                sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
+                _, _, _ = sym.search_point_group()
+                _, _, _, _ = sym.search_image_atom()
+                sym.search_self_image_atom()
+                sym.search_independent_displacement()
+                sym.gen_additional_displacement()
 
-                elif _ind_file % 2 == 1:
-                    _backward_matrix = vasp.read_output_lines(_force_file, len(self.super_cell.atom_type))
+            else:
+                for _ind_file, _force_file in enumerate(force_files):
+                    if _ind_file % 2 == 0:
+                        _forward_matrix = vasp.read_output_lines(_force_file, len(self.super_cell.atom_type))
 
-                    _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
-                    self.force_constant[:, _ind_file // 2] = _dif_force.reshape([self.force_constant.shape[0], ])
+                    elif _ind_file % 2 == 1:
+                        _backward_matrix = vasp.read_output_lines(_force_file, len(self.super_cell.atom_type))
+
+                        _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
+                        self.force_constant[:, _ind_file // 2] = _dif_force.reshape([self.force_constant.shape[0], ])
 
         elif code_name == 'espresso':
-            for _ind_file, _force_file in enumerate(force_files):
-                if _ind_file % 2 == 0:
-                    _forward_matrix = espresso.read_output_lines(_force_file, len(self.super_cell.atom_type))
+            if sym_flag:
+                pass
+            else:
+                for _ind_file, _force_file in enumerate(force_files):
+                    if _ind_file % 2 == 0:
+                        _forward_matrix = espresso.read_output_lines(_force_file, len(self.super_cell.atom_type))
 
-                elif _ind_file % 2 == 1:
-                    _backward_matrix = espresso.read_output_lines(_force_file, len(self.super_cell.atom_type))
+                    elif _ind_file % 2 == 1:
+                        _backward_matrix = espresso.read_output_lines(_force_file, len(self.super_cell.atom_type))
 
-                    _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
-                    self.force_constant[:, _ind_file // 2] = _dif_force.reshape([self.force_constant.shape[0], ])
+                        _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
+                        self.force_constant[:, _ind_file // 2] = _dif_force.reshape([self.force_constant.shape[0], ])
 
         elif code_name == 'aims':
-            for _ind_file, _force_file in enumerate(force_files):
-                if _ind_file % 2 == 0:
-                    _forward_matrix = aims.read_output_lines(_force_file, len(self.super_cell.atom_type))
+            if sym_flag:
+                pass
+            else:
+                for _ind_file, _force_file in enumerate(force_files):
+                    if _ind_file % 2 == 0:
+                        _forward_matrix = aims.read_output_lines(_force_file, len(self.super_cell.atom_type))
 
-                elif _ind_file % 2 == 1:
-                    _backward_matrix = aims.read_output_lines(_force_file, len(self.super_cell.atom_type))
+                    elif _ind_file % 2 == 1:
+                        _backward_matrix = aims.read_output_lines(_force_file, len(self.super_cell.atom_type))
 
-                    _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
-                    self.force_constant[:, _ind_file // 2] = _dif_force.reshape([self.force_constant.shape[0], ])
+                        _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
+                        self.force_constant[:, _ind_file // 2] = _dif_force.reshape([self.force_constant.shape[0], ])
 
     def set_k_points(self, k_file: FilePath) -> None:
         """
