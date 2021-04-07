@@ -84,7 +84,7 @@ class PostProcess(PreProcess):
             self.reciprocal_matrix[i, 0:3] = 2 * np.pi * np.cross(self.unit_cell.lattice_matrix[(i + 1) % 3, 0:3],
                                                                   self.unit_cell.lattice_matrix[(i + 2) % 3, 0:3]) / _volume
 
-    def set_force_constant(self, force_files: FilePath, code_name: str = 'vasp', sym_flag: bool = True) -> None:
+    def set_force_constant(self, force_files: FilePath, code_name: str = 'vasp', sym_flag: bool = False) -> None:
         """
         Method of PostProcess class.
         Process to set the instance variable (self.force_constant).
