@@ -2,10 +2,10 @@ import numpy as np
 from typing import List, Dict
 from InterPhon.util import MatrixLike, AtomType, SelectIndex, FilePath, File, KptPath
 from InterPhon.util import k_points, Symmetry2D
-from .unit_cell import UnitCell
-from .super_cell import SuperCell
-from .post_check import PostArgument
-from .pre_process import PreProcess
+from InterPhon.core.unit_cell import UnitCell
+from InterPhon.core.super_cell import SuperCell
+from InterPhon.core.post_check import PostArgument
+from InterPhon.core.pre_process import PreProcess
 from InterPhon.inout import vasp, aims, espresso
 
 
@@ -84,7 +84,7 @@ class PostProcess(PreProcess):
             self.reciprocal_matrix[i, 0:3] = 2 * np.pi * np.cross(self.unit_cell.lattice_matrix[(i + 1) % 3, 0:3],
                                                                   self.unit_cell.lattice_matrix[(i + 2) % 3, 0:3]) / _volume
 
-    def set_force_constant(self, force_files: FilePath, code_name: str = 'vasp', sym_flag: bool = False) -> None:
+    def set_force_constant(self, force_files: FilePath, code_name: str = 'vasp', sym_flag: bool = True) -> None:
         """
         Method of PostProcess class.
         Process to set the instance variable (self.force_constant).
@@ -105,6 +105,54 @@ class PostProcess(PreProcess):
                 sym.search_self_image_atom()
                 sym.search_independent_displacement()
                 sym.gen_additional_displacement()
+
+                force_ind = 0
+                for i, require in enumerate(sym.require_atom):
+                    num_of_calculation = 2 * (len(sym.independent_additional_displacement_cart[i]) + 1)
+
+                    _independent_displace = [sym.independent_by_single_displacement_cart[i][_v] for _v in range(len(sym.independent_by_single_displacement_cart[i]))]
+                    _additional_displace = sym.independent_additional_displacement_cart[i]
+                    for __v in range(len(_additional_displace)):
+                        _independent_displace.append(_additional_displace[__v])
+                    independent_displace = np.array(_independent_displace)
+
+                    for j in range(num_of_calculation):
+                        if force_ind % 2 == 0:
+                            _forward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
+                        elif force_ind % 2 == 1:
+                            _backward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
+
+                            _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
+
+                            if j // 2 == 0:
+                                for k, (W_index, W_cart) in enumerate(zip(sym.independent_by_W_index[i], sym.independent_by_W_displacement_cart[i]), start=0):
+                                    __dif_force = W_cart @ np.transpose(_dif_force)
+                                    _dif_force[[self.super_cell.atom_true[v] for i, v in enumerate(sym.same_supercell_index_select[W_index][require])]] \
+                                        = np.transpose(__dif_force)[[self.super_cell.atom_true[i] for i, v in enumerate(sym.same_supercell_index_select[W_index][require])]]
+                                    self.force_constant[:, 3 * require + j // 2 + k] = _dif_force.reshape([self.force_constant.shape[0], ])
+                                    kk = k
+                            else:
+                                for _, _ in enumerate(sym.independent_additional_displacement_cart[i]):
+                                    self.force_constant[:, 3 * require + j // 2 + kk] = _dif_force.reshape([self.force_constant.shape[0], ])
+
+                        force_ind += 1
+
+                    force_constant_cart = self.force_constant.copy()[:, 3 * require: 3 * (require + 1)] @ np.linalg.inv(np.transpose(independent_displace))
+                    self.force_constant[:, 3 * require: 3 * (require + 1)] = force_constant_cart
+
+                original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
+                original_basis = original_basis / np.linalg.norm(original_basis, axis=0)
+                transform_matrix = np.linalg.inv(original_basis)
+                for _point_group_ind, _not_require in zip(sym.point_group_ind, sym.not_require_atom):
+                    W_in_cart = np.linalg.inv(transform_matrix) @ sym.W_select[_point_group_ind] @ transform_matrix
+
+                    for _super_index, _super_same_index in enumerate(sym.same_supercell_index_select[_point_group_ind][_not_require]):
+                        self.force_constant[3 * self.super_cell.atom_true[_super_index]: 3 * (self.super_cell.atom_true[_super_index] + 1),
+                        3 * _not_require: 3 * (_not_require + 1)] \
+                            = np.linalg.inv(W_in_cart) \
+                              @ self.force_constant.copy()[3 * self.super_cell.atom_true[_super_same_index]: 3 * (self.super_cell.atom_true[_super_same_index] + 1),
+                                3 * sym.same_index_select[_point_group_ind][0][_not_require]: 3 * (sym.same_index_select[_point_group_ind][0][_not_require] + 1)] \
+                              @ W_in_cart
 
             else:
                 for _ind_file, _force_file in enumerate(force_files):
