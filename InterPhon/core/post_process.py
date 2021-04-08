@@ -114,7 +114,8 @@ class PostProcess(PreProcess):
                     _additional_displace = sym.independent_additional_displacement_cart[i]
                     for __v in range(len(_additional_displace)):
                         _independent_displace.append(_additional_displace[__v])
-                    independent_displace = np.array(_independent_displace)
+                    to_cart_displace = np.transpose(np.array(_independent_displace))
+                    to_random_displace = np.linalg.inv(to_cart_displace)
 
                     for j in range(num_of_calculation):
                         if force_ind % 2 == 0:
@@ -137,14 +138,14 @@ class PostProcess(PreProcess):
 
                         force_ind += 1
 
-                    force_constant_cart = self.force_constant.copy()[:, 3 * require: 3 * (require + 1)] @ np.linalg.inv(np.transpose(independent_displace))
+                    force_constant_cart = self.force_constant.copy()[:, 3 * require: 3 * (require + 1)] @ to_random_displace
                     self.force_constant[:, 3 * require: 3 * (require + 1)] = force_constant_cart
 
-                original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
-                original_basis = original_basis / np.linalg.norm(original_basis, axis=0)
-                transform_matrix = np.linalg.inv(original_basis)
+                _original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
+                to_cart_coord = _original_basis / np.linalg.norm(_original_basis, axis=0)
+                to_direct_coord = np.linalg.inv(to_cart_coord)
                 for _point_group_ind, _not_require in zip(sym.point_group_ind, sym.not_require_atom):
-                    W_in_cart = np.linalg.inv(transform_matrix) @ sym.W_select[_point_group_ind] @ transform_matrix
+                    W_in_cart = to_cart_coord @ sym.W_select[_point_group_ind] @ to_direct_coord
 
                     for _super_index, _super_same_index in enumerate(sym.same_supercell_index_select[_point_group_ind][_not_require]):
                         self.force_constant[3 * self.super_cell.atom_true[_super_index]: 3 * (self.super_cell.atom_true[_super_index] + 1),
