@@ -295,9 +295,9 @@ class Symmetry2D(object):
             self.point_group_for_self_require_atom.append(_sym_point_for_require)
 
     def search_independent_displacement(self):
-        original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
-        original_basis = original_basis / np.linalg.norm(original_basis, axis=0)
-        transform_matrix = np.linalg.inv(original_basis)
+        _original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
+        to_cart_coord = _original_basis / np.linalg.norm(_original_basis, axis=0)
+        to_direct_coord = np.linalg.inv(to_cart_coord)
 
         _random_direction_cart = np.array([1, 0, 1]) / np.linalg.norm(np.array([1, 0, 1]))
         for _point_group_for_self_require in self.point_group_for_self_require_atom:
@@ -312,7 +312,7 @@ class Symmetry2D(object):
                     set_W.append(tmp_W)
                     tmp_W = tmp_W @ self.W_select[__point_group_for_self_require]
 
-                set_W_in_cart = [np.linalg.inv(transform_matrix) @ W_select @ transform_matrix for W_select in set_W]
+                set_W_in_cart = [to_cart_coord @ W_select @ to_direct_coord for W_select in set_W]
 
                 for _W_in_cart in set_W_in_cart:
                     __W_displacement_cart.append(_W_in_cart)
@@ -320,7 +320,7 @@ class Symmetry2D(object):
                     __require_displacement_cart.append(_image_direction_cart)
 
             _W_displacement_cart = [__W_displacement_cart[0]]
-            _W_index = [self.find_point_group_index(np.linalg.inv(original_basis) @ __W_displacement_cart[0] @ original_basis)]
+            _W_index = [self.find_point_group_index(to_direct_coord @ __W_displacement_cart[0] @ to_cart_coord)]
             _require_displacement_cart = [__require_displacement_cart[0]]
             for i in range(1, len(__require_displacement_cart)):
                 independent = True
@@ -338,7 +338,7 @@ class Symmetry2D(object):
                 if independent:
                     if len(_require_displacement_cart) < 3:
                         _W_displacement_cart.append(__W_displacement_cart[i])
-                        _W_index.append(self.find_point_group_index(np.linalg.inv(original_basis) @ __W_displacement_cart[i] @ original_basis))
+                        _W_index.append(self.find_point_group_index(to_direct_coord @ __W_displacement_cart[i] @ to_cart_coord))
                         _require_displacement_cart.append(__require_displacement_cart[i])
                     else:
                         break
