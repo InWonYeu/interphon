@@ -42,6 +42,8 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
             _enlarge = _enlarge * process.user_arg.enlargement[ind]
 
     for i, ind_T in enumerate(process.unit_cell.atom_true):
+        _dis_super_position = _current_position.copy()
+
         for j, displace in enumerate(np.eye(3, dtype=float)):
             # Forward Displacement
             _dis_super_position[_enlarge * ind_T, 0:3] = \
