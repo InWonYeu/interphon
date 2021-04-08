@@ -42,6 +42,8 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
             _enlarge = _enlarge * process.user_arg.enlargement[ind]
 
     for i, ind_T in enumerate(process.unit_cell.atom_true):
+        _dis_super_position = _current_position.copy()
+
         for j, displace in enumerate(np.eye(3, dtype=float)):
             # Forward Displacement
             _dis_super_position[_enlarge * ind_T, 0:3] = \
@@ -519,10 +521,10 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
                 band_args['k_label'] = [label for label in k_label_band.strip().split()]
 
             if atom_band is None:
-                if option_dos != 'plain':
+                if option_band != 'plain':
                     print('Caution:')
                     print('"atom_band" should be given, in the Index of selected atoms, to plot projected Band.')
-                    print('"option_band" is changed from "{0}" to "plain".'.format(option_dos))
+                    print('"option_band" is changed from "{0}" to "plain".'.format(option_band))
                     band_args['option'] = 'plain'
                 band_args['atom'] = None
             else:

@@ -1,4 +1,4 @@
-## This is the data used to obtain the results in **"Adsorption: Oxygen on Cu(111)"** ##
+## This is the data used to obtain the results in Section 3.2. **"Adsorption: Oxygen on Cu(111)"** ##
 
 The contents of the DFT output file (`vasprun.xml`) have been deleted except for force-related information to reduce the file size.
 

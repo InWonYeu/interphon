@@ -1,0 +1,134 @@
+- files:
+  - unit_cell_file: POSCAR
+  - super_cell_file: SUPERCELL
+  - k_point_file_dos: KPOINTS_dos
+  - k_point_file_band: KPOINTS_band
+  - force_file:
+    - FORCE-0001\vasprun.xml
+    - FORCE-0002\vasprun.xml
+    - FORCE-0003\vasprun.xml
+    - FORCE-0004\vasprun.xml
+    - FORCE-0005\vasprun.xml
+    - FORCE-0006\vasprun.xml
+    - FORCE-0007\vasprun.xml
+    - FORCE-0008\vasprun.xml
+    - FORCE-0009\vasprun.xml
+    - FORCE-0010\vasprun.xml
+    - FORCE-0011\vasprun.xml
+    - FORCE-0012\vasprun.xml
+    - FORCE-0013\vasprun.xml
+    - FORCE-0014\vasprun.xml
+    - FORCE-0015\vasprun.xml
+    - FORCE-0016\vasprun.xml
+    - FORCE-0017\vasprun.xml
+    - FORCE-0018\vasprun.xml
+    - FORCE-0019\vasprun.xml
+    - FORCE-0020\vasprun.xml
+    - FORCE-0021\vasprun.xml
+    - FORCE-0022\vasprun.xml
+    - FORCE-0023\vasprun.xml
+    - FORCE-0024\vasprun.xml
+    - FORCE-0025\vasprun.xml
+    - FORCE-0026\vasprun.xml
+    - FORCE-0027\vasprun.xml
+    - FORCE-0028\vasprun.xml
+    - FORCE-0029\vasprun.xml
+    - FORCE-0030\vasprun.xml
+    - FORCE-0031\vasprun.xml
+    - FORCE-0032\vasprun.xml
+    - FORCE-0033\vasprun.xml
+    - FORCE-0034\vasprun.xml
+    - FORCE-0035\vasprun.xml
+    - FORCE-0036\vasprun.xml
+    - FORCE-0037\vasprun.xml
+    - FORCE-0038\vasprun.xml
+    - FORCE-0039\vasprun.xml
+    - FORCE-0040\vasprun.xml
+    - FORCE-0041\vasprun.xml
+    - FORCE-0042\vasprun.xml
+    - FORCE-0043\vasprun.xml
+    - FORCE-0044\vasprun.xml
+    - FORCE-0045\vasprun.xml
+    - FORCE-0046\vasprun.xml
+    - FORCE-0047\vasprun.xml
+    - FORCE-0048\vasprun.xml
+    - FORCE-0049\vasprun.xml
+    - FORCE-0050\vasprun.xml
+    - FORCE-0051\vasprun.xml
+    - FORCE-0052\vasprun.xml
+    - FORCE-0053\vasprun.xml
+    - FORCE-0054\vasprun.xml
+    - FORCE-0055\vasprun.xml
+    - FORCE-0056\vasprun.xml
+    - FORCE-0057\vasprun.xml
+    - FORCE-0058\vasprun.xml
+    - FORCE-0059\vasprun.xml
+    - FORCE-0060\vasprun.xml
+    - FORCE-0061\vasprun.xml
+    - FORCE-0062\vasprun.xml
+    - FORCE-0063\vasprun.xml
+    - FORCE-0064\vasprun.xml
+    - FORCE-0065\vasprun.xml
+    - FORCE-0066\vasprun.xml
+    - FORCE-0067\vasprun.xml
+    - FORCE-0068\vasprun.xml
+    - FORCE-0069\vasprun.xml
+    - FORCE-0070\vasprun.xml
+    - FORCE-0071\vasprun.xml
+    - FORCE-0072\vasprun.xml
+    - FORCE-0073\vasprun.xml
+    - FORCE-0074\vasprun.xml
+    - FORCE-0075\vasprun.xml
+    - FORCE-0076\vasprun.xml
+    - FORCE-0077\vasprun.xml
+    - FORCE-0078\vasprun.xml
+- dft_code: vasp
+- user_arguments:
+  - displacement: 0.02
+  - enlargement: 2 2 1
+  - periodicity: 1 1 0
+- dos_arguments:
+  - flag: true
+  - sigma: 0.1
+  - num_dos: 1000
+  - color: tab:orange
+  - option: line
+  - orientation: horizontal
+  - legend_loc: best
+  - atom:
+    - - 28
+    - - 16
+      - 17
+      - 18
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 26
+      - 27
+  - legend:
+    - Oxygen
+    - Cu layers
+  - elimit: &id001
+    - -1
+    - 17
+- thermal_arguments:
+  - flag: false
+- band_arguments:
+  - flag: true
+  - color: tab:orange
+  - option: plain
+  - bar_loc: right
+  - bar_label: None
+  - k_label:
+    - G
+    - M
+    - K
+    - G
+  - atom: None
+  - elimit: *id001
+- mode_arguments:
+    flag: false

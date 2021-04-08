@@ -1,6 +1,7 @@
 import numpy as np
 from typing import List, Dict
 from InterPhon.util import FilePath, File
+from InterPhon.util import Symmetry2D
 from .unit_cell import UnitCell
 from .super_cell import SuperCell
 from .pre_check import PreArgument
@@ -108,7 +109,7 @@ class PreProcess(object):
         if write_file is True:
             self.super_cell.write_unit_cell(out_file, comment=comment, code_name=code_name)
 
-    def write_displace_cell(self, out_file: FilePath, code_name: str = 'vasp') -> File:
+    def write_displace_cell(self, out_file: FilePath, code_name: str = 'vasp', sym_flag: bool = False) -> File:
         """
         Method of PreProcess class.
         Process to write the displaced SuperCell instance into DFT input file format.
@@ -118,30 +119,67 @@ class PreProcess(object):
 
         :param out_file: (str) Name of DFT input file.
         :param code_name: (str) Specification of the file-format.
+        :param sym_flag: (str) Specify whether to use symmetry operation.
         :return: (File)
         """
         _dis_super_cell = self.super_cell
         _current_position = self.super_cell.atom_cart.copy()
+
         _enlarge = 1
         for ind, value in enumerate(self.user_arg.periodicity):
             if value:
                 _enlarge = _enlarge * self.user_arg.enlargement[ind]
 
-        for i, ind_T in enumerate(self.unit_cell.atom_true):
-            _dis_super_cell.atom_cart = _current_position.copy()
-            for j, displace in enumerate(np.eye(3, dtype=float)):
+        if sym_flag:
+            sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
+            _, _, _ = sym.search_point_group()
+            _, _, _, _ = sym.search_image_atom()
+            sym.search_self_image_atom()
+            sym.search_independent_displacement()
+            sym.gen_additional_displacement()
 
-                # Forward Displacement
-                _dis_super_cell.atom_cart[_enlarge * ind_T, 0:3] = \
-                    _current_position[_enlarge * ind_T, 0:3] + self.user_arg.displacement * displace
-                _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(6 * i + 2 * j + 1),
-                                                comment='Forward Displacement', code_name=code_name)
+            k = 0
+            for i, ind_T in enumerate(sym.require_atom):
+                _dis_super_cell.atom_cart = _current_position.copy()
 
-                # Backward Displacement
-                _dis_super_cell.atom_cart[_enlarge * ind_T, 0:3] = \
-                    _current_position[_enlarge * ind_T, 0:3] - self.user_arg.displacement * displace
-                _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(6 * i + 2 * j + 2),
-                                                comment='Backward Displacement', code_name=code_name)
+                _displace = [sym.independent_by_single_displacement_cart[i][0]]
+                _additional_displace = sym.independent_additional_displacement_cart[i]
+                if _additional_displace:
+                    _displace.extend(_additional_displace)
+
+                for j, displace in enumerate(_displace):
+                    # Forward Displacement
+                    _dis_super_cell.atom_cart[_enlarge * self.unit_cell.atom_true[ind_T], 0:3] = \
+                        _current_position[_enlarge * self.unit_cell.atom_true[ind_T],
+                        0:3] + self.user_arg.displacement * displace
+                    _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(2 * k + 1),
+                                                    comment='Forward Displacement', code_name=code_name)
+
+                    # Backward Displacement
+                    _dis_super_cell.atom_cart[_enlarge * self.unit_cell.atom_true[ind_T], 0:3] = \
+                        _current_position[_enlarge * self.unit_cell.atom_true[ind_T],
+                        0:3] - self.user_arg.displacement * displace
+                    _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(2 * k + 2),
+                                                    comment='Backward Displacement', code_name=code_name)
+
+                    k += 1
+
+        else:
+            for i, ind_T in enumerate(self.unit_cell.atom_true):
+                _dis_super_cell.atom_cart = _current_position.copy()
+                for j, displace in enumerate(np.eye(3, dtype=float)):
+
+                    # Forward Displacement
+                    _dis_super_cell.atom_cart[_enlarge * ind_T, 0:3] = \
+                        _current_position[_enlarge * ind_T, 0:3] + self.user_arg.displacement * displace
+                    _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(6 * i + 2 * j + 1),
+                                                    comment='Forward Displacement', code_name=code_name)
+
+                    # Backward Displacement
+                    _dis_super_cell.atom_cart[_enlarge * ind_T, 0:3] = \
+                        _current_position[_enlarge * ind_T, 0:3] - self.user_arg.displacement * displace
+                    _dis_super_cell.write_unit_cell(out_file + '-{0:0>4}'.format(6 * i + 2 * j + 2),
+                                                    comment='Backward Displacement', code_name=code_name)
 
     def __deepcopy__(self, memodict: dict = {}) -> object:
         import copy
