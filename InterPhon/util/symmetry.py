@@ -1,5 +1,4 @@
 import numpy as np
-from InterPhon.core import UnitCell, SuperCell, PreArgument
 
 # Searching lattice point group operations
 W_candidate = [np.array([[0, 1],
@@ -52,7 +51,7 @@ W_candidate = [np.array([[0, 1],
 
 
 class Symmetry2D(object):
-    def __init__(self, unit_cell=UnitCell(), super_cell=SuperCell(), user_arg=PreArgument()):
+    def __init__(self, unit_cell, super_cell, user_arg):
         self.__unit_cell = unit_cell
         self.__super_cell = super_cell
         self.__user_arg = user_arg
@@ -74,41 +73,41 @@ class Symmetry2D(object):
 
         self.independent_additional_displacement_cart = []
 
-    @property
-    def user_arg(self):
-        return self.__user_arg
-
-    @user_arg.setter
-    def user_arg(self, _user_arg):
-        if isinstance(_user_arg, PreArgument):
-            self.__user_arg = _user_arg
-        else:
-            ValueError(
-                "'{0}' should be the instance of <class 'InterPhon.core.pre_check.PreArgument'>".format(_user_arg))
-
-    @property
-    def unit_cell(self):
-        return self.__unit_cell
-
-    @unit_cell.setter
-    def unit_cell(self, _unit_cell):
-        if isinstance(_unit_cell, UnitCell):
-            self.__unit_cell = _unit_cell
-        else:
-            ValueError(
-                "'{0}' should be the instance of <class 'InterPhon.core.unit_cell.UnitCell'>".format(_unit_cell))
-
-    @property
-    def super_cell(self):
-        return self.__super_cell
-
-    @super_cell.setter
-    def super_cell(self, _super_cell):
-        if isinstance(_super_cell, SuperCell):
-            self.__super_cell = _super_cell
-        else:
-            ValueError(
-                "'{0}' should be the instance of <class 'InterPhon.core.super_cell.SuperCell'>".format(_super_cell))
+    # @property
+    # def user_arg(self):
+    #     return self.__user_arg
+    #
+    # @user_arg.setter
+    # def user_arg(self, _user_arg):
+    #     if isinstance(_user_arg, PreArgument):
+    #         self.__user_arg = _user_arg
+    #     else:
+    #         ValueError(
+    #             "'{0}' should be the instance of <class 'InterPhon.core.pre_check.PreArgument'>".format(_user_arg))
+    #
+    # @property
+    # def unit_cell(self):
+    #     return self.__unit_cell
+    #
+    # @unit_cell.setter
+    # def unit_cell(self, _unit_cell):
+    #     if isinstance(_unit_cell, UnitCell):
+    #         self.__unit_cell = _unit_cell
+    #     else:
+    #         ValueError(
+    #             "'{0}' should be the instance of <class 'InterPhon.core.unit_cell.UnitCell'>".format(_unit_cell))
+    #
+    # @property
+    # def super_cell(self):
+    #     return self.__super_cell
+    #
+    # @super_cell.setter
+    # def super_cell(self, _super_cell):
+    #     if isinstance(_super_cell, SuperCell):
+    #         self.__super_cell = _super_cell
+    #     else:
+    #         ValueError(
+    #             "'{0}' should be the instance of <class 'InterPhon.core.super_cell.SuperCell'>".format(_super_cell))
 
     def search_point_group(self):
         # metric tensor
@@ -251,7 +250,7 @@ class Symmetry2D(object):
 
         return self.point_group_ind, self.require_atom, self.not_require_atom, self.same_supercell_index_select
 
-    def search_cell_image_index(self, W_direct, cell=UnitCell()):
+    def search_cell_image_index(self, W_direct, cell):
         # conserving the image index in primitive cell
         _enlarge = int(len(cell.atom_type) / len(self.unit_cell.atom_type))
 
