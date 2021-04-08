@@ -106,6 +106,7 @@ class PreProcess(object):
         :return: (File)
         """
         self.super_cell.set_super_cell(self.unit_cell, self.user_arg)
+        self.super_cell.set_super_ind_true(self.unit_cell, self.user_arg)
         if write_file is True:
             self.super_cell.write_unit_cell(out_file, comment=comment, code_name=code_name)
 
