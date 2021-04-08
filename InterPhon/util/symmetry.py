@@ -52,9 +52,9 @@ W_candidate = [np.array([[0, 1],
 
 class Symmetry2D(object):
     def __init__(self, unit_cell, super_cell, user_arg):
-        self.__unit_cell = unit_cell
-        self.__super_cell = super_cell
-        self.__user_arg = user_arg
+        self.unit_cell = unit_cell
+        self.super_cell = super_cell
+        self.user_arg = user_arg
 
         self.W_select = []
         self.w_select = []
