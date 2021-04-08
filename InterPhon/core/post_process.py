@@ -2,10 +2,10 @@ import numpy as np
 from typing import List, Dict
 from InterPhon.util import MatrixLike, AtomType, SelectIndex, FilePath, File, KptPath
 from InterPhon.util import k_points, Symmetry2D
-from InterPhon.core.unit_cell import UnitCell
-from InterPhon.core.super_cell import SuperCell
-from InterPhon.core.post_check import PostArgument
-from InterPhon.core.pre_process import PreProcess
+from .unit_cell import UnitCell
+from .super_cell import SuperCell
+from .post_check import PostArgument
+from .pre_process import PreProcess
 from InterPhon.inout import vasp, aims, espresso
 
 
