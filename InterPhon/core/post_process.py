@@ -99,19 +99,19 @@ class PostProcess(PreProcess):
         """
         if code_name == 'vasp':
             if sym_flag:
-                sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
-                _, _, _ = sym.search_point_group()
-                _, _, _, _ = sym.search_image_atom()
-                sym.search_self_image_atom()
-                sym.search_independent_displacement()
-                sym.gen_additional_displacement()
+                self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
+                _, _, _ = self.sym.search_point_group()
+                _, _, _, _ = self.sym.search_image_atom()
+                self.sym.search_self_image_atom()
+                self.sym.search_independent_displacement()
+                self.sym.gen_additional_displacement()
 
                 force_ind = 0
-                for i, require in enumerate(sym.require_atom):
-                    num_of_calculation = 2 * (len(sym.independent_additional_displacement_cart[i]) + 1)
+                for i, require in enumerate(self.sym.require_atom):
+                    num_of_calculation = 2 * (len(self.sym.independent_additional_displacement_cart[i]) + 1)
 
-                    _independent_displace = [sym.independent_by_single_displacement_cart[i][_v] for _v in range(len(sym.independent_by_single_displacement_cart[i]))]
-                    _additional_displace = sym.independent_additional_displacement_cart[i]
+                    _independent_displace = [self.sym.independent_by_single_displacement_cart[i][_v] for _v in range(len(self.sym.independent_by_single_displacement_cart[i]))]
+                    _additional_displace = self.sym.independent_additional_displacement_cart[i]
                     for __v in range(len(_additional_displace)):
                         _independent_displace.append(_additional_displace[__v])
                     to_cart_displace = np.transpose(np.array(_independent_displace))
@@ -126,14 +126,14 @@ class PostProcess(PreProcess):
                             _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
 
                             if j // 2 == 0:
-                                for k, (W_index, W_cart) in enumerate(zip(sym.independent_by_W_index[i], sym.independent_by_W_displacement_cart[i]), start=0):
+                                for k, (W_index, W_cart) in enumerate(zip(self.sym.independent_by_W_index[i], self.sym.independent_by_W_displacement_cart[i]), start=0):
                                     __dif_force = W_cart @ np.transpose(_dif_force)
-                                    _dif_force[[self.super_cell.atom_true[v] for i, v in enumerate(sym.same_supercell_index_select[W_index][require])]] \
-                                        = np.transpose(__dif_force)[[self.super_cell.atom_true[i] for i, v in enumerate(sym.same_supercell_index_select[W_index][require])]]
+                                    _dif_force[[self.super_cell.atom_true[v] for i, v in enumerate(self.sym.same_supercell_index_select[W_index][require])]] \
+                                        = np.transpose(__dif_force)[[self.super_cell.atom_true[i] for i, v in enumerate(self.sym.same_supercell_index_select[W_index][require])]]
                                     self.force_constant[:, 3 * require + j // 2 + k] = _dif_force.reshape([self.force_constant.shape[0], ])
                                     kk = k
                             else:
-                                for _, _ in enumerate(sym.independent_additional_displacement_cart[i]):
+                                for _, _ in enumerate(self.sym.independent_additional_displacement_cart[i]):
                                     self.force_constant[:, 3 * require + j // 2 + kk] = _dif_force.reshape([self.force_constant.shape[0], ])
 
                         force_ind += 1
@@ -144,15 +144,15 @@ class PostProcess(PreProcess):
                 _original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
                 to_cart_coord = _original_basis / np.linalg.norm(_original_basis, axis=0)
                 to_direct_coord = np.linalg.inv(to_cart_coord)
-                for _point_group_ind, _not_require in zip(sym.point_group_ind, sym.not_require_atom):
-                    W_in_cart = to_cart_coord @ sym.W_select[_point_group_ind] @ to_direct_coord
+                for _point_group_ind, _not_require in zip(self.sym.point_group_ind, self.sym.not_require_atom):
+                    W_in_cart = to_cart_coord @ self.sym.W_select[_point_group_ind] @ to_direct_coord
 
-                    for _super_index, _super_same_index in enumerate(sym.same_supercell_index_select[_point_group_ind][_not_require]):
+                    for _super_index, _super_same_index in enumerate(self.ym.same_supercell_index_select[_point_group_ind][_not_require]):
                         self.force_constant[3 * self.super_cell.atom_true[_super_index]: 3 * (self.super_cell.atom_true[_super_index] + 1),
                         3 * _not_require: 3 * (_not_require + 1)] \
                             = np.linalg.inv(W_in_cart) \
                               @ self.force_constant.copy()[3 * self.super_cell.atom_true[_super_same_index]: 3 * (self.super_cell.atom_true[_super_same_index] + 1),
-                                3 * sym.same_index_select[_point_group_ind][0][_not_require]: 3 * (sym.same_index_select[_point_group_ind][0][_not_require] + 1)] \
+                                3 * self.sym.same_index_select[_point_group_ind][0][_not_require]: 3 * (self.sym.same_index_select[_point_group_ind][0][_not_require] + 1)] \
                               @ W_in_cart
 
             else:

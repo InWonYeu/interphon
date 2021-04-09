@@ -24,6 +24,7 @@ class PreProcess(object):
         self.__user_arg = user_arg
         self.__unit_cell = unit_cell
         self.__super_cell = super_cell
+        self.sym = False
 
     @property
     def user_arg(self):
@@ -132,19 +133,19 @@ class PreProcess(object):
                 _enlarge = _enlarge * self.user_arg.enlargement[ind]
 
         if sym_flag:
-            sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
-            _, _, _ = sym.search_point_group()
-            _, _, _, _ = sym.search_image_atom()
-            sym.search_self_image_atom()
-            sym.search_independent_displacement()
-            sym.gen_additional_displacement()
+            self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
+            _, _, _ = self.sym.search_point_group()
+            _, _, _, _ = self.sym.search_image_atom()
+            self.sym.search_self_image_atom()
+            self.sym.search_independent_displacement()
+            self.sym.gen_additional_displacement()
 
             k = 0
-            for i, ind_T in enumerate(sym.require_atom):
+            for i, ind_T in enumerate(self.sym.require_atom):
                 _dis_super_cell.atom_cart = _current_position.copy()
 
-                _displace = [sym.independent_by_single_displacement_cart[i][0]]
-                _additional_displace = sym.independent_additional_displacement_cart[i]
+                _displace = [self.sym.independent_by_single_displacement_cart[i][0]]
+                _additional_displace = self.sym.independent_additional_displacement_cart[i]
                 if _additional_displace:
                     _displace.extend(_additional_displace)
 
