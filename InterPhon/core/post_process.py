@@ -147,7 +147,7 @@ class PostProcess(PreProcess):
                 for _point_group_ind, _not_require in zip(self.sym.point_group_ind, self.sym.not_require_atom):
                     W_in_cart = to_cart_coord @ self.sym.W_select[_point_group_ind] @ to_direct_coord
 
-                    for _super_index, _super_same_index in enumerate(self.ym.same_supercell_index_select[_point_group_ind][_not_require]):
+                    for _super_index, _super_same_index in enumerate(self.sym.same_supercell_index_select[_point_group_ind][_not_require]):
                         self.force_constant[3 * self.super_cell.atom_true[_super_index]: 3 * (self.super_cell.atom_true[_super_index] + 1),
                         3 * _not_require: 3 * (_not_require + 1)] \
                             = np.linalg.inv(W_in_cart) \
