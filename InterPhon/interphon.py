@@ -28,6 +28,7 @@ def iter_atom_yaml(unit_cell):
 
 
 def check_file_order(process, unit_cell_file, force_file, dft_code, sym_flag: bool = False):
+    print('Checking the order of force files...')
     from InterPhon.core import UnitCell
     from InterPhon.util import Symmetry2D
 
@@ -430,13 +431,13 @@ def main(force_files, option_file, process,
             dft = pre_record[3].get('dft_code')
 
         if displacement == '0.02':  # default
-            displacement = pre_record[4].get('user_arguments')[0].get('displacement')
+            displacement = pre_record[5].get('user_arguments')[0].get('displacement')
 
         if enlargement == '2 2 1':  # default
-            enlargement = pre_record[4].get('user_arguments')[1].get('enlargement')
+            enlargement = pre_record[5].get('user_arguments')[1].get('enlargement')
 
         if periodicity == '1 1 0':  # default
-            periodicity = pre_record[4].get('user_arguments')[2].get('periodicity')
+            periodicity = pre_record[5].get('user_arguments')[2].get('periodicity')
 
         user_args = {'dft_code': dft,
                      'displacement': displacement,
@@ -639,12 +640,12 @@ def main(force_files, option_file, process,
 
         # Build a set of super_cells with displacements
         _displaced_supercell = os.path.basename(files.get('unit_cell_file')) + '-' \
-                               + '{{{0:0>4}..{1:0>4}}}'.format(1, len(files.get('force_file')))
+                               + '{{{0:0>4}..}}'.format(1)
         print('Writing displaced supercells... ---> {0}'.format(_displaced_supercell))
 
         _ind_pbc = pre.user_arg.periodicity.nonzero()[0]
         if sym:
-            if _ind_pbc != 2:
+            if _ind_pbc.shape[0] != 2:
                 print('Caution:')
                 print('Current version supports symmetry functionality only for 2D periodic systems.')
                 print('"-sym" is changed from "{0}" to "False".'.format(sym))
@@ -658,13 +659,22 @@ def main(force_files, option_file, process,
                                     sym_flag=sym)
 
         # Record this pre-process
-        serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
-                                       {'supercell_file': supercell_file},
-                                       {'displaced_supercell_files': _displaced_supercell},
-                                       {'dft_code': user_args.get('dft_code')},
-                                       {'symmetry': sym},
-                                       {'user_arguments': _pre_user_arg},
-                                       {'unit_cell': _pre_unit_cell}]
+        if sym:
+            serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
+                                           {'supercell_file': supercell_file},
+                                           {'displaced_supercell_files': _displaced_supercell},
+                                           {'dft_code': user_args.get('dft_code')},
+                                           {'point_group': pre.sym.point_group},
+                                           {'user_arguments': _pre_user_arg},
+                                           {'unit_cell': _pre_unit_cell}]
+        else:
+            serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
+                                           {'supercell_file': supercell_file},
+                                           {'displaced_supercell_files': _displaced_supercell},
+                                           {'dft_code': user_args.get('dft_code')},
+                                           {'point_group': pre.sym},
+                                           {'user_arguments': _pre_user_arg},
+                                           {'unit_cell': _pre_unit_cell}]
 
         with open('pre_process.yaml', 'w') as outfile:
             yaml.dump(serialized_yaml_pre_process, outfile)
@@ -698,7 +708,7 @@ def main(force_files, option_file, process,
             print('Setting force constants...')
             _ind_pbc = post.user_arg.periodicity.nonzero()[0]
             if sym:
-                if _ind_pbc != 2:
+                if _ind_pbc.shape[0] != 2:
                     print('Caution:')
                     print('Current version supports symmetry functionality only for 2D periodic systems.')
                     print('"-sym" is changed from "{0}" to "False".'.format(sym))
@@ -780,7 +790,7 @@ def main(force_files, option_file, process,
             # construct Born-von Karman force constants
             print('Setting force constants...')
             if sym:
-                if _ind_pbc != 2:
+                if _ind_pbc.shape[0] != 2:
                     print('Caution:')
                     print('Current version supports symmetry functionality only for 2D periodic systems.')
                     print('"-sym" is changed from "{0}" to "False".'.format(sym))
@@ -892,7 +902,6 @@ def main(force_files, option_file, process,
 
         serialized_yaml_post_process = [{'files': _post_files},
                                         {'dft_code': user_args.get('dft_code')},
-                                        {'symmetry': sym},
                                         {'user_arguments': _post_user_arg},
                                         {'dos_arguments': _dos_args},
                                         {'thermal_arguments': _thermal_args},
