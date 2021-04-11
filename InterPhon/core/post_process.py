@@ -109,6 +109,7 @@ class PostProcess(PreProcess):
                 force_ind = 0
                 for i, require in enumerate(self.sym.require_atom):
                     num_of_calculation = 2 * (len(self.sym.independent_additional_displacement_cart[i]) + 1)
+                    print("num_of_calculation: ", num_of_calculation)
 
                     _independent_displace = [self.sym.independent_by_single_displacement_cart[i][_v] for _v in range(len(self.sym.independent_by_single_displacement_cart[i]))]
                     _additional_displace = self.sym.independent_additional_displacement_cart[i]
@@ -117,29 +118,39 @@ class PostProcess(PreProcess):
                     to_cart_displace = np.transpose(np.array(_independent_displace))
                     to_random_displace = np.linalg.inv(to_cart_displace)
 
+                    forward_force = np.empty((len(self.super_cell.atom_type) * 3, 3))
+                    backward_force = np.empty((len(self.super_cell.atom_type) * 3, 3))
                     for j in range(num_of_calculation):
                         if force_ind % 2 == 0:
                             _forward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
+                            __forward_matrix = _forward_matrix.copy()
                         elif force_ind % 2 == 1:
                             _backward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
-
-                            _dif_force = - (_forward_matrix - _backward_matrix) / (2 * self.user_arg.displacement * 10 ** (-10))
+                            __backward_matrix = _backward_matrix.copy()
 
                             if j // 2 == 0:
                                 for k, (W_index, W_cart) in enumerate(zip(self.sym.independent_by_W_index[i], self.sym.independent_by_W_displacement_cart[i]), start=0):
-                                    __dif_force = W_cart @ np.transpose(_dif_force)
-                                    _dif_force[[self.super_cell.atom_true[v] for i, v in enumerate(self.sym.same_supercell_index_select[W_index][require])]] \
-                                        = np.transpose(__dif_force)[[self.super_cell.atom_true[i] for i, v in enumerate(self.sym.same_supercell_index_select[W_index][require])]]
-                                    self.force_constant[:, 3 * require + j // 2 + k] = _dif_force.reshape([self.force_constant.shape[0], ])
+                                    _forward_rot = W_cart @ np.transpose(_forward_matrix)
+                                    _backward_rot = W_cart @ np.transpose(_backward_matrix)
+
+                                    _image_sindex = [self.super_cell.atom_true[v] for i, v in enumerate(self.sym.same_supercell_index_select[W_index][require])]
+                                    _original_sindex = [self.super_cell.atom_true[i] for i, v in enumerate( self.sym.same_supercell_index_select[W_index][require])]
+
+                                    __forward_matrix[_image_sindex] = np.transpose(_forward_rot)[_original_sindex]
+                                    __backward_matrix[_image_sindex] = np.transpose(_backward_rot)[_original_sindex]
+
+                                    forward_force[:, j // 2 + k] = __forward_matrix.reshape([self.force_constant.shape[0], ])
+                                    backward_force[:, j // 2 + k] = __backward_matrix.reshape([self.force_constant.shape[0], ])
                                     kk = k
                             else:
                                 for _, _ in enumerate(self.sym.independent_additional_displacement_cart[i]):
-                                    self.force_constant[:, 3 * require + j // 2 + kk] = _dif_force.reshape([self.force_constant.shape[0], ])
+                                    forward_force[:, j // 2 + kk] = __forward_matrix.reshape([self.force_constant.shape[0], ])
+                                    backward_force[:, j // 2 + kk] = __backward_matrix.reshape([self.force_constant.shape[0], ])
 
                         force_ind += 1
 
-                    force_constant_cart = self.force_constant.copy()[:, 3 * require: 3 * (require + 1)] @ to_random_displace
-                    self.force_constant[:, 3 * require: 3 * (require + 1)] = force_constant_cart
+                    _dif_force = - (forward_force - backward_force) @ to_random_displace / (2 * self.user_arg.displacement * 10 ** (-10))
+                    self.force_constant[:, 3 * require: 3 * (require + 1)] = _dif_force
 
                 _original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
                 to_cart_coord = _original_basis / np.linalg.norm(_original_basis, axis=0)
