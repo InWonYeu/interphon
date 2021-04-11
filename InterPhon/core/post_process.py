@@ -109,7 +109,6 @@ class PostProcess(PreProcess):
                 force_ind = 0
                 for i, require in enumerate(self.sym.require_atom):
                     num_of_calculation = 2 * (len(self.sym.independent_additional_displacement_cart[i]) + 1)
-                    print("num_of_calculation: ", num_of_calculation)
 
                     _independent_displace = [self.sym.independent_by_single_displacement_cart[i][_v] for _v in range(len(self.sym.independent_by_single_displacement_cart[i]))]
                     _additional_displace = self.sym.independent_additional_displacement_cart[i]
