@@ -459,6 +459,16 @@ class PostProcess(PreProcess):
             self.v_q[_ind_k, :, :] = self.v_q[_ind_k, np.argsort(self.w_q[_ind_k, :]), :]
             _ind_k = _ind_k + 1
 
+        if _ind_pbc.shape[0] == 0:
+            with open('./freqency_at_gamma_point.dat', 'w') as outfile:
+                comment = "Discrete frequency of non-periodic system"
+                outfile.write("%s" % comment + '\n')
+                outfile.write("%s" % '    Frequency (THz)' + '\n')
+
+                for _freq in self.w_q[0]:
+                    line = ' %16.9f ' % _freq
+                    outfile.write("%s" % line + '\n')
+
     # def write_dos(self, out_file: FilePath = 'total_dos.dat', sigma: float = 0.0, num_dos: int = 200,
     #               partial_dos: bool = False, plot: bool = False) -> File:
     #     """
