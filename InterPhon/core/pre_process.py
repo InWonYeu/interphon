@@ -111,7 +111,7 @@ class PreProcess(object):
         if write_file is True:
             self.super_cell.write_unit_cell(out_file, comment=comment, code_name=code_name)
 
-    def write_displace_cell(self, out_file: FilePath, code_name: str = 'vasp', sym_flag: bool = False) -> File:
+    def write_displace_cell(self, out_file: FilePath, code_name: str = 'vasp', sym_flag: bool = True) -> File:
         """
         Method of PreProcess class.
         Process to write the displaced SuperCell instance into DFT input file format.
