@@ -24,7 +24,7 @@ class PreProcess(object):
         self.__user_arg = user_arg
         self.__unit_cell = unit_cell
         self.__super_cell = super_cell
-        self.sym = False
+        self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
 
     @property
     def user_arg(self):
