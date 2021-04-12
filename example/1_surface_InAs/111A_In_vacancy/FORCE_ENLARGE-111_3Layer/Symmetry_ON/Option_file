@@ -1,0 +1,11 @@
+OPTION_DOS = stack
+NDOS = 1000
+ELIMIT = -1 8
+ATOM_DOS = 16 17 18, 31 32 33 34, 12 13 14 15
+COLOR_DOS = black
+LEGEND_DOS = 1st layer, 2nd layer, 3rd layer
+
+OPTION_band = projection
+ATOM_BAND = 16 17 18
+K_LABEL_Band = G M K G
+BAR_LABEL_BAND = 1st layer

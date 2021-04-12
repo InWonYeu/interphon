@@ -1,0 +1,189 @@
+- unit_cell_file: POSCAR
+- supercell_file: SUPERCELL
+- displaced_supercell_files: POSCAR-{0001..}
+- dft_code: vasp
+- point_group: null
+- user_arguments:
+  - displacement: 0.02
+  - enlargement: 2 2 1
+  - periodicity: 1 1 0
+- unit_cell:
+  - lattice_matrix:
+      a1: 8.5171680450000000,   0.0000000000000000,   0.0000000000000000
+      a2: -4.2585840225000000,   7.3760838952999999,   0.0000000000000000
+      a3: 0.0000000000000000,   0.0000000000000000,  31.2940731049000007
+  - num_atom: 43
+  - selected_atom_index: 0, 1, 2, 3, 4, 5, 6, 23, 24, 25, 26
+  - atoms:
+    - index: 0
+      position: -2.5692622533923450,   5.8927196367618944,  31.1589620038914816
+      selection: true
+      type: In
+    - index: 1
+      position: 2.5692622619096488,   5.8927196367618944,  31.1589620038914816
+      selection: true
+      type: In
+    - index: 2
+      position: 4.2585841545161820,   2.9667282884174764,  31.1589620038914816
+      selection: true
+      type: In
+    - index: 3
+      position: 0.0000000000000303,   0.7852832332328709,  31.1345499508267025
+      selection: true
+      type: In
+    - index: 4
+      position: 1.4492167821070405,   3.2954003310335453,  31.1345499508267025
+      selection: true
+      type: In
+    - index: 5
+      position: 4.2585840225000000,   0.0000000000000000,  31.1354355580590507
+      selection: true
+      type: In
+    - index: 6
+      position: -1.4492167821069819,   3.2954003310335453,  31.1345499508267025
+      selection: true
+      type: In
+    - index: 7
+      position: -0.0000000042586299,   4.9234254710470404,   3.4783065644671511
+      selection: false
+      type: In
+    - index: 8
+      position: 6.3826484586925716,   1.2263293264557991,   3.4783065644671511
+      selection: false
+      type: In
+    - index: 9
+      position: 4.2585837627263388,   4.9173894135137273,   3.4270368294973665
+      selection: false
+      type: In
+    - index: 10
+      position: 2.1345194500326716,   1.2263293264557991,   3.4783065644671511
+      selection: false
+      type: In
+    - index: 11
+      position: 4.2585841545161305,   2.4586947030688080,   6.9542385233894448
+      selection: false
+      type: In
+    - index: 12
+      position: -2.1292922625064632,   6.1467364294362730,   6.9542385233894448
+      selection: false
+      type: In
+    - index: 13
+      position: -0.0000005067715256,   2.4586949243513434,   6.9542385233894448
+      selection: false
+      type: In
+    - index: 14
+      position: 2.1292922710236617,   6.1467364294362730,   6.9542385233894448
+      selection: false
+      type: In
+    - index: 15
+      position: 0.0000000000000000,   0.0000000000000000,  10.4313580041426945
+      selection: false
+      type: In
+    - index: 16
+      position: 2.1292920112500000,   3.6880419476499999,  10.4313580041426945
+      selection: false
+      type: In
+    - index: 17
+      position: 4.2585840225000000,   0.0000000000000000,  10.4313580041426945
+      selection: false
+      type: In
+    - index: 18
+      position: -2.1292920112500000,   3.6880419476499999,  10.4313580041426945
+      selection: false
+      type: In
+    - index: 19
+      position: -0.0000000042585993,   4.9173894135137273,  13.9084770467788861
+      selection: false
+      type: In
+    - index: 20
+      position: 6.3878758378551188,   1.2293473552224334,  13.9084770467788861
+      selection: false
+      type: In
+    - index: 21
+      position: 4.2585837627263388,   4.9173894135137273,  13.9084770467788861
+      selection: false
+      type: In
+    - index: 22
+      position: 2.1292920708701812,   1.2293473552224334,  13.9084770467788861
+      selection: false
+      type: In
+    - index: 23
+      position: -0.0000000000000302,   0.0178219068055745,   2.4807113923926116
+      selection: true
+      type: As
+    - index: 24
+      position: -2.1138577872125368,   3.6791309942472346,   2.4807125502733007
+      selection: true
+      type: As
+    - index: 25
+      position: 4.2585840225000000,   0.0000000000000000,   2.5330939333726290
+      selection: true
+      type: As
+    - index: 26
+      position: 2.1138577872125381,   3.6791309942472346,   2.4807125502733007
+      selection: true
+      type: As
+    - index: 27
+      position: -0.0000000042586294,   4.9155198500600514,   6.0876275717222530
+      selection: false
+      type: As
+    - index: 28
+      position: 2.1276729814252713,   1.2302821369492993,   6.0876275717222530
+      selection: false
+      type: As
+    - index: 29
+      position: 4.2585837627263388,   4.9173894135137273,   6.0531687743310751
+      selection: false
+      type: As
+    - index: 30
+      position: 6.3894949272999657,   1.2302821369492993,   6.0876275717222530
+      selection: false
+      type: As
+    - index: 31
+      position: 4.2585841545161305,   2.4586947030688080,   9.5620777818961145
+      selection: false
+      type: As
+    - index: 32
+      position: 2.1292922710236617,   6.1467364294362730,   9.5620777818961145
+      selection: false
+      type: As
+    - index: 33
+      position: -0.0000005067715256,   2.4586949243513434,   9.5620777818961145
+      selection: false
+      type: As
+    - index: 34
+      position: -2.1292922625064632,   6.1467364294362730,   9.5620777818961145
+      selection: false
+      type: As
+    - index: 35
+      position: 0.0000000000000000,   0.0000000000000000,  13.0391968245323060
+      selection: false
+      type: As
+    - index: 36
+      position: -2.1292920112500000,   3.6880419476499999,  13.0391968245323060
+      selection: false
+      type: As
+    - index: 37
+      position: 4.2585840225000000,   0.0000000000000000,  13.0391968245323060
+      selection: false
+      type: As
+    - index: 38
+      position: 2.1292920112500000,   3.6880419476499999,  13.0391968245323060
+      selection: false
+      type: As
+    - index: 39
+      position: -0.0000000042585993,   4.9173894135137273,  15.6492520892572085
+      selection: false
+      type: H
+    - index: 40
+      position: 2.1292920708701812,   1.2293473552224334,  15.6492520892572085
+      selection: false
+      type: H
+    - index: 41
+      position: 4.2585837627263388,   4.9173894135137273,  15.6492520892572085
+      selection: false
+      type: H
+    - index: 42
+      position: 6.3878758378551188,   1.2293473552224334,  15.6492520892572085
+      selection: false
+      type: H
