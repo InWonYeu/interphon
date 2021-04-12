@@ -52,13 +52,14 @@ W_candidate = [np.array([[0, 1],
 
 class Symmetry2D(object):
     def __init__(self, unit_cell, super_cell, user_arg):
-        self.__unit_cell = unit_cell
-        self.__super_cell = super_cell
-        self.__user_arg = user_arg
+        self.unit_cell = unit_cell
+        self.super_cell = super_cell
+        self.user_arg = user_arg
 
         self.W_select = []
         self.w_select = []
         self.same_index_select = []
+        self.point_group = None
 
         self.point_group_ind = []
         self.require_atom = []
@@ -200,29 +201,41 @@ class Symmetry2D(object):
                     assert False
 
         if np.allclose(look_up_table, np.array([0, 1, 0, 0, 0, 0])):
-            print('Point group = 1')
+            # print('Point group = 1')
+            self.point_group = '1'
         elif np.allclose(look_up_table, np.array([0, 1, 1, 0, 0, 0])):
-            print('Point group = 2')
+            # print('Point group = 2')
+            self.point_group = '2'
         elif np.allclose(look_up_table, np.array([1, 1, 0, 0, 0, 0])):
-            print('Point group = m')
+            # print('Point group = m')
+            self.point_group = 'm'
         elif np.allclose(look_up_table, np.array([2, 1, 1, 0, 0, 0])):
-            print('Point group = 2mm')
+            # print('Point group = 2mm')
+            self.point_group = '2mm'
         elif np.allclose(look_up_table, np.array([2, 2, 0, 0, 0, 0])):
-            print('Point group = m (cm)')
+            # print('Point group = m (cm)')
+            self.point_group = 'm (cm)'
         elif np.allclose(look_up_table, np.array([4, 2, 2, 0, 0, 0])):
-            print('Point group = 2mm (c2mm)')
+            # print('Point group = 2mm (c2mm)')
+            self.point_group = '2mm (c2mm)'
         elif np.allclose(look_up_table, np.array([0, 1, 1, 0, 2, 0])):
-            print('Point group = 4')
+            # print('Point group = 4')
+            self.point_group = '4'
         elif np.allclose(look_up_table, np.array([4, 1, 1, 0, 2, 0])):
-            print('Point group = 4mm')
+            # print('Point group = 4mm')
+            self.point_group = '4mm'
         elif np.allclose(look_up_table, np.array([0, 1, 0, 2, 0, 0])):
-            print('Point group = 3')
+            # print('Point group = 3')
+            self.point_group = '3'
         elif np.allclose(look_up_table, np.array([3, 1, 0, 2, 0, 0])):
-            print('Point group = 3m')
+            # print('Point group = 3m')
+            self.point_group = '3m'
         elif np.allclose(look_up_table, np.array([0, 1, 1, 2, 0, 2])):
-            print('Point group = 6')
+            # print('Point group = 6')
+            self.point_group = '6'
         elif np.allclose(look_up_table, np.array([6, 1, 1, 2, 0, 2])):
-            print('Point group = 6mm')
+            # print('Point group = 6mm')
+            self.point_group = '6mm'
         else:
             print('What is this point group?')
             assert False
