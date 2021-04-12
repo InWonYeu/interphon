@@ -123,8 +123,8 @@ def check_file_order(process, unit_cell_file, force_file, dft_code, sym_flag: bo
               default=True,
               required=True,
               show_default=True)
-@click.option('--symmetry_on', '-sym', 'sym', is_flag=True,
-              default=False,
+@click.option('--symmetry_on/--symmetry_off', '-sym_on/-sym_off', 'sym',
+              default=True,
               required=True,
               show_default=True,
               help='Flag to the usage of symmetry operation.')
@@ -430,6 +430,11 @@ def main(force_files, option_file, process,
         if dft == 'vasp':  # default
             dft = pre_record[3].get('dft_code')
 
+        if sym:  # default
+            _sym = pre_record[4].get('point_group')
+            if _sym is None:
+                sym = False
+
         if displacement == '0.02':  # default
             displacement = pre_record[5].get('user_arguments')[0].get('displacement')
 
@@ -648,15 +653,17 @@ def main(force_files, option_file, process,
             if _ind_pbc.shape[0] != 2:
                 print('Caution:')
                 print('Current version supports symmetry functionality only for 2D periodic systems.')
-                print('"-sym" is changed from "{0}" to "False".'.format(sym))
+                print('"symmetry usage" is changed from "{0}" to "False".'.format(sym))
                 sym = False
             pre.write_displace_cell(out_file=files.get('unit_cell_file'),
                                     code_name=user_args.get('dft_code'),
                                     sym_flag=sym)
+            print('Point group = {0}'.format(pre.sym.point_group))
         else:
             pre.write_displace_cell(out_file=files.get('unit_cell_file'),
                                     code_name=user_args.get('dft_code'),
                                     sym_flag=sym)
+            print('Point group = {0}'.format(pre.sym.point_group))
 
         # Record this pre-process
         if sym:
@@ -672,7 +679,7 @@ def main(force_files, option_file, process,
                                            {'supercell_file': supercell_file},
                                            {'displaced_supercell_files': _displaced_supercell},
                                            {'dft_code': user_args.get('dft_code')},
-                                           {'point_group': pre.sym},
+                                           {'point_group': pre.sym.point_group},
                                            {'user_arguments': _pre_user_arg},
                                            {'unit_cell': _pre_unit_cell}]
 
@@ -721,6 +728,7 @@ def main(force_files, option_file, process,
                 post.set_force_constant(force_files=files.get('force_file'),
                                         code_name=user_args.get('dft_code'),
                                         sym_flag=sym)
+                print('Point group = {0}'.format(post.sym.point_group))
             else:
                 check_file_order(post,
                                  os.path.basename(files.get('unit_cell_file')),
@@ -730,6 +738,7 @@ def main(force_files, option_file, process,
                 post.set_force_constant(force_files=files.get('force_file'),
                                         code_name=user_args.get('dft_code'),
                                         sym_flag=sym)
+                print('Point group = {0}'.format(post.sym.point_group))
 
             # set k-points
             print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_dos'))))
@@ -803,6 +812,8 @@ def main(force_files, option_file, process,
                 post_band.set_force_constant(force_files=files.get('force_file'),
                                              code_name=user_args.get('dft_code'),
                                              sym_flag=sym)
+                if not dos_args.get('flag', False):
+                    print('Point group = {0}'.format(post_band.sym.point_group))
             else:
                 check_file_order(post_band,
                                  os.path.basename(files.get('unit_cell_file')),
@@ -812,6 +823,8 @@ def main(force_files, option_file, process,
                 post_band.set_force_constant(force_files=files.get('force_file'),
                                              code_name=user_args.get('dft_code'),
                                              sym_flag=sym)
+                if not dos_args.get('flag', False):
+                    print('Point group = {0}'.format(post_band.sym.point_group))
 
             # set k-points
             print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_band'))))
