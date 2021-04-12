@@ -434,6 +434,10 @@ def main(force_files, option_file, process,
             _sym = pre_record[4].get('point_group')
             if _sym is None:
                 sym = False
+        else:
+            _sym = pre_record[4].get('point_group')
+            if _sym is not None:
+                sym = True
 
         if displacement == '0.02':  # default
             displacement = pre_record[5].get('user_arguments')[0].get('displacement')
