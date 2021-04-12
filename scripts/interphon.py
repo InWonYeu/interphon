@@ -27,11 +27,11 @@ def iter_atom_yaml(unit_cell):
         yield atom
 
 
-def check_file_order(process, unit_cell_file, force_file, dft_code):
-    assert len(process.unit_cell.atom_true * 6) == len(force_file), \
-        "The number of force files is not consistent with pre-process"
-
+def check_file_order(process, unit_cell_file, force_file, dft_code, sym_flag: bool = False):
+    print('Checking the order of force files...')
     from InterPhon.core import UnitCell
+    from InterPhon.util import Symmetry2D
+
     _dis_super_cell = UnitCell()
     _dis_super_position = process.super_cell.atom_cart.copy()
     _current_position = process.super_cell.atom_cart.copy()
@@ -41,31 +41,74 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
         if value:
             _enlarge = _enlarge * process.user_arg.enlargement[ind]
 
-    for i, ind_T in enumerate(process.unit_cell.atom_true):
-        _dis_super_position = _current_position.copy()
+    if sym_flag:
+        sym = Symmetry2D(process.unit_cell, process.super_cell, process.user_arg)
+        _, _, _ = sym.search_point_group()
+        _, _, _, _ = sym.search_image_atom()
+        sym.search_self_image_atom()
+        sym.search_independent_displacement()
+        sym.gen_additional_displacement()
 
-        for j, displace in enumerate(np.eye(3, dtype=float)):
-            # Forward Displacement
-            _dis_super_position[_enlarge * ind_T, 0:3] = \
-                _current_position[_enlarge * ind_T, 0:3] + process.user_arg.displacement * displace
+        k = 0
+        for i, ind_T in enumerate(sym.require_atom):
+            _dis_super_position = _current_position.copy()
 
-            _dis_super_cell.read_unit_cell(os.path.dirname(force_file[6 * i + 2 * j]) + '/' + unit_cell_file,
-                                           code_name=dft_code)
+            _displace = [sym.independent_by_single_displacement_cart[i][0]]
+            _additional_displace = sym.independent_additional_displacement_cart[i]
+            if _additional_displace:
+                _displace.extend(_additional_displace)
 
-            assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
-                "The force files are not consistent with the {0} of pre-process".format(
-                    unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(process.unit_cell.atom_true) * 6))
+            for j, displace in enumerate(_displace):
+                # Forward Displacement
+                _dis_super_position[_enlarge * process.unit_cell.atom_true[ind_T], 0:3] = \
+                    _current_position[_enlarge * process.unit_cell.atom_true[ind_T],
+                    0:3] + process.user_arg.displacement * displace
 
-            # Backward Displacement
-            _dis_super_position[_enlarge * ind_T, 0:3] = \
-                _current_position[_enlarge * ind_T, 0:3] - process.user_arg.displacement * displace
+                _dis_super_cell.read_unit_cell(os.path.dirname(force_file[2 * k]) + '/' + unit_cell_file, code_name=dft_code)
 
-            _dis_super_cell.read_unit_cell(os.path.dirname(force_file[6 * i + 2 * j + 1]) + '/' + unit_cell_file,
-                                           code_name=dft_code)
+                assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
+                    "The force files are not consistent with the {0} of pre-process".format(
+                        unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(force_file)))
 
-            assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
-                "The force files are not consistent with the {0} of pre-process".format(
-                    unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(process.unit_cell.atom_true) * 6))
+                # Backward Displacement
+                _dis_super_position[_enlarge * process.unit_cell.atom_true[ind_T], 0:3] = \
+                    _current_position[_enlarge * process.unit_cell.atom_true[ind_T],
+                    0:3] - process.user_arg.displacement * displace
+
+                _dis_super_cell.read_unit_cell(os.path.dirname(force_file[2 * k + 1]) + '/' + unit_cell_file, code_name=dft_code)
+
+                assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
+                    "The force files are not consistent with the {0} of pre-process".format(
+                        unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(force_file)))
+
+                k += 1
+
+    else:
+        for i, ind_T in enumerate(process.unit_cell.atom_true):
+            _dis_super_position = _current_position.copy()
+
+            for j, displace in enumerate(np.eye(3, dtype=float)):
+                # Forward Displacement
+                _dis_super_position[_enlarge * ind_T, 0:3] = \
+                    _current_position[_enlarge * ind_T, 0:3] + process.user_arg.displacement * displace
+
+                _dis_super_cell.read_unit_cell(os.path.dirname(force_file[6 * i + 2 * j]) + '/' + unit_cell_file,
+                                               code_name=dft_code)
+
+                assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
+                    "The force files are not consistent with the {0} of pre-process".format(
+                        unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(force_file)))
+
+                # Backward Displacement
+                _dis_super_position[_enlarge * ind_T, 0:3] = \
+                    _current_position[_enlarge * ind_T, 0:3] - process.user_arg.displacement * displace
+
+                _dis_super_cell.read_unit_cell(os.path.dirname(force_file[6 * i + 2 * j + 1]) + '/' + unit_cell_file,
+                                               code_name=dft_code)
+
+                assert np.allclose(_dis_super_position, _dis_super_cell.atom_cart), \
+                    "The force files are not consistent with the {0} of pre-process".format(
+                        unit_cell_file + '-' + '{{{0:0>4}..{1:0>4}}}'.format(1, len(force_file)))
 
 
 @click.command()
@@ -80,6 +123,11 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
               default=True,
               required=True,
               show_default=True)
+@click.option('--symmetry_on/--symmetry_off', '-sym_on/-sym_off', 'sym',
+              default=True,
+              required=True,
+              show_default=True,
+              help='Flag to the usage of symmetry operation.')
 @click.option('--dft_code', '-dft', 'dft',
               default='vasp',
               type=click.Choice(['vasp', 'espresso', 'aims']),
@@ -236,7 +284,8 @@ def check_file_order(process, unit_cell_file, force_file, dft_code):
               type=click.STRING,
               help='The K-point of phonon mode(kpoint, index).',
               show_default=True)
-def main(force_files, option_file, process, dft, displacement, enlargement, periodicity,
+def main(force_files, option_file, process,
+         sym, dft, displacement, enlargement, periodicity,
          unitcell, supercell, kpoint_dos,
          dos, sigma, num_dos, atom_dos, legend_dos, elimit, color_dos, option_dos, orientation_dos, legend_loc_dos,
          thermal, tmin, tmax, tstep,
@@ -381,14 +430,19 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
         if dft == 'vasp':  # default
             dft = pre_record[3].get('dft_code')
 
+        if sym:  # default
+            _sym = pre_record[4].get('point_group')
+            if _sym is None:
+                sym = False
+
         if displacement == '0.02':  # default
-            displacement = pre_record[4].get('user_arguments')[0].get('displacement')
+            displacement = pre_record[5].get('user_arguments')[0].get('displacement')
 
         if enlargement == '2 2 1':  # default
-            enlargement = pre_record[4].get('user_arguments')[1].get('enlargement')
+            enlargement = pre_record[5].get('user_arguments')[1].get('enlargement')
 
         if periodicity == '1 1 0':  # default
-            periodicity = pre_record[4].get('user_arguments')[2].get('periodicity')
+            periodicity = pre_record[5].get('user_arguments')[2].get('periodicity')
 
         user_args = {'dft_code': dft,
                      'displacement': displacement,
@@ -591,18 +645,43 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
         # Build a set of super_cells with displacements
         _displaced_supercell = os.path.basename(files.get('unit_cell_file')) + '-' \
-                               + '{{{0:0>4}..{1:0>4}}}'.format(1, len(pre.unit_cell.atom_true) * 6)
+                               + '{{{0:0>4}..}}'.format(1)
         print('Writing displaced supercells... ---> {0}'.format(_displaced_supercell))
-        pre.write_displace_cell(out_file=files.get('unit_cell_file'),
-                                code_name=user_args.get('dft_code'))
+
+        _ind_pbc = pre.user_arg.periodicity.nonzero()[0]
+        if sym:
+            if _ind_pbc.shape[0] != 2:
+                print('Caution:')
+                print('Current version supports symmetry functionality only for 2D periodic systems.')
+                print('"symmetry usage" is changed from "{0}" to "False".'.format(sym))
+                sym = False
+            pre.write_displace_cell(out_file=files.get('unit_cell_file'),
+                                    code_name=user_args.get('dft_code'),
+                                    sym_flag=sym)
+            print('Point group = {0}'.format(pre.sym.point_group))
+        else:
+            pre.write_displace_cell(out_file=files.get('unit_cell_file'),
+                                    code_name=user_args.get('dft_code'),
+                                    sym_flag=sym)
+            print('Point group = {0}'.format(pre.sym.point_group))
 
         # Record this pre-process
-        serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
-                                       {'supercell_file': supercell_file},
-                                       {'displaced_supercell_files': _displaced_supercell},
-                                       {'dft_code': user_args.get('dft_code')},
-                                       {'user_arguments': _pre_user_arg},
-                                       {'unit_cell': _pre_unit_cell}]
+        if sym:
+            serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
+                                           {'supercell_file': supercell_file},
+                                           {'displaced_supercell_files': _displaced_supercell},
+                                           {'dft_code': user_args.get('dft_code')},
+                                           {'point_group': pre.sym.point_group},
+                                           {'user_arguments': _pre_user_arg},
+                                           {'unit_cell': _pre_unit_cell}]
+        else:
+            serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
+                                           {'supercell_file': supercell_file},
+                                           {'displaced_supercell_files': _displaced_supercell},
+                                           {'dft_code': user_args.get('dft_code')},
+                                           {'point_group': pre.sym.point_group},
+                                           {'user_arguments': _pre_user_arg},
+                                           {'unit_cell': _pre_unit_cell}]
 
         with open('pre_process.yaml', 'w') as outfile:
             yaml.dump(serialized_yaml_pre_process, outfile)
@@ -634,12 +713,32 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
             # construct Born-von Karman force constants
             print('Setting force constants...')
-            check_file_order(post,
-                             os.path.basename(files.get('unit_cell_file')),
-                             files.get('force_file'),
-                             user_args.get('dft_code'))
-            post.set_force_constant(force_files=files.get('force_file'),
-                                    code_name=user_args.get('dft_code'))
+            _ind_pbc = post.user_arg.periodicity.nonzero()[0]
+            if sym:
+                if _ind_pbc.shape[0] != 2:
+                    print('Caution:')
+                    print('Current version supports symmetry functionality only for 2D periodic systems.')
+                    print('"-sym" is changed from "{0}" to "False".'.format(sym))
+                    sym = False
+                check_file_order(post,
+                                 os.path.basename(files.get('unit_cell_file')),
+                                 files.get('force_file'),
+                                 user_args.get('dft_code'),
+                                 sym_flag=sym)
+                post.set_force_constant(force_files=files.get('force_file'),
+                                        code_name=user_args.get('dft_code'),
+                                        sym_flag=sym)
+                print('Point group = {0}'.format(post.sym.point_group))
+            else:
+                check_file_order(post,
+                                 os.path.basename(files.get('unit_cell_file')),
+                                 files.get('force_file'),
+                                 user_args.get('dft_code'),
+                                 sym_flag=sym)
+                post.set_force_constant(force_files=files.get('force_file'),
+                                        code_name=user_args.get('dft_code'),
+                                        sym_flag=sym)
+                print('Point group = {0}'.format(post.sym.point_group))
 
             # set k-points
             print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_dos'))))
@@ -699,12 +798,33 @@ def main(force_files, option_file, process, dft, displacement, enlargement, peri
 
             # construct Born-von Karman force constants
             print('Setting force constants...')
-            check_file_order(post_band,
-                             os.path.basename(files.get('unit_cell_file')),
-                             files.get('force_file'),
-                             user_args.get('dft_code'))
-            post_band.set_force_constant(force_files=files.get('force_file'),
-                                         code_name=user_args.get('dft_code'))
+            if sym:
+                if _ind_pbc.shape[0] != 2:
+                    print('Caution:')
+                    print('Current version supports symmetry functionality only for 2D periodic systems.')
+                    print('"-sym" is changed from "{0}" to "False".'.format(sym))
+                    sym = False
+                check_file_order(post_band,
+                                 os.path.basename(files.get('unit_cell_file')),
+                                 files.get('force_file'),
+                                 user_args.get('dft_code'),
+                                 sym_flag=sym)
+                post_band.set_force_constant(force_files=files.get('force_file'),
+                                             code_name=user_args.get('dft_code'),
+                                             sym_flag=sym)
+                if not dos_args.get('flag', False):
+                    print('Point group = {0}'.format(post_band.sym.point_group))
+            else:
+                check_file_order(post_band,
+                                 os.path.basename(files.get('unit_cell_file')),
+                                 files.get('force_file'),
+                                 user_args.get('dft_code'),
+                                 sym_flag=sym)
+                post_band.set_force_constant(force_files=files.get('force_file'),
+                                             code_name=user_args.get('dft_code'),
+                                             sym_flag=sym)
+                if not dos_args.get('flag', False):
+                    print('Point group = {0}'.format(post_band.sym.point_group))
 
             # set k-points
             print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_band'))))
