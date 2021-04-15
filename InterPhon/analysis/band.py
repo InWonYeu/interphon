@@ -356,7 +356,7 @@ class Band(object):
                 if bulk_legend is not None:
                     label = bulk_legend
                 else:
-                    label = 'bulk_dos'
+                    label = 'bulk dos'
 
                 if bulk_option == 'line':
                     ax_dos.plot(bulk_dos[:, 1] * proportion, bulk_dos[:, 0],
@@ -378,7 +378,7 @@ class Band(object):
                 if bulk_legend is not None:
                     label = bulk_legend
                 else:
-                    label = 'bulk_dos'
+                    label = 'bulk dos'
 
                 if bulk_option == 'line':
                     ax_dos.plot(bulk_dos[:, 1] * proportion, bulk_dos[:, 0],
@@ -422,7 +422,7 @@ class Band(object):
                 if bulk_legend is not None:
                     label = bulk_legend
                 else:
-                    label = 'bulk_dos'
+                    label = 'bulk dos'
 
                 if bulk_option == 'line':
                     ax_dos.plot(bulk_dos[:, 1] * proportion, bulk_dos[:, 0],
