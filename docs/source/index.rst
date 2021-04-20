@@ -17,8 +17,8 @@ Currently supported DFT codes:
 2. Quantum ESPRESSO
 3. FHI-aims
 
-News
-****
+Version report
+**************
 
 * `InterPhon version 1.1.0 <https://github.com/InWonYeu/interphon/tree/v1.1.0>`_ released (20 April 2021)
 * `InterPhon version 1.0.0 <https://github.com/InWonYeu/interphon/tree/v1.0.0>`_ released (12 April 2021)
