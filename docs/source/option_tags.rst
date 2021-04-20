@@ -129,6 +129,17 @@ Basic option tags
     usage:
     $ interphon -sc SUPERCELL
 
+8. --symmetry_off, -sym_off
+-------------------
+::
+
+    help = Flag to the usage of symmetry operation
+    value type = bool
+    default = True
+
+    usage:
+    $ interphon -sym_off
+
 Density of state (DOS) option tags
 **********************************
 
