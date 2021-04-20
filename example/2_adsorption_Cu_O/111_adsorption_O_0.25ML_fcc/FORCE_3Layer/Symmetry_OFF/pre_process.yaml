@@ -1,0 +1,133 @@
+- unit_cell_file: POSCAR
+- supercell_file: SUPERCELL
+- displaced_supercell_files: POSCAR-{0001..}
+- dft_code: vasp
+- point_group: null
+- user_arguments:
+  - displacement: 0.02
+  - enlargement: 2 2 1
+  - periodicity: 1 1 0
+- unit_cell:
+  - lattice_matrix:
+      a1: 5.1425905228000000,   0.0000000000000000,   0.0000000000000000
+      a2: 2.5712952614000000,   4.4536140340000001,   0.0000000000000000
+      a3: 0.0000000000000000,   0.0000000000000000,  27.7901687622000004
+  - num_atom: 29
+  - selected_atom_index: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28
+  - atoms:
+    - index: 0
+      position: 0.0000000000000000,   0.0000000000000000,   6.2983610850000522
+      selection: false
+      type: Cu
+    - index: 1
+      position: 1.2856476309999960,   2.2268070170000001,   6.2983610850000522
+      selection: false
+      type: Cu
+    - index: 2
+      position: 2.5712952609999933,   0.0000000000000000,   6.2983610850000522
+      selection: false
+      type: Cu
+    - index: 3
+      position: 3.8569428919999886,   2.2268070170000001,   6.2983610850000522
+      selection: false
+      type: Cu
+    - index: 4
+      position: 2.5712951080000059,   1.4845379229999942,   8.3978147800000702
+      selection: false
+      type: Cu
+    - index: 5
+      position: 3.8569427390000017,   3.7113449399999943,   8.3978147800000702
+      selection: false
+      type: Cu
+    - index: 6
+      position: 5.1425903699999980,   1.4845379229999942,   8.3978147800000702
+      selection: false
+      type: Cu
+    - index: 7
+      position: 6.4282379999999950,   3.7113449399999943,   8.3978147800000702
+      selection: false
+      type: Cu
+    - index: 8
+      position: 1.2832463910461711,   0.7408826494086498,  10.4841048279904783
+      selection: false
+      type: Cu
+    - index: 9
+      position: 2.5712951850000012,   2.9718486031826838,  10.4841048279904783
+      selection: false
+      type: Cu
+    - index: 10
+      position: 3.8593439789537944,   0.7408826494086498,  10.4841048279904783
+      selection: false
+      type: Cu
+    - index: 11
+      position: 5.1425902160000128,   2.9690758459999884,  10.4844283906729459
+      selection: false
+      type: Cu
+    - index: 12
+      position: 0.0000000000000000,   0.0000000000000000,  12.5910220259641665
+      selection: false
+      type: Cu
+    - index: 13
+      position: 1.2863304234179984,   2.2264127504366176,  12.5719494111218921
+      selection: false
+      type: Cu
+    - index: 14
+      position: 2.5712952120000265,   0.0007884491268190,  12.5719494111218921
+      selection: false
+      type: Cu
+    - index: 15
+      position: 3.8562600015820525,   2.2264127504366176,  12.5719494111218921
+      selection: false
+      type: Cu
+    - index: 16
+      position: 2.5712951080000059,   1.4845379229999942,  14.6644045081965650
+      selection: true
+      type: Cu
+    - index: 17
+      position: 3.8664702124286547,   3.7058444279372109,  14.6754794243430133
+      selection: true
+      type: Cu
+    - index: 18
+      position: 5.1425905229999422,   1.4955392131254803,  14.6754794243430133
+      selection: true
+      type: Cu
+    - index: 19
+      position: 6.4187108335711933,   3.7058444279372109,  14.6754794243430133
+      selection: true
+      type: Cu
+    - index: 20
+      position: 1.2941708576866344,   0.7471898930287418,  16.7374704811724868
+      selection: true
+      type: Cu
+    - index: 21
+      position: 2.5712951079999913,   2.9592339819424973,  16.7374704811724868
+      selection: true
+      type: Cu
+    - index: 22
+      position: 3.8484193583133486,   0.7471898930287418,  16.7374704811724868
+      selection: true
+      type: Cu
+    - index: 23
+      position: 5.1425902160000128,   2.9690758459999884,  16.8328494067076058
+      selection: true
+      type: Cu
+    - index: 24
+      position: 0.0000000000000000,   0.0000000000000000,  18.7211977161248413
+      selection: true
+      type: Cu
+    - index: 25
+      position: 6.3810116645697308,   2.2540734198926580,  18.9140790934969161
+      selection: true
+      type: Cu
+    - index: 26
+      position: 5.1425906760000331,   4.3990814932146796,  18.9140790934969161
+      selection: true
+      type: Cu
+    - index: 27
+      position: 3.9041696874302616,   2.2540734198926580,  18.9140790934969161
+      selection: true
+      type: Cu
+    - index: 28
+      position: 2.5712951080000059,   1.4845379229999942,  20.0035309733694184
+      selection: true
+      type: O

@@ -20,7 +20,7 @@ def gamma_centered(k_file_lines: List[str], _ind_pbc) -> tuple:
         shift = [0.0, 0.0, 0.0]
 
     if _ind_pbc.shape[0] == 0:
-        pass
+        k_points.append(np.zeros((3,)))
 
     elif _ind_pbc.shape[0] == 1:
         __tmp_1st = np.zeros((3,))
@@ -181,7 +181,7 @@ def monkhorst_pack(k_file_lines: List[str], _ind_pbc) -> tuple:
         shift = [0.0, 0.0, 0.0]
 
     if _ind_pbc.shape[0] == 0:
-        pass
+        k_points.append(np.zeros((3,)))
 
     elif _ind_pbc.shape[0] == 1:
         __tmp_1st = np.zeros((3,))

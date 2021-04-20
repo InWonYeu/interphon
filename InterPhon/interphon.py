@@ -802,6 +802,7 @@ def main(force_files, option_file, process,
 
             # construct Born-von Karman force constants
             print('Setting force constants...')
+            _ind_pbc = post_band.user_arg.periodicity.nonzero()[0]
             if sym:
                 if _ind_pbc.shape[0] != 2:
                     print('Caution:')

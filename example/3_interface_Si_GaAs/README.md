@@ -1,6 +1,6 @@
 ## This is the data used to obtain the results in Section 3.3 **"Interface: Si(111)/GaAs(111)"** ##
 
-The contents of the DFT output file (`vasprun.xml`) have been deleted except for force-related information to reduce the file size.
+In order to reduce the file size, contents of the DFT output file (`vasprun.xml`) have been deleted except for force-related information.
 
 The data include following four systems:
 

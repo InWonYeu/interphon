@@ -21,8 +21,9 @@ Usage::
 
     - unit_cell_file: POSCAR  # This is input file of Pre-process
     - supercell_file: SUPERCELL  # This is output file of Pre-process
-    - displaced_supercell_files: POSCAR-{0001..0018}  # This is output file of Pre-process
+    - displaced_supercell_files: POSCAR-{0001..}  # This is output file of Pre-process
     - dft_code: vasp
+    - point_group: 3m
     - user_arguments:
       - displacement: 0.02
       - enlargement: 4 4 1
@@ -94,18 +95,6 @@ Usage::
         - FORCE-0004\vasprun.xml
         - FORCE-0005\vasprun.xml
         - FORCE-0006\vasprun.xml
-        - FORCE-0007\vasprun.xml
-        - FORCE-0008\vasprun.xml
-        - FORCE-0009\vasprun.xml
-        - FORCE-0010\vasprun.xml
-        - FORCE-0011\vasprun.xml
-        - FORCE-0012\vasprun.xml
-        - FORCE-0013\vasprun.xml
-        - FORCE-0014\vasprun.xml
-        - FORCE-0015\vasprun.xml
-        - FORCE-0016\vasprun.xml
-        - FORCE-0017\vasprun.xml
-        - FORCE-0018\vasprun.xml
     - dft_code: vasp
     - user_arguments:
       - displacement: 0.02

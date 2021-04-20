@@ -1,0 +1,45 @@
+- unit_cell_file: POSCAR
+- supercell_file: SUPERCELL
+- displaced_supercell_files: POSCAR-{0001..}
+- dft_code: vasp
+- point_group: 3m
+- user_arguments:
+  - displacement: 0.02
+  - enlargement: 4 4 1
+  - periodicity: 1 1 0
+- unit_cell:
+  - lattice_matrix:
+      a1: 2.5712952614000000,   0.0000000000000000,   0.0000000000000000
+      a2: 1.2856476307000000,   2.2268070170000001,   0.0000000000000000
+      a3: 0.0000000000000000,   0.0000000000000000,  27.7901687622000004
+  - num_atom: 7
+  - selected_atom_index: 4, 5, 6
+  - atoms:
+    - index: 0
+      position: 0.0000000000000000,   0.0000000000000000,   6.2983610850000522
+      selection: false
+      type: Cu
+    - index: 1
+      position: 2.5712951080000064,   1.4845379229999942,   8.3978147800000702
+      selection: false
+      type: Cu
+    - index: 2
+      position: 1.2856475539999939,   0.7422689609999932,  10.4987696089513474
+      selection: false
+      type: Cu
+    - index: 3
+      position: 0.0000000000000000,   0.0000000000000000,  12.6063618648222011
+      selection: false
+      type: Cu
+    - index: 4
+      position: 2.5712951080000064,   1.4845379229999942,  14.7139551036653078
+      selection: true
+      type: Cu
+    - index: 5
+      position: 1.2856475539999939,   0.7422689609999932,  16.8159162965492293
+      selection: true
+      type: Cu
+    - index: 6
+      position: 0.0000000000000000,   0.0000000000000000,  18.9003445564971102
+      selection: true
+      type: Cu

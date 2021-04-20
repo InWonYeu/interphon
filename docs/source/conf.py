@@ -22,7 +22,7 @@ copyright = '2020, In Won Yeu'
 author = 'In Won Yeu'
 
 # The full version, including alpha/beta/rc tags
-release = '0.2.3'
+release = '1.1.0'
 
 
 # -- General configuration ---------------------------------------------------
