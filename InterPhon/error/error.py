@@ -74,3 +74,20 @@ class Not_Specified_Kpath_Error(Exception):
         :return: (str) Error message.
         """
         return "The given k_point was not set."
+
+
+class Cannot_Search_Poing_Group(Exception):
+    """
+    Defined error class to notify that point group cannot be searched.
+    """
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        """
+        Error message for the case that point group cannot be searched.
+
+        :return: (str) Error message.
+        """
+        return "What is this point group? " \
+               "Since the point group cannot be found, the symmetry function is turned off instead."
