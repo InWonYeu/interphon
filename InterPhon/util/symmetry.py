@@ -1,4 +1,5 @@
 import numpy as np
+from InterPhon import error
 
 # Searching lattice point group operations
 W_candidate = [np.array([[0, 1],
@@ -237,8 +238,7 @@ class Symmetry2D(object):
             # print('Point group = 6mm')
             self.point_group = '6mm'
         else:
-            print('What is this point group?')
-            assert False
+            raise error.Cannot_Search_Poing_Group(look_up_table)
 
         return self.W_select, self.w_select, self.same_index_select
 
