@@ -2,6 +2,7 @@ import numpy as np
 from typing import List, Dict
 from InterPhon.util import FilePath, File
 from InterPhon.util import Symmetry2D
+from InterPhon import error
 from .unit_cell import UnitCell
 from .super_cell import SuperCell
 from .pre_check import PreArgument
@@ -132,9 +133,16 @@ class PreProcess(object):
             if value:
                 _enlarge = _enlarge * self.user_arg.enlargement[ind]
 
-        if sym_flag:
+        try:
             self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
             _, _, _ = self.sym.search_point_group()
+        except error.Cannot_Search_Poing_Group as e:
+            if sym_flag:
+                # print("look-up table: ", e.value)
+                print(e)
+                sym_flag = False
+
+        if sym_flag:
             _, _, _, _ = self.sym.search_image_atom()
             self.sym.search_self_image_atom()
             self.sym.search_independent_displacement()
