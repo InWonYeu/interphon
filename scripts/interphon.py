@@ -670,22 +670,13 @@ def main(force_files, option_file, process,
             print('Point group = {0}'.format(pre.sym.point_group))
 
         # Record this pre-process
-        if sym:
-            serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
-                                           {'supercell_file': supercell_file},
-                                           {'displaced_supercell_files': _displaced_supercell},
-                                           {'dft_code': user_args.get('dft_code')},
-                                           {'point_group': pre.sym.point_group},
-                                           {'user_arguments': _pre_user_arg},
-                                           {'unit_cell': _pre_unit_cell}]
-        else:
-            serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
-                                           {'supercell_file': supercell_file},
-                                           {'displaced_supercell_files': _displaced_supercell},
-                                           {'dft_code': user_args.get('dft_code')},
-                                           {'point_group': pre.sym.point_group},
-                                           {'user_arguments': _pre_user_arg},
-                                           {'unit_cell': _pre_unit_cell}]
+        serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
+                                       {'supercell_file': supercell_file},
+                                       {'displaced_supercell_files': _displaced_supercell},
+                                       {'dft_code': user_args.get('dft_code')},
+                                       {'point_group': pre.sym.point_group},
+                                       {'user_arguments': _pre_user_arg},
+                                       {'unit_cell': _pre_unit_cell}]
 
         with open('pre_process.yaml', 'w') as outfile:
             yaml.dump(serialized_yaml_pre_process, outfile)
