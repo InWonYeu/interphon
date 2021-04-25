@@ -76,7 +76,7 @@ class Not_Specified_Kpath_Error(Exception):
         return "The given k_point was not set."
 
 
-class Cannot_Search_Poing_Group(Exception):
+class Cannot_Search_Point_Group(Exception):
     """
     Defined error class to notify that point group cannot be searched.
     """
