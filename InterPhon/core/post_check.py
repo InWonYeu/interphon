@@ -42,7 +42,7 @@ class PostArgument(PreArgument):
         for i in range(3):
             if not np.allclose(unit_cell.lattice_matrix[i, 0:3] * self.enlargement[i],
                                super_cell.lattice_matrix[i, 0:3]):
-                raise error.Mismatch_DIM_post_Error
+                raise error.Mismatch_ENLARGE_post_Error
 
         _enlarge = 1
         for ind, value in enumerate(self.periodicity):
@@ -51,4 +51,4 @@ class PostArgument(PreArgument):
 
         # for _unit_num, _super_num in zip(unit_cell.num_atom, super_cell.num_atom):
         #     if _unit_num * _enlarge != _super_num:
-        #         raise error.Mismatch_DIM_post_Error
+        #         raise error.Mismatch_ENLARGE_post_Error

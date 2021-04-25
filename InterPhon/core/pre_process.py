@@ -134,13 +134,13 @@ class PreProcess(object):
                 _enlarge = _enlarge * self.user_arg.enlargement[ind]
 
         try:
-            self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
-            _, _, _ = self.sym.search_point_group()
-        except error.Cannot_Search_Poing_Group as e:
             if sym_flag:
-                print("look-up table: ", e.value)
-                print(e)
-                sym_flag = False
+                self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
+                _, _, _ = self.sym.search_point_group()
+        except error.Cannot_Search_Point_Group as e:
+            print("look-up table: ", e.value)
+            print(e)
+            sym_flag = False
 
         if sym_flag:
             _, _, _, _ = self.sym.search_image_atom()
