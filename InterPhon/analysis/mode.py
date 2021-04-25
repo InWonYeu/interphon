@@ -22,7 +22,7 @@ class Mode(object):
             if np.allclose(self.k_point, kpt):
                 _ind_k = ind
         if _ind_k is None:
-            raise error.Not_Specified_Kpath_Error
+            raise error.Not_Specified_Kpath_Error(self.k_point)
 
         self.mode = self.process.v_q[_ind_k, :, :]
 
