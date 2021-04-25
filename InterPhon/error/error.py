@@ -2,52 +2,63 @@ class Insufficient_PBC_Error(Exception):
     """
     Defined error class to guide for insufficient PBC arguments.
     """
+    def __init__(self, value):
+        self.value = value
+
     def __str__(self):
         """
         Error message for insufficient PBC arguments.
 
         :return: (str) Error message.
         """
-        return "PBC is not sufficient, the length of PBC must be 3."
+        return "The given PBC, {0}, is not sufficient. The length of PBC must be 3.".format(self.value)
 
 
-class Insufficient_DIM_Error(Exception):
+class Insufficient_ENLARGE_Error(Exception):
     """
-    Defined error class to guide for insufficient DIM arguments.
+    Defined error class to guide for insufficient ENLARGE arguments.
     """
+    def __init__(self, value):
+        self.value = value
+
     def __str__(self):
         """
-        Error message for insufficient DIM arguments.
+        Error message for insufficient ENLARGE arguments.
 
         :return: (str) Error message.
         """
-        return "DIM is not sufficient, the length of DIM must be 3."
+        return "The given ENLARGE, {0}, is not sufficient. The length of ENLARGE must be 3.".format(self.value)
 
 
-class Mismatch_DIM_and_PBC_Error(Exception):
+class Mismatch_ENLARGE_and_PBC_Error(Exception):
     """
-    Defined error class to guide for inconsistency between DIM and PBC arguments.
+    Defined error class to guide for inconsistency between ENLARGE and PBC arguments.
     """
+    def __init__(self, enlarge, pbc):
+        self.enlarge = enlarge
+        self.pbc = pbc
+
     def __str__(self):
         """
-        Error message for inconsistency between DIM and PBC arguments.
+        Error message for inconsistency between ENLARGE and PBC arguments.
 
         :return: (str) Error message.
         """
-        return "DIM is not matched with PBC. Super cell enlargement along the non-periodic direction is meaningless"
+        return "ENLARGE, {0}, is not matched with PBC, {1}. " \
+               "Supercell enlargement along the non-periodic direction is meaningless.".format(self.enlarge, self.pbc)
 
 
-class Mismatch_DIM_post_Error(Exception):
+class Mismatch_ENLARGE_post_Error(Exception):
     """
-    Defined error class to guide for inconsistency between pre- and post- DIM arguments.
+    Defined error class to guide for inconsistency between pre- and post- ENLARGE arguments.
     """
     def __str__(self):
         """
-        Error message for inconsistency between pre- and post- DIM arguments.
+        Error message for inconsistency between pre- and post- ENLARGE arguments.
 
         :return: (str) Error message.
         """
-        return "DIM of post-process is not matched with the DIM of pre-process."
+        return "ENLARGE of post-process is not matched with the ENLARGE of pre-process."
 
 
 class Invalid_Line_Kpath_Error(Exception):
@@ -67,13 +78,16 @@ class Not_Specified_Kpath_Error(Exception):
     """
     Defined error class to guide for the attempt to access unspecified k-points.
     """
+    def __init__(self, value):
+        self.value = value
+
     def __str__(self):
         """
         Error message for the attempt to access unspecified k-points.
 
         :return: (str) Error message.
         """
-        return "The given k_point was not set."
+        return "The given k_point, {0}, was not set before.".format(self.value)
 
 
 class Cannot_Search_Point_Group(Exception):
