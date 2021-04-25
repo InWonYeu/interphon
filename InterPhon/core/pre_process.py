@@ -138,7 +138,7 @@ class PreProcess(object):
             _, _, _ = self.sym.search_point_group()
         except error.Cannot_Search_Poing_Group as e:
             if sym_flag:
-                # print("look-up table: ", e.value)
+                print("look-up table: ", e.value)
                 print(e)
                 sym_flag = False
 
