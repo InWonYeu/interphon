@@ -45,7 +45,7 @@ The **InterPhon** package comprises following five sub-packages:
 
 - ``inout`` sub-package consists of parser modules to read and write files in different DFT formats.
 
-- ``core`` sub-package consists of core modules responsible for the control of main workflow.
+- ``core`` sub-package consists of core modules responsible for the central processes.
 
 - ``util`` sub-package consists of util modules to extend the functionality.
 
