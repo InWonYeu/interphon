@@ -5,7 +5,7 @@ This package includes following five sub-packages:
 
 error -> Collection of error modules defined by developer to guide users.
 inout -> Collection of parser modules to read and write files in different DFT formats.
-core -> Collection of core modules responsible for the control tower of processes.
+core -> Collection of core modules responsible for the central processes.
 util -> Collection of util modules to extend the functionality.
 analysis -> Collection of analysis modules to characterize phonons.
 """
