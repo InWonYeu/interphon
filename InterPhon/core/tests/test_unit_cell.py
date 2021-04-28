@@ -5,7 +5,7 @@ from InterPhon.core import UnitCell
 from InterPhon import error
 
 
-class TestPreArgument(unittest.TestCase):
+class TestUnitCell(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.lattice_matrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]

@@ -5,7 +5,7 @@ from InterPhon.core import PreArgument, UnitCell, SuperCell
 from InterPhon import error
 
 
-class TestPreArgument(unittest.TestCase):
+class TestSuperCell(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.user_args_ = {'displacement': 0.02, 'enlargement': "2 1 1", 'periodicity': "1 0 0"}

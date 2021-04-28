@@ -5,7 +5,7 @@ from InterPhon.core import PostArgument, UnitCell, SuperCell
 from InterPhon import error
 
 
-class TestPreArgument(unittest.TestCase):
+class TestPostArgument(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.displacement = 0.02
