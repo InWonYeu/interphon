@@ -21,6 +21,9 @@ scripts_interphon = ['scripts/interphon.py', ]
 if __name__ == '__main__':
 
     assert sys.version_info >= (3, 0), 'python>=3 is required'
+
+    with open('./README.md', 'rt', encoding='UTF8') as f:
+        long_description = f.read()
     
     with open('InterPhon/__init__.py', 'r') as init_file:
         for line in init_file:
@@ -40,5 +43,7 @@ if __name__ == '__main__':
           python_requires='>=3',
           setup_requires=setup_requires,
           # scripts=scripts_interphon,
+          long_description=long_description,
+          # long_description_content_type="text/markdown",
           entry_points={'console_scripts': ['interphon = InterPhon.interphon:main', ], },
           )

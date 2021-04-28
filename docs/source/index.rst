@@ -20,6 +20,7 @@ Currently supported DFT codes:
 Version report
 **************
 
+* `InterPhon version 1.2.0 <https://github.com/InWonYeu/interphon/tree/v1.2.0>`_ released (28 April 2021)
 * `InterPhon version 1.1.0 <https://github.com/InWonYeu/interphon/tree/v1.1.0>`_ released (20 April 2021)
 * `InterPhon version 1.0.0 <https://github.com/InWonYeu/interphon/tree/v1.0.0>`_ released (12 April 2021)
 * `InterPhon version 0.2.3 <https://github.com/InWonYeu/interphon/tree/v0.2.3>`_ released (16 December 2020)

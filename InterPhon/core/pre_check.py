@@ -61,7 +61,7 @@ class PreArgument(object):
         _enlargement = to_int_numpy(_enlargement)
 
         if len(_enlargement) != 3:
-            raise error.Insufficient_DIM_Error
+            raise error.Insufficient_ENLARGE_Error(_enlargement)
         else:
             self.__enlargement = _enlargement
 
@@ -77,12 +77,12 @@ class PreArgument(object):
         _periodicity = to_int_numpy(periodicity)
 
         if len(_periodicity) != 3:
-            raise error.Insufficient_PBC_Error
+            raise error.Insufficient_PBC_Error(_periodicity)
         else:
             for ind, value in enumerate(_periodicity):
                 if not value:
                     if self.enlargement[ind] != 1:
-                        raise error.Mismatch_DIM_and_PBC_Error
+                        raise error.Mismatch_ENLARGE_and_PBC_Error(self.enlargement, _periodicity)
             self.__periodicity = _periodicity
 
     def initialization(self):
@@ -121,15 +121,15 @@ class PreArgument(object):
         :return: (None)
         """
         if len(self.enlargement) != 3:
-            raise error.Insufficient_DIM_Error
+            raise error.Insufficient_ENLARGE_Error(self.enlargement)
 
         if len(self.periodicity) != 3:
-            raise error.Insufficient_PBC_Error
+            raise error.Insufficient_PBC_Error(self.periodicity)
 
         for ind, value in enumerate(self.periodicity):
             if not value:
                 if self.enlargement[ind] != 1:
-                    raise error.Mismatch_DIM_and_PBC_Error
+                    raise error.Mismatch_ENLARGE_and_PBC_Error(self.enlargement, self.periodicity)
 
     def __deepcopy__(self, memodict: dict = {}) -> object:
         import copy

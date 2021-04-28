@@ -1,4 +1,5 @@
 import numpy as np
+from InterPhon import error
 
 # Searching lattice point group operations
 W_candidate = [np.array([[0, 1],
@@ -161,7 +162,7 @@ class Symmetry2D(object):
                         delta_x = atom_transform[:, index] - atom_true_original[:, same_atom_index]  # atom-to-atom compare
                         delta_x_cart = np.matmul(np.transpose(self.unit_cell.lattice_matrix.copy()), delta_x - np.rint(delta_x))
 
-                        if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
+                        if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-04):
                             # if same_atom_index not in __same_index:
                             __same_index.append(same_atom_index)
                             # break
@@ -237,8 +238,7 @@ class Symmetry2D(object):
             # print('Point group = 6mm')
             self.point_group = '6mm'
         else:
-            print('What is this point group?')
-            assert False
+            raise error.Cannot_Search_Point_Group(look_up_table)
 
         return self.W_select, self.w_select, self.same_index_select
 
@@ -288,7 +288,7 @@ class Symmetry2D(object):
                         delta_x = _satom_in_primitive_transform + _min_vector_rot - satom_true_original[:, same_satom_index]
                         delta_x_cart = np.matmul(np.transpose(cell.lattice_matrix), delta_x - np.rint(delta_x))
 
-                        if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-06):
+                        if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-04):
                             # if same_satom_index not in __same_supercell_index:
                             __same_cell_index.append(same_satom_index)
                             #    break
