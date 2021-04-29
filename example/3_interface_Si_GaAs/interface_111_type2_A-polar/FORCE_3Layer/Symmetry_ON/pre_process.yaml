@@ -1,0 +1,81 @@
+- unit_cell_file: POSCAR
+- supercell_file: SUPERCELL
+- displaced_supercell_files: POSCAR-{0001..}
+- dft_code: vasp
+- point_group: 3m
+- user_arguments:
+  - displacement: 0.02
+  - enlargement: 3 3 1
+  - periodicity: 1 1 0
+- unit_cell:
+  - lattice_matrix:
+      a1: 3.8201699257000001,   0.0000000000000000,   0.0000000000000000
+      a2: -1.9100849628000001,   3.3083642024000000,   0.0000000000000000
+      a3: 0.0000000000000000,   0.0000000000000000,  46.7873382567999982
+  - num_atom: 16
+  - selected_atom_index: 3, 4, 5, 6, 7, 10
+  - atoms:
+    - index: 0
+      position: 0.0000009111438477,   2.2055750178090263,   8.5776837646373583
+      selection: false
+      type: Si
+    - index: 1
+      position: 0.0000000000000000,   0.0000000000000000,   9.3574733594152057
+      selection: false
+      type: Si
+    - index: 2
+      position: 0.0000000000000000,   0.0000000000000000,  11.6968373714401981
+      selection: false
+      type: Si
+    - index: 3
+      position: 1.9100851328642219,   1.1027871135549996,  12.4524137382290991
+      selection: true
+      type: Si
+    - index: 4
+      position: 1.9100851328642219,   1.1027871135549996,  14.7873714840463446
+      selection: true
+      type: Si
+    - index: 5
+      position: 0.0000009111438477,   2.2055750178090263,  15.5112217713489553
+      selection: true
+      type: Si
+    - index: 6
+      position: 0.0000009111438477,   2.2055750178090263,  17.8805944533971548
+      selection: true
+      type: As
+    - index: 7
+      position: 0.0000000000000000,   0.0000000000000000,  21.1675919600562850
+      selection: true
+      type: As
+    - index: 8
+      position: 1.9100851328642219,   1.1027871135549996,  24.4671654428232763
+      selection: false
+      type: As
+    - index: 9
+      position: 0.0000009111438477,   2.2055750178090263,  27.7576989012969406
+      selection: false
+      type: As
+    - index: 10
+      position: 0.0000000000000000,   0.0000000000000000,  18.7588912740560723
+      selection: true
+      type: Ga
+    - index: 11
+      position: 1.9100851328642219,   1.1027871135549996,  22.0523925431874979
+      selection: false
+      type: Ga
+    - index: 12
+      position: 0.0000009111438477,   2.2055750178090263,  25.3489604285662473
+      selection: false
+      type: Ga
+    - index: 13
+      position: 0.0000000000000000,   0.0000000000000000,  28.6106832183130848
+      selection: false
+      type: Ga
+    - index: 14
+      position: 0.0000000000000000,   0.0000000000000000,  30.1663013364095569
+      selection: false
+      type: H
+    - index: 15
+      position: 0.0000009111438477,   2.2055750178090263,   7.0727791239978020
+      selection: false
+      type: H
