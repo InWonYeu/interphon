@@ -118,36 +118,44 @@ class Symmetry2D(object):
                           np.transpose(self.unit_cell.lattice_matrix.copy()[np.ix_(self.user_arg.periodicity.nonzero()[0],
                                                                                    self.user_arg.periodicity.nonzero()[0])]))
 
+        # Search lattice point group operations
         rot_ind = []
         for ind, rot in enumerate(W_candidate):
             G_rotate = np.dot(np.transpose(rot), np.dot(G_metric, rot))
             if np.allclose(G_metric, G_rotate, atol=1e-06):
                 rot_ind.append(ind)
 
-        atom_true_original = np.transpose(self.unit_cell.atom_direct.copy()[self.unit_cell.atom_true, :])
+        # Search space group operations
+        atom_original = np.transpose(self.unit_cell.atom_direct.copy())
+        atom_true_original = atom_original[:, self.unit_cell.atom_true]
         w_for_given_rot = []
         same_index = []
         for ind in rot_ind:
             _W_candidate = np.identity(3)
             _W_candidate[np.ix_(self.user_arg.periodicity.nonzero()[0],
                                 self.user_arg.periodicity.nonzero()[0])] = W_candidate.copy()[ind]
+            atom_rot = np.dot(_W_candidate, atom_original)
             atom_true_rot = np.dot(_W_candidate, atom_true_original)
 
-            # space group search
-            w_candidate = [np.array([0.0, 0.0, 0.0])]
-            # for index, value in enumerate(unit_cell.atom_true):
-            #     other_atom_ind = [i for i in unit_cell.atom_true]
-            #     other_atom_ind.remove(value)
-            #     for other_index, other_ind in enumerate(other_atom_ind):
-            #         if unit_cell.atom_type[other_ind] == unit_cell.atom_type[value]:
-            #             w = np.round_(atom_true_original[:, other_index] - atom_true_rot[:, index], 6)
-            #             if w[2] == 0.0:
-            #                 w_, _ = np.modf(w)
-            #                 if not np.allclose(w_, np.zeros([3, ]), atol=1e-06):
-            #                     w_candidate.append(w_)
-            # print('w_candidate=', w_candidate)
-            # print(np.array(w_candidate).shape)
+            # Candidates of translation part
+            # if selective, take an atom from bulk region!
+            if len(self.unit_cell.atom_true) < len(self.unit_cell.atom_type):
+                tmp_index = [i for i in range(len(self.unit_cell.atom_type)) if i not in self.unit_cell.atom_true][0]
+            else:
+                tmp_index = 0
+            other_atom_ind = [i for i in range(len(self.unit_cell.atom_type))]
+            other_atom_ind.remove(tmp_index)
 
+            w_candidate = [np.array([0.0, 0.0, 0.0])]
+            for other_index, other_ind in enumerate(other_atom_ind):
+                if self.unit_cell.atom_type[other_ind] == self.unit_cell.atom_type[tmp_index]:
+                    w = np.round_(atom_original[:, other_index] - atom_rot[:, tmp_index], 6)
+                    if w[np.argwhere(self.user_arg.periodicity == 0)[0]] == 0.0:
+                        w_, _ = np.modf(w)
+                        if not np.allclose(w_, np.zeros([3, ]), atol=1e-06):
+                            w_candidate.append(w_)
+
+            # Selection of translation part
             trans_for_given_rot = []
             _same_index = []
             for w in w_candidate:
@@ -174,7 +182,8 @@ class Symmetry2D(object):
             w_for_given_rot.append(trans_for_given_rot)
             same_index.append(_same_index)
 
-        look_up_table = np.array([0, 0, 0, 0, 0, 0])  # num of following point-group operations: m, 1, 2, 3, 4, 6
+        # num of following point-group operations: m, 1, 2, 3, 4, 6
+        look_up_table = np.array([0, 0, 0, 0, 0, 0])
         for ind_ind, _rot_ind in enumerate(rot_ind):
             if w_for_given_rot[ind_ind]:
                 _W_candidate = np.identity(3)
@@ -266,35 +275,36 @@ class Symmetry2D(object):
     def search_cell_image_index(self, W_direct, cell):
         # conserving the image index in primitive cell
         _enlarge = int(len(cell.atom_type) / len(self.unit_cell.atom_type))
+        W_ind = self.find_point_group_index(W_direct)
 
         satom_true_original = np.transpose(cell.atom_direct.copy()[cell.atom_true, :])  # [3, satom_true]
         _same_cell_index = []
-        for _atom_index, _image_index in enumerate(self.same_index_select[self.find_point_group_index(W_direct)][0]):
+        for _atom_index, _image_index in enumerate(self.same_index_select[W_ind][0]):
             _satom_in_primitive = satom_true_original[:, _atom_index * _enlarge]  # [3, ]
-            _satom_in_primitive_rot = satom_true_original[:, _image_index * _enlarge]  # [3, ]
+            _satom_in_primitive_transform = satom_true_original[:, _image_index * _enlarge]  # [3, ]
 
             __same_cell_index = []
             for _satom_index, value in enumerate(cell.atom_true):
                 _min_vector = satom_true_original[:, _satom_index] - _satom_in_primitive
                 _min_vector_rot = np.dot(W_direct, _min_vector)
 
-                for w in self.w_select[self.find_point_group_index(W_direct)]:
-                    _satom_in_primitive_transform = _satom_in_primitive_rot + w.reshape([3, ])
+                # for w in self.w_select[W_ind]:
+                #     _satom_in_primitive_transform = _satom_in_primitive_rot + w.reshape([3, ])
 
-                    same_satom_type = [ind_ for ind_, val_ in enumerate(cell.atom_true)
-                                       if cell.atom_type[val_] == cell.atom_type[value]]
+                same_satom_type = [ind_ for ind_, val_ in enumerate(cell.atom_true)
+                                   if cell.atom_type[val_] == cell.atom_type[value]]
 
-                    for _, same_satom_index in enumerate(same_satom_type):
-                        delta_x = _satom_in_primitive_transform + _min_vector_rot - satom_true_original[:, same_satom_index]
-                        delta_x_cart = np.matmul(np.transpose(cell.lattice_matrix), delta_x - np.rint(delta_x))
+                for _, same_satom_index in enumerate(same_satom_type):
+                    delta_x = _satom_in_primitive_transform + _min_vector_rot - satom_true_original[:, same_satom_index]
+                    delta_x_cart = np.matmul(np.transpose(cell.lattice_matrix), delta_x - np.rint(delta_x))
 
-                        if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-04):
-                            # if same_satom_index not in __same_supercell_index:
-                            __same_cell_index.append(same_satom_index)
-                            #    break
+                    if np.allclose(delta_x_cart, np.zeros([3, ]), atol=1e-04):
+                        # if same_satom_index not in __same_supercell_index:
+                        __same_cell_index.append(same_satom_index)
+                        #    break
 
-                    if len(__same_cell_index) == len(cell.atom_true):
-                        _same_cell_index.append(__same_cell_index)
+                if len(__same_cell_index) == len(cell.atom_true):
+                    _same_cell_index.append(__same_cell_index)
 
         return _same_cell_index
 

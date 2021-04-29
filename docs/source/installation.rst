@@ -23,7 +23,7 @@ Requirements
 Installation using pip
 **********************
 
-Install **InterPhon** via pip_, which gets the source code from PyPI_::
+Install stable version of **InterPhon** via pip_, which gets the code stored in PyPI_::
 
     $ pip install interphon
 
@@ -35,7 +35,7 @@ Installation from source code
 
 .. :Git clone:
 
-Alternatively, get the source code from `InterPhon GitHub <https://github.com/InWonYeu/interphon>`_ by git clone and setup::
+Alternatively, install the latest version in development from `InterPhon GitHub <https://github.com/InWonYeu/interphon>`_ by git clone and setup::
 
     $ git clone https://github.com/inwonyeu/interphon.git
     $ cd interphon/

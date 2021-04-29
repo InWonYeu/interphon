@@ -14,14 +14,14 @@ If you want to learn more about ***InterPhon***, please find the user manual at 
 
 
 ## Installation
-Please clone this repository and install using:
+Latest version in development:
 
 ```
 $ git clone https://github.com/inwonyeu/interphon.git
 $ cd interphon/
 $ python setup.py install
 ```
-Or install via pip:
+Previous stable version:
 ```
 $ pip install interphon
 ```
