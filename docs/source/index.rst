@@ -8,14 +8,15 @@ Welcome to InterPhon's documentation!
 
 **InterPhon** is a Python Package for *Ab initio* Interface Phonon Calculations within a 3D Electronic Structure Framework.
 
-It fully implements a set of tools to promote efficient interface phonon calculations and
-supports the phonon analysis of symmetry- and periodicity-reduced systems, in conjunction with 3D DFT codes.
+This program calculates phonons of user-defined interfacial regions, in conjunction with 3D DFT codes.
 
 Currently supported DFT codes:
+**1. VASP**
+**2. Quantum ESPRESSO**
+**3. FHI-aims**
 
-1. VASP
-2. Quantum ESPRESSO
-3. FHI-aims
+If you have any questions or issues, please contact:
+**In Won Yeu**, yeuiw@kist.re.kr
 
 Version report
 **************
