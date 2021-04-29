@@ -21,7 +21,7 @@ $ git clone https://github.com/inwonyeu/interphon.git
 $ cd interphon/
 $ python setup.py install
 ```
-Previous version in stable:
+Previous stable version:
 ```
 $ pip install interphon
 ```
