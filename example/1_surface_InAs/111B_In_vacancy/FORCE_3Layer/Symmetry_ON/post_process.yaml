@@ -1,0 +1,82 @@
+- files:
+  - unit_cell_file: POSCAR
+  - super_cell_file: SUPERCELL
+  - k_point_file_dos: KPOINTS_dos
+  - k_point_file_band: KPOINTS_band
+  - force_file:
+    - FORCE-0001\vasprun.xml
+    - FORCE-0002\vasprun.xml
+    - FORCE-0003\vasprun.xml
+    - FORCE-0004\vasprun.xml
+    - FORCE-0005\vasprun.xml
+    - FORCE-0006\vasprun.xml
+    - FORCE-0007\vasprun.xml
+    - FORCE-0008\vasprun.xml
+    - FORCE-0009\vasprun.xml
+    - FORCE-0010\vasprun.xml
+    - FORCE-0011\vasprun.xml
+    - FORCE-0012\vasprun.xml
+    - FORCE-0013\vasprun.xml
+    - FORCE-0014\vasprun.xml
+    - FORCE-0015\vasprun.xml
+    - FORCE-0016\vasprun.xml
+- dft_code: vasp
+- user_arguments:
+  - displacement: 0.02
+  - enlargement: 2 2 1
+  - periodicity: 1 1 0
+- dos_arguments:
+  - flag: true
+  - sigma: 0.1
+  - num_dos: 1000
+  - color: black
+  - option: stack
+  - orientation: horizontal
+  - legend_loc: best
+  - atom:
+    - - 0
+      - 1
+      - 2
+    - - 3
+      - 4
+      - 5
+      - 6
+    - - 23
+      - 24
+      - 25
+      - 26
+  - legend:
+    - 1st layer
+    - 2nd layer
+    - 3rd layer
+  - elimit: &id001
+    - -1
+    - 8
+- thermal_arguments:
+  - flag: true
+  - temp: range(0, 1000, 10)
+  - legend_loc: best
+- band_arguments:
+  - flag: true
+  - color: tab:orange
+  - option: projection
+  - bar_loc: right
+  - bar_label: 1st layer
+  - k_label:
+    - G
+    - M
+    - K
+    - G
+  - atom:
+    - 0
+    - 1
+    - 2
+  - elimit: *id001
+- mode_arguments:
+    flag: true
+    index:
+    - 0
+    k_point:
+    - 0.0
+    - 0.0
+    - 0.0
