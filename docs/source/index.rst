@@ -11,11 +11,13 @@ Welcome to InterPhon's documentation!
 This program calculates phonons of user-defined interfacial regions, in conjunction with 3D DFT codes.
 
 Currently supported DFT codes:
+
 **1. VASP**
 **2. Quantum ESPRESSO**
 **3. FHI-aims**
 
 If you have any questions or issues, please contact:
+
 **In Won Yeu**, yeuiw@kist.re.kr
 
 Version report
