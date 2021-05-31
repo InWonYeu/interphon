@@ -9,6 +9,7 @@ class Mode(object):
         self.mode_inds = []
         self.k_point = np.empty((3,))
         self.num_images = 30
+        self.freq = self.w_q = np.empty((len(self.process.unit_cell.xyz_true)), dtype=float)
         self.mode = np.empty((len(self.process.unit_cell.xyz_true),
                              len(self.process.unit_cell.xyz_true)))
 
@@ -24,15 +25,21 @@ class Mode(object):
         if _ind_k is None:
             raise error.Not_Specified_Kpath_Error(self.k_point)
 
+        self.freq = self.process.w_q[_ind_k, :]
         self.mode = self.process.v_q[_ind_k, :, :]
 
     def write(self, out_folder='.'):
-        _current_position_true = self.process.unit_cell.atom_cart.copy()[self.process.unit_cell.atom_true]
-        _mass_weight = self.process.unit_cell.mass_true.reshape((-1, 3)) / self.process.unit_cell.mass_true.max()
+        q = np.dot(self.k_point, self.process.reciprocal_matrix)
+        _q = np.array([q, q, q])
+
+        _current_position_true = np.transpose(self.process.unit_cell.atom_cart.copy()[self.process.unit_cell.atom_true, :])
+        _mass_weight = np.transpose(self.process.unit_cell.mass_true.reshape((-1, 3))) / self.process.unit_cell.mass_true.max()
         for mode_ind in self.mode_inds:
             for ind, x in enumerate(np.linspace(0, 2 * np.pi, self.num_images, endpoint=False), 1):
-                self.process.unit_cell.atom_cart[self.process.unit_cell.atom_true] = _current_position_true \
-                    + np.sin(x) * self.mode[mode_ind, :].reshape((-1, 3)).real / np.sqrt(_mass_weight)
+                self.process.unit_cell.atom_cart[self.process.unit_cell.atom_true, :] = \
+                    np.transpose(_current_position_true
+                                 + np.sin(np.dot(_q, _current_position_true) + x)
+                                 * np.transpose(self.mode[mode_ind, :].reshape((-1, 3)).real) / np.sqrt(_mass_weight))
 
                 if ind == 1:
                     lines = vasp.write_input_lines(self.process.unit_cell, "unknown system")
@@ -56,15 +63,22 @@ class Mode(object):
         if code_name == 'espresso':
             code_name = 'espresso-in'  # aims, espresso-in, vasp
 
+        q = np.dot(self.k_point, self.process.reciprocal_matrix)
+        _q = np.array([q, q, q])
+
         atom = read(unit_cell, format=code_name)
-        _current_position_true = atom.positions.copy()[self.process.unit_cell.atom_true]
-        _mass_weight = self.process.unit_cell.mass_true.reshape((-1, 3)) / self.process.unit_cell.mass_true.max()
+        _current_position_true = np.transpose(atom.positions.copy()[self.process.unit_cell.atom_true, :])
+        _mass_weight = np.transpose(self.process.unit_cell.mass_true.reshape((-1, 3))) / self.process.unit_cell.mass_true.max()
         for mode_ind in self.mode_inds:
             traj = Trajectory(out_folder + "/Trajectory_{0}.traj".format(mode_ind), 'w')
-            for ind, x in enumerate(np.linspace(0, 2 * np.pi, self.num_images, endpoint=False), 1):
-                atom.positions[self.process.unit_cell.atom_true] = _current_position_true \
-                    + np.sin(x) * self.mode[mode_ind, :].reshape((-1, 3)).real / np.sqrt(_mass_weight)
+            for _, x in enumerate(np.linspace(0, 2 * np.pi, self.num_images, endpoint=False), 1):
+                atom.positions[self.process.unit_cell.atom_true, :] = \
+                    np.transpose(_current_position_true
+                                 + np.sin(np.dot(_q, _current_position_true) + x)
+                                 * np.transpose(self.mode[mode_ind, :].reshape((-1, 3)).real) / np.sqrt(_mass_weight))
+
                 traj.write(atom)
+
             traj.close()
             atoms = iread(out_folder + "/Trajectory_{0}.traj".format(mode_ind))
             view(atoms)
