@@ -75,6 +75,7 @@ class UnitCell(object):
         self.__lattice_matrix = lattice_matrix
         self.__atom_type = atom_type
         self.__num_atom = num_atom
+        self.selective = False
         self.__coordinate = coordinate
         self.__atom_cart = atom_cart
         self.__atom_true = atom_true
@@ -221,6 +222,7 @@ class UnitCell(object):
         self.__lattice_matrix = None
         self.__atom_type = None
         self.__num_atom = None
+        self.selective = False
         self.__coordinate = None
         self.__atom_cart = None
         self.__atom_true = None
@@ -244,6 +246,7 @@ class UnitCell(object):
             self.lattice_matrix, \
             self.atom_type, \
             self.num_atom, \
+            self.selective, \
             self.coordinate, \
             self.atom_cart, \
             self.atom_true, \
