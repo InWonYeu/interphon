@@ -1,4 +1,5 @@
 import numpy as np
+from InterPhon import error
 
 
 class ThermalProperty(object):
@@ -7,36 +8,42 @@ class ThermalProperty(object):
         self.temp = np.array(temp)
         self.free_energy = np.zeros(self.temp.shape)
         self.entropy = np.zeros(self.temp.shape)
-        self.heat_capacity = np.zeros(self.temp.shape)
+        # self.heat_capacity = np.zeros(self.temp.shape)
 
     def set(self):
         kb = 1.38 * 10 ** (-23) / (1.602 * 10 ** (-19))
         h = 6.626 * 10 ** (-34) / (1.602 * 10 ** (-19))
 
+        is_imaginary = False
         check_zero = np.isin(self.temp, 0).nonzero()[0]
         if check_zero.shape[0] == 0:
             for eig_freqs in self.process.w_q:
                 for eig_freq in eig_freqs:
-                    eig_freq *= 10 ** 12
+                    if eig_freq < 0:
+                        is_imaginary = True
+                    else:
+                        eig_freq *= 10 ** 12
 
-                    # To solve the overflow encountered in exp
-                    self.free_energy += (1.0 / 2.0 * h * eig_freq
-                                         + kb * self.temp * np.log(1 - np.exp(-h * eig_freq / (kb * self.temp)))) \
+                        # To solve the overflow encountered in exp
+                        self.free_energy += (1.0 / 2.0 * h * eig_freq
+                                             + kb * self.temp * np.log(1 - np.exp(-h * eig_freq / (kb * self.temp)))) \
+                                            / len(self.process.k_points) \
+                                            / (self.process.w_q.shape[1] / 3)
+
+                        self.entropy += (1 / (2 * self.temp) * h * eig_freq \
+                                        * np.cosh(h * eig_freq / (2 * kb * self.temp)) \
+                                        / np.sinh(h * eig_freq / (2 * kb * self.temp)) \
+                                        - kb * np.log(2 * np.sinh(h * eig_freq / (2 * kb * self.temp)))) \
                                         / len(self.process.k_points) \
                                         / (self.process.w_q.shape[1] / 3)
 
-                    self.entropy += (1 / (2 * self.temp) * h * eig_freq \
-                                    * np.cosh(h * eig_freq / (2 * kb * self.temp)) \
-                                    / np.sinh(h * eig_freq / (2 * kb * self.temp)) \
-                                    - kb * np.log(2 * np.sinh(h * eig_freq / (2 * kb * self.temp)))) \
-                                    / len(self.process.k_points) \
-                                    / (self.process.w_q.shape[1] / 3)
-
-                    # self.heat_capacity += kb * np.power(h * eig_freq / (kb * self.temp), 2) \
-                    #                       * np.exp(h * eig_freq / (kb * self.temp)) \
-                    #                       / np.power(np.exp(h * eig_freq / (kb * self.temp)) - 1, 2) \
-                    #                       / len(self.process.k_points) \
-                    #                       / (self.process.w_q.shape[1] / 3)
+                        # self.heat_capacity += kb * np.power(h * eig_freq / (kb * self.temp), 2) \
+                        #                       * np.exp(h * eig_freq / (kb * self.temp)) \
+                        #                       / np.power(np.exp(h * eig_freq / (kb * self.temp)) - 1, 2) \
+                        #                       / len(self.process.k_points) \
+                        #                       / (self.process.w_q.shape[1] / 3)
+            if is_imaginary:
+                print("\nCaution: ", error.Thermal_Imaginary_Frequency())
 
         elif check_zero.shape[0] == 1:
             zero_index = check_zero[0]
@@ -47,26 +54,32 @@ class ThermalProperty(object):
 
             for eig_freqs in self.process.w_q:
                 for eig_freq in eig_freqs:
-                    eig_freq *= 10 ** 12
+                    if eig_freq < 0:
+                        is_imaginary = True
+                    else:
+                        eig_freq *= 10 ** 12
 
-                    # To solve the overflow encountered in exp
-                    tmp_free_energy += (1.0 / 2.0 * h * eig_freq
-                                        + kb * tmp_temp * np.log(1 - np.exp(-h * eig_freq / (kb * tmp_temp)))) \
+                        # To solve the overflow encountered in exp
+                        tmp_free_energy += (1.0 / 2.0 * h * eig_freq
+                                            + kb * tmp_temp * np.log(1 - np.exp(-h * eig_freq / (kb * tmp_temp)))) \
+                                           / len(self.process.k_points) \
+                                           / (self.process.w_q.shape[1] / 3)
+
+                        zero_point_energy += 1.0 / 2.0 * h * eig_freq \
+                                             / len(self.process.k_points) / (self.process.w_q.shape[1] / 3)
+
+                        tmp_entropy += (1 / (2 * tmp_temp) * h * eig_freq
+                                        * np.cosh(h * eig_freq / (2 * kb * tmp_temp))
+                                        / np.sinh(h * eig_freq / (2 * kb * tmp_temp))
+                                        - kb * np.log(2 * np.sinh(h * eig_freq / (2 * kb * tmp_temp)))) \
                                        / len(self.process.k_points) \
                                        / (self.process.w_q.shape[1] / 3)
 
-                    zero_point_energy += 1.0 / 2.0 * h * eig_freq \
-                                         / len(self.process.k_points) / (self.process.w_q.shape[1] / 3)
-
-                    tmp_entropy += (1 / (2 * tmp_temp) * h * eig_freq
-                                    * np.cosh(h * eig_freq / (2 * kb * tmp_temp))
-                                    / np.sinh(h * eig_freq / (2 * kb * tmp_temp))
-                                    - kb * np.log(2 * np.sinh(h * eig_freq / (2 * kb * tmp_temp)))) \
-                                   / len(self.process.k_points) \
-                                   / (self.process.w_q.shape[1] / 3)
-
             self.free_energy = np.insert(tmp_free_energy, zero_index, zero_point_energy)
             self.entropy = np.insert(tmp_entropy, zero_index, 0.0)
+
+            if is_imaginary:
+                print("\nCaution: ", error.Thermal_Imaginary_Frequency())
 
     def write(self, out_folder='.'):
         with open(out_folder + '/thermal_properties.dat', 'w') as outfile:
