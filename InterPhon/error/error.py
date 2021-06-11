@@ -61,6 +61,24 @@ class Mismatch_ENLARGE_post_Error(Exception):
         return "ENLARGE of post-process is not matched with the ENLARGE of pre-process."
 
 
+class Mismatch_Kpath_and_PBC_Error(Exception):
+    """
+    Defined error class to guide for inconsistency between Kpath and PBC arguments.
+    """
+    def __init__(self, kpoint, pbc):
+        self.kpoint = kpoint
+        self.pbc = pbc
+
+    def __str__(self):
+        """
+        Error message for inconsistency between Kpath and PBC arguments.
+
+        :return: (str) Error message.
+        """
+        return "K-points, {0}, is not matched with PBC, {1}. ".format(self.kpoint, self.pbc) + \
+               "\nNon-zero reciprocal lattice along the non-periodic direction is meaningless."
+
+
 class Invalid_Line_Kpath_Error(Exception):
     """
     Defined error class to guide for invalid k-points setting for line path of band plot.
