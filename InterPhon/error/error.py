@@ -105,3 +105,17 @@ class Cannot_Search_Point_Group(Exception):
         """
         return "What is this point group? " \
                "Since the point group cannot be found, the symmetry function is turned off instead."
+
+
+class Thermal_Imaginary_Frequency(Exception):
+    """
+    Defined error class to caution to an attempt to compute thermal properties with imaginary frequency.
+    """
+    def __str__(self):
+        """
+        Error message for an attempt to compute thermal properties with imaginary frequency.
+
+        :return: (str) Error message.
+        """
+        return "Computation of thermal properties by imaginary frequency, which cannot be defined, is being attempted." \
+               "\nThermal properties will be calculated by neglecting the corresponding imaginary frequency. "
