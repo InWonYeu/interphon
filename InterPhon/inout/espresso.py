@@ -165,7 +165,7 @@ def write_input_lines(unit_cell, comment: str) -> List[str]:
 
     _line = "ATOMIC_POSITIONS angstrom" + '\n'
     if unit_cell.selective:
-        for i, atom, pos_atom in enumerate(zip(unit_cell.atom_type, unit_cell.atom_cart)):
+        for i, (atom, pos_atom) in enumerate(zip(unit_cell.atom_type, unit_cell.atom_cart)):
             if i in unit_cell.atom_true:
                 _line += "{0} {1:>20.16f}  {2:>20.16f}  {3:20.16f}".format(atom, pos_atom[0], pos_atom[1], pos_atom[2])
                 _line += '\n'

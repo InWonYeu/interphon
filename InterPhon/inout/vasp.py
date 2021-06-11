@@ -130,7 +130,7 @@ def write_input_lines(unit_cell, comment: str) -> List[str]:
     lines.append("%s" % "    ".join(num_atom) + '\n')
 
     if unit_cell.selective:
-        lines.append("Selective dynamics")
+        lines.append("Selective dynamics" + '\n')
     else:
         pass
 
