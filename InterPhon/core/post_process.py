@@ -376,7 +376,7 @@ class PostProcess(PreProcess):
 
         elif lines[2].split()[0][0] in ('L', 'l'):
             # Line-Path of k-points
-            self.k_points = k_points.line_path(lines)
+            self.k_points = k_points.line_path(lines, _ind_pbc)
 
         elif lines[2].split()[0][0] in ('R', 'r'):
             # Explicit list of k-points
