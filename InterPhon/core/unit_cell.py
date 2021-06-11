@@ -54,6 +54,7 @@ class UnitCell(object):
     def __init__(self, lattice_matrix: np.ndarray = None,
                  atom_type: AtomType = None,
                  num_atom: np.ndarray = None,
+                 selective: bool = False,
                  coordinate: str = None,
                  atom_cart: np.ndarray = None,
                  atom_true: SelectIndex = None,
@@ -64,7 +65,8 @@ class UnitCell(object):
 
         :param lattice_matrix: (np.ndarray[float]) '(3, 3) size' matrix for the lattice of unit cell.
         :param atom_type: (AtomType) List of atom type in unit cell.
-        :param num_atom: (np.ndarray[int]) matrix of the number of atoms of each atom type.
+        :param num_atom: (np.ndarray[int]) Matrix of the number of atoms of each atom type.
+        :param selective: (bool) Selective dynamics (True) or not (False)
         :param coordinate: (str) 'direct' or 'cartesian' coordinate.
         :param atom_cart: (np.ndarray[float]) '(total number of atoms, 3) size'
                                         matrix for atom positions in cartesian coordinate.
@@ -75,7 +77,7 @@ class UnitCell(object):
         self.__lattice_matrix = lattice_matrix
         self.__atom_type = atom_type
         self.__num_atom = num_atom
-        self.selective = False
+        self.selective = selective
         self.__coordinate = coordinate
         self.__atom_cart = atom_cart
         self.__atom_true = atom_true
@@ -256,6 +258,7 @@ class UnitCell(object):
             self.lattice_matrix, \
             self.atom_type, \
             self.num_atom, \
+            self.selective, \
             self.coordinate, \
             self.atom_cart, \
             self.atom_true, \
@@ -265,6 +268,7 @@ class UnitCell(object):
             self.lattice_matrix, \
             self.atom_type, \
             self.num_atom, \
+            self.selective, \
             self.coordinate, \
             self.atom_cart, \
             self.atom_true, \
