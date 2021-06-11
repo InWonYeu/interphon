@@ -26,6 +26,7 @@ def read_input_lines(structure_file: str) -> tuple:
             break
 
     __atom_type = []
+    selective = False
     __atom_cart = []
     __atom_true = []
     _ind_atom = -1
@@ -36,12 +37,12 @@ def read_input_lines(structure_file: str) -> tuple:
             _ind_atom += 1
             try:
                 if 'constrain_relaxation .true.' in _line or 'constrain_relaxation .true.' in _lines[_ind_line + 1]:
-                    pass
+                    selective = True
                 else:
                     __atom_true.append(_ind_atom)
             except IndexError:
                 if 'constrain_relaxation .true.' in _line:
-                    pass
+                    selective = True
                 else:
                     __atom_true.append(_ind_atom)
 
@@ -103,7 +104,7 @@ def read_input_lines(structure_file: str) -> tuple:
     for ind_T in __atom_true:
         xyz_true.extend([ind_T for _ in range(3)])
 
-    return lattice_matrix, __atom_type, num_atom, coordinate, __atom_cart, __atom_true, xyz_true
+    return lattice_matrix, __atom_type, num_atom, selective, coordinate, __atom_cart, __atom_true, xyz_true
 
 
 def write_input_lines(unit_cell, comment: str) -> List[str]:
@@ -121,9 +122,20 @@ def write_input_lines(unit_cell, comment: str) -> List[str]:
     lines.append(_line)
 
     _line = ""
-    for atom, pos_atom in zip(unit_cell.atom_type, unit_cell.atom_cart):
-        _line += "atom {0:>20.16f}  {1:>20.16f}  {2:20.16f} {3}".format(pos_atom[0], pos_atom[1], pos_atom[2], atom)
-        _line += '\n'
+    if unit_cell.selective:
+        for i, atom, pos_atom in enumerate(zip(unit_cell.atom_type, unit_cell.atom_cart)):
+            if i in unit_cell.atom_true:
+                _line += "atom {0:>20.16f}  {1:>20.16f}  {2:20.16f} {3}".format(pos_atom[0], pos_atom[1], pos_atom[2], atom)
+                _line += '\n'
+            else:
+                _line += "atom {0:>20.16f}  {1:>20.16f}  {2:20.16f} {3}".format(pos_atom[0], pos_atom[1], pos_atom[2], atom)
+                _line += '\n'
+                _line += "    constrain_relaxation .true."
+                _line += '\n'
+    else:
+        for atom, pos_atom in zip(unit_cell.atom_type, unit_cell.atom_cart):
+            _line += "atom {0:>20.16f}  {1:>20.16f}  {2:20.16f} {3}".format(pos_atom[0], pos_atom[1], pos_atom[2], atom)
+            _line += '\n'
     lines.append(_line)
 
     return lines

@@ -55,13 +55,14 @@ def read_input_lines(structure_file: str) -> tuple:
     lattice_matrix = np.asfarray([_line.split()[0:3] for _line in _lines[_lattice_index + 1:_lattice_index + 4]])
 
     __atom_type = []
+    selective = False
     __atom_cart = []
     __atom_true = []
     for _ind_line, _line in enumerate(_lines[_pos_atom_index + 1:_pos_atom_index + 1 + num_total]):
         __atom_type.append(_line.split()[0])
         __atom_cart.append(_line.split()[1:4])
         if '0' in _line.split():
-            pass
+            selective = True
         else:
             __atom_true.append(_ind_line)
 
@@ -123,7 +124,7 @@ def read_input_lines(structure_file: str) -> tuple:
     for ind_T in __atom_true:
         xyz_true.extend([ind_T for i in range(3)])
 
-    return lattice_matrix, __atom_type, num_atom, coordinate, __atom_cart, __atom_true, xyz_true
+    return lattice_matrix, __atom_type, num_atom, selective, coordinate, __atom_cart, __atom_true, xyz_true
 
 
 def write_input_lines(unit_cell, comment: str) -> List[str]:
@@ -163,9 +164,19 @@ def write_input_lines(unit_cell, comment: str) -> List[str]:
     lines.append(_line + '\n')
 
     _line = "ATOMIC_POSITIONS angstrom" + '\n'
-    for atom, pos_atom in zip(unit_cell.atom_type, unit_cell.atom_cart):
-        _line += "{0} {1:>20.16f}  {2:>20.16f}  {3:20.16f}".format(atom, pos_atom[0], pos_atom[1], pos_atom[2]) + '\n'
-    lines.append(_line + '\n')
+    if unit_cell.selective:
+        for i, atom, pos_atom in enumerate(zip(unit_cell.atom_type, unit_cell.atom_cart)):
+            if i in unit_cell.atom_true:
+                _line += "{0} {1:>20.16f}  {2:>20.16f}  {3:20.16f}".format(atom, pos_atom[0], pos_atom[1], pos_atom[2])
+                _line += '\n'
+            else:
+                _line += "{0} {1:>20.16f}  {2:>20.16f}  {3:20.16f}   0 0 0".format(atom, pos_atom[0], pos_atom[1], pos_atom[2])
+                _line += '\n'
+    else:
+        for atom, pos_atom in zip(unit_cell.atom_type, unit_cell.atom_cart):
+            _line += "{0} {1:>20.16f}  {2:>20.16f}  {3:20.16f}".format(atom, pos_atom[0], pos_atom[1], pos_atom[2])
+            _line += '\n'
+    lines.append(_line)
 
     return lines
 
