@@ -14,6 +14,13 @@ def gamma_centered(k_file_lines: List[str], _ind_pbc) -> tuple:
     """
     k_points = []
     auto_k_points = [int(num_k_point) for num_k_point in k_file_lines[3].split()[0:3]]
+
+    __pbc = np.array([True if i in _ind_pbc else False for i in range(3)])
+    for ind, value in enumerate(__pbc):
+        if not value:
+            if auto_k_points[ind] != 1:
+                raise error.Mismatch_Kpath_and_PBC_Error('', __pbc)
+
     try:
         shift = [float(s) for s in k_file_lines[4].split()[0:3]]
     except IndexError:
@@ -175,6 +182,13 @@ def monkhorst_pack(k_file_lines: List[str], _ind_pbc) -> tuple:
     """
     k_points = []
     auto_k_points = [int(num_k_point) for num_k_point in k_file_lines[3].split()[0:3]]
+
+    __pbc = np.array([True if i in _ind_pbc else False for i in range(3)])
+    for ind, value in enumerate(__pbc):
+        if not value:
+            if auto_k_points[ind] != 1:
+                raise error.Mismatch_Kpath_and_PBC_Error('', __pbc)
+
     try:
         shift = [float(s) for s in k_file_lines[4].split()[0:3]]
     except IndexError:
