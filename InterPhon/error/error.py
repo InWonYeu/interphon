@@ -75,7 +75,7 @@ class Mismatch_Kpath_and_PBC_Error(Exception):
 
         :return: (str) Error message.
         """
-        return "K-points, {0}, is not matched with PBC, {1}. ".format(self.kpoint, self.pbc) + \
+        return "K-point, {0}, is not matched with PBC, {1}. ".format(self.kpoint, self.pbc) + \
                "\nNon-zero reciprocal lattice along the non-periodic direction is meaningless."
 
 
