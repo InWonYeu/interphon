@@ -270,8 +270,9 @@ def line_path(k_file_lines: List[str], _ind_pbc) -> KptPath:
         raise error.Invalid_Line_Kpath_Error
     else:
         for ind in range(0, len(_tmp), 2):
-            if np.asfarray(_tmp[ind])[_ind_non_pbc].any():
-                raise error.Mismatch_Kpath_and_PBC_Error(np.asfarray(_tmp[ind]), __pbc)
+            __k_point = np.asfarray(_tmp[ind])
+            if __k_point[_ind_non_pbc].any():
+                raise error.Mismatch_Kpath_and_PBC_Error(__k_point, __pbc)
             else:
                 k_points.extend(np.linspace(np.asfarray(_tmp[ind]),
                                             np.asfarray(_tmp[ind + 1]), num_per_segment))
