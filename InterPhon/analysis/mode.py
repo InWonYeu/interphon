@@ -97,17 +97,29 @@ class Mode(object):
                 enlargement[ind] = Fraction(self.k_point[ind]).limit_denominator(100).denominator
         user_arg.enlargement = enlargement
 
+        _enlarge = 1
+        for ind, value in enumerate(user_arg.periodicity):
+            if value:
+                _enlarge = _enlarge * user_arg.enlargement[ind]
+
         super_cell.initialization()
         super_cell.set_super_cell(self.process.unit_cell, user_arg)
         super_cell.set_super_ind_true(self.process.unit_cell, user_arg)
         super_cell.set_mass_true()
 
         _current_position_true = np.transpose(super_cell.atom_cart.copy()[super_cell.atom_true, :])
-        _mass_weight = np.transpose(super_cell.mass_true.reshape((-1, 3))) / super_cell.mass_true.max()
+        _mass_weight = super_cell.mass_true.reshape((-1, 3)) / super_cell.mass_true.max()
+        _phase_factor = np.sin(np.dot(q, _current_position_true).reshape((-1, 1)))
+
         for mode_ind in self.mode_inds:
-            super_cell.atom_cart[super_cell.atom_true, :] = \
-                np.transpose(_current_position_true + amplitude * np.sin(np.dot(q, _current_position_true))
-                             * self.mode[mode_ind, :].reshape((-1, 3)).real / np.sqrt(_mass_weight))
+            mode_super_cell = []
+            for mode in self.mode[mode_ind, :].reshape((-1, 3)).real:
+                for i in range(_enlarge):
+                    mode_super_cell.append(mode)
+            mode_super_cell = np.asfarray(mode_super_cell)
+
+            super_cell.atom_cart[super_cell.atom_true, :] = np.transpose(_current_position_true) + amplitude \
+                                                            * _phase_factor * mode_super_cell / np.sqrt(_mass_weight)
 
             _lines = vasp.write_input_lines(super_cell, 'Commensurate supercell with displacements along normal mode {0} at k-point {1}'.format(mode_ind, self.k_point))
             with open(out_folder + '/MPOSCAR-{0}'.format(mode_ind), 'w') as outfile:
