@@ -92,7 +92,7 @@ class Mode(object):
         from fractions import Fraction
 
         enlargement = np.ones([3, ], dtype=int)
-        for ind, value in enumerate(user_arg):
+        for ind, value in enumerate(user_arg.periodicity):
             if value:
                 enlargement[ind] = Fraction(self.k_point[ind]).limit_denominator(100).denominator
         user_arg.enlargement = enlargement
@@ -109,6 +109,6 @@ class Mode(object):
                 np.transpose(_current_position_true + amplitude * np.sin(np.dot(q, _current_position_true))
                              * self.mode[mode_ind, :].reshape((-1, 3)).real / np.sqrt(_mass_weight))
 
-            _lines = vasp.write_input_lines(self, 'Commensurate supercell with displacements along normal mode {0} at k-point {1}'.format(mode_ind, self.k_point))
+            _lines = vasp.write_input_lines(super_cell, 'Commensurate supercell with displacements along normal mode {0} at k-point {1}'.format(mode_ind, self.k_point))
             with open(out_folder + '/MPOSCAR-{0}'.format(mode_ind), 'w') as outfile:
                 outfile.write("%s" % "".join(_lines))
