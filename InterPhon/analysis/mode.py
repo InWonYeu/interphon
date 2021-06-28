@@ -82,8 +82,8 @@ class Mode(object):
             atoms = iread(out_folder + "/Trajectory_{0}.traj".format(mode_ind))
             view(atoms)
 
-    def write_mode_displace(self, out_folder='.', amplitude=5.0):
-        # Make file of supercell with displacements along normal mode
+    def write_mode_displace(self, out_folder='.', amplitude=1.0):
+        # Make supercell with displacements along normal mode
         # The displaced supercell along an imaginary mode can be used for structure search
         # test is ongoing
         from copy import deepcopy
