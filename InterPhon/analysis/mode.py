@@ -83,7 +83,7 @@ class Mode(object):
             view(atoms)
 
     def write_mode_displace(self, out_folder='.', amplitude=1.0):
-        # Make supercell with displacements along normal mode
+        # Make a supercell file with displacement along normal mode
         # The displaced supercell along an imaginary mode can be used for structure search
         # test is ongoing
         from copy import deepcopy
