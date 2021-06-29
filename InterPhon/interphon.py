@@ -291,13 +291,19 @@ def check_file_order(process, unit_cell_file, force_file, dft_code, sym_flag: bo
               required=True,
               show_default=True,
               help='Flag to whether to write a supercell file with displacement along normal mode')
+@click.option('--displacement_amplitude_mode', '-disp_amp_mode', 'disp_amp_mode',
+              default=1.0,
+              type=click.FLOAT,
+              help='Amplitude of displacement along normal mode (unit: Angst).',
+              required=True,
+              show_default=True)
 def main(force_files, option_file, process,
          sym, dft, displacement, enlargement, periodicity,
          unitcell, supercell, kpoint_dos,
          dos, sigma, num_dos, atom_dos, legend_dos, elimit, color_dos, option_dos, orientation_dos, legend_loc_dos,
          thermal, tmin, tmax, tstep,
          band, kpoint_band, k_label_band, atom_band, color_band, option_band, bar_label_band, bar_loc_band,
-         mode, ind_mode, kpt_mode, disp_mode):
+         mode, ind_mode, kpt_mode, disp_mode, disp_amp_mode):
     if option_file is not None:
         with open(option_file, 'r') as infile:
             lines = infile.readlines()
@@ -388,6 +394,8 @@ def main(force_files, option_file, process,
                 ind_mode = value
             elif key in ('k_point_mode', 'kpt_mode'):
                 kpt_mode = value
+            elif key in ('displacement_amplitude_mode', 'disp_amp_mode'):
+                disp_amp_mode = value
 
     if force_files:
         process = False
@@ -625,7 +633,8 @@ def main(force_files, option_file, process,
                 mode_args['k_point'] = k_point
             else:
                 raise Exception('The length of "k_point" should be 3.')
-            mode_args['write_disp_mode'] = disp_mode
+            mode_args['write_disp'] = disp_mode
+            mode_args['displacement_amplitude'] = disp_amp_mode
         print('Mode Arguments:\n', mode_args)
 
     # start process
@@ -887,9 +896,9 @@ def main(force_files, option_file, process,
                 post_band.mode.plot(out_folder=working_dir,
                                     unit_cell=files.get('unit_cell_file'),
                                     code_name=user_args.get('dft_code'))
-                if mode_args['write_disp_mode']:
+                if mode_args['write_disp']:
                     print('Commensurate supercell files with displacement along normal mode are written... ---> MPOSCAR-[mode_index]')
-                    post_band.mode.write_mode_displace()
+                    post_band.mode.write_mode_displace(amplitude=mode_args['displacement_amplitude'])
 
         # Record this post-process
         _post_files = []
