@@ -109,6 +109,7 @@ class Mode(object):
         super_cell.set_super_cell(self.process.unit_cell, user_arg)
         super_cell.set_super_ind_true(self.process.unit_cell, user_arg)
         super_cell.set_mass_true()
+        super_cell.selective = True
 
         _current_position_true = np.transpose(super_cell.atom_cart.copy()[super_cell.atom_true, :])
         _mass_weight = super_cell.mass_true.reshape((-1, 3)) / super_cell.mass_true.max()
