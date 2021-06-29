@@ -1,6 +1,6 @@
 import numpy as np
 from InterPhon import error
-from InterPhon.inout import vasp
+from InterPhon.inout import vasp, aims, espresso
 from InterPhon.core.pre_check import PreArgument
 
 
@@ -82,7 +82,7 @@ class Mode(object):
             atoms = iread(out_folder + "/Trajectory_{0}.traj".format(mode_ind))
             view(atoms)
 
-    def write_mode_displace(self, out_folder='.', amplitude=1.0):
+    def write_mode_displace(self, out_folder='.', amplitude=1.0, code_name: str = 'vasp'):
         # Make a supercell file with displacement along normal mode
         # The displaced supercell along an imaginary mode can be used for structure search
         # test is ongoing
@@ -124,6 +124,18 @@ class Mode(object):
             super_cell.atom_cart[super_cell.atom_true, :] = np.transpose(_current_position_true) + amplitude \
                                                             * _phase_factor * mode_super_cell / np.sqrt(_mass_weight)
 
-            _lines = vasp.write_input_lines(super_cell, 'Commensurate supercell with displacements along normal mode {0} at k-point {1}'.format(mode_ind, self.k_point))
-            with open(out_folder + '/MPOSCAR-{0}'.format(mode_ind), 'w') as outfile:
-                outfile.write("%s" % "".join(_lines))
+            comment = 'Commensurate supercell with displacements along normal mode {0} at k-point {1}'.format(mode_ind, self.k_point)
+            if code_name == 'vasp':
+                _lines = vasp.write_input_lines(super_cell, comment)
+                with open(out_folder + '/MPOSCAR-{0}'.format(mode_ind), 'w') as outfile:
+                    outfile.write("%s" % "".join(_lines))
+
+            elif code_name == 'espresso':
+                _lines = espresso.write_input_lines(super_cell, comment)
+                with open(out_folder + '/MPOSCAR-{0}'.format(mode_ind), 'w') as outfile:
+                    outfile.write("%s" % "".join(_lines))
+
+            elif code_name == 'aims':
+                _lines = aims.write_input_lines(super_cell, comment)
+                with open(out_folder + '/MPOSCAR-{0}'.format(mode_ind), 'w') as outfile:
+                    outfile.write("%s" % "".join(_lines))
