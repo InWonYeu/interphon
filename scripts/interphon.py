@@ -898,7 +898,8 @@ def main(force_files, option_file, process,
                                     code_name=user_args.get('dft_code'))
                 if mode_args['write_disp']:
                     print('Commensurate supercell files with displacement along normal mode are written... ---> MPOSCAR-[mode_index]')
-                    post_band.mode.write_mode_displace(amplitude=mode_args['displacement_amplitude'])
+                    post_band.mode.write_mode_displace(amplitude=mode_args['displacement_amplitude'],
+                                                       code_name=user_args.get('dft_code'))
 
         # Record this post-process
         _post_files = []
