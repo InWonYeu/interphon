@@ -188,7 +188,7 @@ def check_file_order(process, unit_cell_file, force_file, dft_code, sym_flag: bo
               help='The Index of atoms to be projected in DOS plot.')
 @click.option('--projection_legend_dos', '-legend_dos', 'legend_dos',
               type=click.STRING,
-              help='Legends for the projected atoms.')
+              help='Legends for the projected DOS lines.')
 @click.option('--energy_limit', '-elimit', 'elimit',
               type=click.STRING,
               help='Energy (THz) limitation of DOS and Band plot.')
