@@ -14,6 +14,13 @@ def gamma_centered(k_file_lines: List[str], _ind_pbc) -> tuple:
     """
     k_points = []
     auto_k_points = [int(num_k_point) for num_k_point in k_file_lines[3].split()[0:3]]
+
+    __pbc = np.array([True if i in _ind_pbc else False for i in range(3)])
+    for ind, value in enumerate(__pbc):
+        if not value:
+            if auto_k_points[ind] != 1:
+                raise error.Mismatch_Kpath_and_PBC_Error('', __pbc)
+
     try:
         shift = [float(s) for s in k_file_lines[4].split()[0:3]]
     except IndexError:
@@ -175,6 +182,13 @@ def monkhorst_pack(k_file_lines: List[str], _ind_pbc) -> tuple:
     """
     k_points = []
     auto_k_points = [int(num_k_point) for num_k_point in k_file_lines[3].split()[0:3]]
+
+    __pbc = np.array([True if i in _ind_pbc else False for i in range(3)])
+    for ind, value in enumerate(__pbc):
+        if not value:
+            if auto_k_points[ind] != 1:
+                raise error.Mismatch_Kpath_and_PBC_Error('', __pbc)
+
     try:
         shift = [float(s) for s in k_file_lines[4].split()[0:3]]
     except IndexError:
@@ -237,23 +251,32 @@ def monkhorst_pack(k_file_lines: List[str], _ind_pbc) -> tuple:
     return k_points, auto_k_points
 
 
-def line_path(k_file_lines: List[str]) -> KptPath:
+def line_path(k_file_lines: List[str], _ind_pbc) -> KptPath:
     """
     Line-path generation scheme connecting high symmetry points by line-segmentation.
 
     :param k_file_lines: (List[str]) List of each line of VASP KPOINTS file.
+    :param _ind_pbc: (np.ndarray[int]) Indices for the direction of periodic boundary.
     :return: (KptPath) k_points
     """
     k_points = []
     num_per_segment = int(k_file_lines[1].split()[0])
     _tmp = [k_point.split()[0:3] for k_point in k_file_lines[3:] if k_point.split()]
 
+    _ind_non_pbc = np.array([i for i in range(3) if i not in _ind_pbc])
+    __pbc = np.array([True if i in _ind_pbc else False for i in range(3)])
+
     if len(_tmp) % 2 != 0:
         raise error.Invalid_Line_Kpath_Error
     else:
         for ind in range(0, len(_tmp), 2):
-            k_points.extend(np.linspace(np.asfarray(_tmp[ind]),
-                                        np.asfarray(_tmp[ind + 1]), num_per_segment))
+            __k_point = np.asfarray(_tmp[ind])
+
+            if __k_point[_ind_non_pbc].any():
+                raise error.Mismatch_Kpath_and_PBC_Error(__k_point, __pbc)
+            else:
+                k_points.extend(np.linspace(np.asfarray(_tmp[ind]),
+                                            np.asfarray(_tmp[ind + 1]), num_per_segment))
 
     return k_points
 

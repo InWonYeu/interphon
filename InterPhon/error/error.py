@@ -61,6 +61,24 @@ class Mismatch_ENLARGE_post_Error(Exception):
         return "ENLARGE of post-process is not matched with the ENLARGE of pre-process."
 
 
+class Mismatch_Kpath_and_PBC_Error(Exception):
+    """
+    Defined error class to guide for inconsistency between Kpath and PBC arguments.
+    """
+    def __init__(self, kpoint, pbc):
+        self.kpoint = kpoint
+        self.pbc = pbc
+
+    def __str__(self):
+        """
+        Error message for inconsistency between Kpath and PBC arguments.
+
+        :return: (str) Error message.
+        """
+        return "K-point, {0}, is not matched with PBC, {1}. ".format(self.kpoint, self.pbc) + \
+               "\nNon-zero reciprocal lattice along the non-periodic direction is meaningless."
+
+
 class Invalid_Line_Kpath_Error(Exception):
     """
     Defined error class to guide for invalid k-points setting for line path of band plot.
@@ -105,3 +123,17 @@ class Cannot_Search_Point_Group(Exception):
         """
         return "What is this point group? " \
                "Since the point group cannot be found, the symmetry function is turned off instead."
+
+
+class Thermal_Imaginary_Frequency(Exception):
+    """
+    Defined error class to caution to an attempt to compute thermal properties with imaginary frequency.
+    """
+    def __str__(self):
+        """
+        Error message for an attempt to compute thermal properties with imaginary frequency.
+
+        :return: (str) Error message.
+        """
+        return "Computation of thermal properties by imaginary frequency, which cannot be defined, is being attempted." \
+               "\nThermal properties will be calculated by neglecting the corresponding imaginary frequency. "

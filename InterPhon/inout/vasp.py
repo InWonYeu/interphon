@@ -33,6 +33,7 @@ def read_input_lines(structure_file: str) -> tuple:
 
     coordinate = 'cartesian'
     if _lines[7].split()[0][0] in ('S', 's'):
+        selective = True
         pos_atom = _lines[9:9 + num_total]
 
         if _lines[8].split()[0][0] in ('D', 'd'):
@@ -47,6 +48,7 @@ def read_input_lines(structure_file: str) -> tuple:
         __atom_true = [i for i, v in enumerate(pos_atom) if 'T' in v.split()]
 
     else:
+        selective = False
         pos_atom = _lines[8:8 + num_total]
 
         if _lines[7].split()[0][0] in ('D', 'd'):
@@ -100,7 +102,7 @@ def read_input_lines(structure_file: str) -> tuple:
     for ind_T in __atom_true:
         xyz_true.extend([ind_T for i in range(3)])
 
-    return lattice_matrix, __atom_type, num_atom, coordinate, __atom_cart, __atom_true, xyz_true
+    return lattice_matrix, __atom_type, num_atom, selective, coordinate, __atom_cart, __atom_true, xyz_true
 
 
 def write_input_lines(unit_cell, comment: str) -> List[str]:
@@ -127,11 +129,25 @@ def write_input_lines(unit_cell, comment: str) -> List[str]:
     num_atom = [str(num) for num in unit_cell.num_atom]
     lines.append("%s" % "    ".join(num_atom) + '\n')
 
+    if unit_cell.selective:
+        lines.append("Selective dynamics" + '\n')
+    else:
+        pass
+
     lines.append("Cartesian" + '\n')
 
-    for v in unit_cell.atom_cart:
-        _line = " {0:>20.16f}  {1:>20.16f}  {2:20.16f}".format(v[0], v[1], v[2])
-        lines.append(_line + '\n')
+    if unit_cell.selective:
+        for i, v in enumerate(unit_cell.atom_cart):
+            if i in unit_cell.atom_true:
+                _line = " {0:>20.16f}  {1:>20.16f}  {2:20.16f}   T   T   T".format(v[0], v[1], v[2])
+                lines.append(_line + '\n')
+            else:
+                _line = " {0:>20.16f}  {1:>20.16f}  {2:20.16f}   F   F   F".format(v[0], v[1], v[2])
+                lines.append(_line + '\n')
+    else:
+        for v in unit_cell.atom_cart:
+            _line = " {0:>20.16f}  {1:>20.16f}  {2:20.16f}".format(v[0], v[1], v[2])
+            lines.append(_line + '\n')
 
     return lines
 

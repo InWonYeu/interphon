@@ -200,10 +200,10 @@ class PostProcess(PreProcess):
                     backward_force = np.empty((len(self.super_cell.atom_type) * 3, 3))
                     for j in range(num_of_calculation):
                         if force_ind % 2 == 0:
-                            _forward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
+                            _forward_matrix = espresso.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
                             __forward_matrix = _forward_matrix.copy()
                         elif force_ind % 2 == 1:
-                            _backward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
+                            _backward_matrix = espresso.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
                             __backward_matrix = _backward_matrix.copy()
 
                             if j // 2 == 0:
@@ -279,10 +279,10 @@ class PostProcess(PreProcess):
                     backward_force = np.empty((len(self.super_cell.atom_type) * 3, 3))
                     for j in range(num_of_calculation):
                         if force_ind % 2 == 0:
-                            _forward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
+                            _forward_matrix = aims.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
                             __forward_matrix = _forward_matrix.copy()
                         elif force_ind % 2 == 1:
-                            _backward_matrix = vasp.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
+                            _backward_matrix = aims.read_output_lines(force_files[force_ind], len(self.super_cell.atom_type))
                             __backward_matrix = _backward_matrix.copy()
 
                             if j // 2 == 0:
@@ -376,7 +376,7 @@ class PostProcess(PreProcess):
 
         elif lines[2].split()[0][0] in ('L', 'l'):
             # Line-Path of k-points
-            self.k_points = k_points.line_path(lines)
+            self.k_points = k_points.line_path(lines, _ind_pbc)
 
         elif lines[2].split()[0][0] in ('R', 'r'):
             # Explicit list of k-points

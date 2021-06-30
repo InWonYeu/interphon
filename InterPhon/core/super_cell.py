@@ -14,6 +14,7 @@ class SuperCell(UnitCell):
     def __init__(self, lattice_matrix: np.ndarray = None,
                  atom_type: AtomType = None,
                  num_atom: np.ndarray = None,
+                 selective: bool = False,
                  coordinate: str = None,
                  atom_cart: np.ndarray = None,
                  atom_true: SelectIndex = None,
@@ -25,6 +26,7 @@ class SuperCell(UnitCell):
         :param lattice_matrix: (np.ndarray[float]) '(3, 3) size' matrix for the lattice of unit cell.
         :param atom_type: (AtomType) List of atom type in unit cell.
         :param num_atom: (np.ndarray[int]) matrix of the number of atoms of each atom type.
+        :param selective: (bool) Selective dynamics (True) or not (False)
         :param coordinate: (str) 'direct' or 'cartesian' coordinate.
         :param atom_cart: (np.ndarray[float]) '(total number of atoms, 3) size'
                                         matrix for atom positions in cartesian coordinate.
@@ -35,6 +37,7 @@ class SuperCell(UnitCell):
         super(SuperCell, self).__init__(lattice_matrix,
                                         atom_type,
                                         num_atom,
+                                        selective,
                                         coordinate,
                                         atom_cart,
                                         atom_true,

@@ -1,9 +1,11 @@
 import os
+import sys
 import glob
 import click
 import yaml
 import numpy as np
 try:
+    import InterPhon
     from InterPhon.core import PreProcess, PostProcess
 except ImportError:  # parent class of ModuleNotFoundError
     print("\nInterPhon package should be in one of the following directories: \n 1) current folder \n "
@@ -284,13 +286,24 @@ def check_file_order(process, unit_cell_file, force_file, dft_code, sym_flag: bo
               type=click.STRING,
               help='The K-point of phonon mode(kpoint, index).',
               show_default=True)
+@click.option('--displacement_mode', '-disp_mode', 'disp_mode', is_flag=True,
+              default=False,
+              required=True,
+              show_default=True,
+              help='Flag to whether to write a supercell file with displacement along normal mode')
+@click.option('--displacement_amplitude_mode', '-disp_amp_mode', 'disp_amp_mode',
+              default=1.0,
+              type=click.FLOAT,
+              help='Amplitude of displacement along normal mode (unit: Angst).',
+              required=True,
+              show_default=True)
 def main(force_files, option_file, process,
          sym, dft, displacement, enlargement, periodicity,
          unitcell, supercell, kpoint_dos,
          dos, sigma, num_dos, atom_dos, legend_dos, elimit, color_dos, option_dos, orientation_dos, legend_loc_dos,
          thermal, tmin, tmax, tstep,
          band, kpoint_band, k_label_band, atom_band, color_band, option_band, bar_label_band, bar_loc_band,
-         mode, ind_mode, kpt_mode):
+         mode, ind_mode, kpt_mode, disp_mode, disp_amp_mode):
     if option_file is not None:
         with open(option_file, 'r') as infile:
             lines = infile.readlines()
@@ -381,6 +394,8 @@ def main(force_files, option_file, process,
                 ind_mode = value
             elif key in ('k_point_mode', 'kpt_mode'):
                 kpt_mode = value
+            elif key in ('displacement_amplitude_mode', 'disp_amp_mode'):
+                disp_amp_mode = value
 
     if force_files:
         process = False
@@ -391,6 +406,9 @@ def main(force_files, option_file, process,
         print('\n#########################################')
         print('\tChecking pre-arguments...')
         print('#########################################')
+
+        print('\nPython version {0}'.format(sys.version.split()[0]))
+        print('InterPhon version {0}'.format(InterPhon.__version__))
 
         user_args = {'dft_code': dft,
                      'displacement': displacement,
@@ -415,6 +433,9 @@ def main(force_files, option_file, process,
         print('\n#########################################')
         print('\tChecking post-arguments...')
         print('#########################################')
+
+        print('\nPython version {0}'.format(sys.version.split()[0]))
+        print('InterPhon version {0}'.format(InterPhon.__version__))
 
         with open('pre_process.yaml') as yaml_file:
             pre_record = yaml.load(yaml_file, Loader=yaml.FullLoader)
@@ -593,7 +614,7 @@ def main(force_files, option_file, process,
             if elimit is None:
                 band_args['elimit'] = None
             elif dos_args.get('elimit') is not None:
-                band_args['elimit'] = dos_args['elimit']
+                band_args['elimit'] = [value for value in dos_args['elimit']]
             else:
                 _elimit = elimit.strip().split()
                 elimit = [int(value) for value in _elimit]
@@ -612,6 +633,8 @@ def main(force_files, option_file, process,
                 mode_args['k_point'] = k_point
             else:
                 raise Exception('The length of "k_point" should be 3.')
+            mode_args['write_disp'] = disp_mode
+            mode_args['displacement_amplitude'] = disp_amp_mode
         print('Mode Arguments:\n', mode_args)
 
     # start process
@@ -873,6 +896,10 @@ def main(force_files, option_file, process,
                 post_band.mode.plot(out_folder=working_dir,
                                     unit_cell=files.get('unit_cell_file'),
                                     code_name=user_args.get('dft_code'))
+                if mode_args['write_disp']:
+                    print('Commensurate supercell files with displacement along normal mode are written... ---> MPOSCAR-[mode_index]')
+                    post_band.mode.write_mode_displace(amplitude=mode_args['displacement_amplitude'],
+                                                       code_name=user_args.get('dft_code'))
 
         # Record this post-process
         _post_files = []
@@ -915,7 +942,7 @@ def main(force_files, option_file, process,
                                         {'dos_arguments': _dos_args},
                                         {'thermal_arguments': _thermal_args},
                                         {'band_arguments': _band_args},
-                                        {'mode_arguments': mode_args}]
+                                        {'mode_arguments': _mode_args}]
 
         with open('post_process.yaml', 'w') as outfile:
             yaml.dump(serialized_yaml_post_process, outfile)

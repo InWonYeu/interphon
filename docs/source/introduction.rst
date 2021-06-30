@@ -2,11 +2,12 @@
 Introduction
 ============
 
-**InterPhon** allows efficient extraction of interfacial phonons at arbitrary reciprocal points in 1D or 2D
-Brillouin zone, by automatically processing the information obtained by 3D-based DFT codes.
+**InterPhon** allows the efficient extraction of interfacial phonons at arbitrary wave vectors in 1D or 2D
+reciprocal space, the corresponding real space being a 1D or in-plane 2D periodic system,
+by automatically processing the information obtained by 3D-based DFT codes.
 
-The only requirements for package execution are a :ref:`label_dft_structure_file` representing the structure of interest
-and the corresponding :ref:`label_dft_force_file` providing the forces acting on each atom.
+The only requirements for the program execution are a :ref:`label_dft_structure_file` representing the atomic structure
+of interest and the corresponding :ref:`label_dft_force_file` providing the forces acting on each atom.
 
 Overview
 ********
@@ -14,15 +15,16 @@ Overview
 The computational cost of *ab initio* phonon calculations is proportional to the number of atoms per unit cell.
 In conventional *ab initio* interface calculations, however, a large number of atoms and a low degree of symmetry are
 intrinsically inevitable to represent interfacial region in a 3D periodic cell. As a result,
-the ability to apply *ab initio* phonon calculations to interfaces has been limited
-by excessive computational cost imposed by their large number of atoms and broken symmetry.
+the ability to apply *ab initio* phonon calculations to interfaces has been limited by excessive computational cost.
 
 Among all of these atoms, however,
 the bonding environment of most of the atoms located far from the interface is similar to
 that of the bulk atoms, presenting the same vibrations as the ideal bulk.
 Deviation of vibrations from bulk occurs only on the atoms in the vicinity of the interface.
-Therefore, to alleviate the excessive computational cost,
-**InterPhon** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface.
+Therefore, using atomic forces obtained from a 3D periodic DFT framework,
+**InterPhon** evaluates the distinct interfacial phonons by allowing users
+to define an interfacial region that is smaller than the full simulation box,
+such that the phonons are calculated only for the atoms in the interface region.
 
 Strategy
 ********
@@ -39,14 +41,14 @@ generates the dynamical matrix of a subset of the constituent atoms in a unit ce
 Architecture
 ************
 
-The **InterPhon** package comprises following five sub-packages:
+The **InterPhon** package consists of following five sub-packages:
 
-- ``error`` sub-package consists of error modules defined by developer to guide users.
+- ``error`` sub-package includes error modules defined by developer to guide users.
 
-- ``inout`` sub-package consists of parser modules to read and write files in different DFT formats.
+- ``inout`` sub-package includes inout parser modules to read and write files in different DFT formats.
 
-- ``core`` sub-package consists of core modules responsible for the central processes.
+- ``core`` sub-package includes core modules responsible for the central processes.
 
-- ``util`` sub-package consists of util modules to extend the functionality.
+- ``util`` sub-package includes util modules to extend the functionality.
 
-- ``analysis`` sub-package consists of analysis modules to characterize phonons.
+- ``analysis`` sub-package includes analysis modules to characterize phonon properties.
