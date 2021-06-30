@@ -29,7 +29,7 @@ such that the phonons are calculated only for the atoms in the interface region.
 Strategy
 ********
 
-Phonon evaluation of **InterPhon** is based on direct approach using the finite displacement method (FDM).
+**InterPhon** operation is based on direct approach using the finite displacement method (FDM).
 
 In contrast to conventional phonon codes for 3D bulk systems such as Phonopy_ and PHON_, which generate the dynamical matrix of
 all constituent atoms in a unit cell by requiring the ‘complete FDM’, **InterPhon**, which requires ‘selective FDM’,
@@ -45,7 +45,7 @@ The **InterPhon** package consists of following five sub-packages:
 
 - ``error`` sub-package includes error modules defined by developer to guide users.
 
-- ``inout`` sub-package includes inout parser modules to read and write files in different DFT formats.
+- ``inout`` sub-package includes inout modules to read and write files in different DFT formats.
 
 - ``core`` sub-package includes core modules responsible for the central processes.
 
