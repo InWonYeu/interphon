@@ -90,6 +90,9 @@ class PreArgument(object):
         """
         Initialize the instance variables.
 
+        usage:
+        " >>> instance_of_PreArgument.initialization()"
+
         :return: (None)
         """
         self.__displacement = None

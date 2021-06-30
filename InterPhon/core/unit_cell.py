@@ -223,6 +223,9 @@ class UnitCell(object):
         """
         Initialize the instance variables.
 
+        usage:
+        " >>> instance_of_UnitCell.initialization()"
+
         :return: (None)
         """
         self.__lattice_matrix = None
