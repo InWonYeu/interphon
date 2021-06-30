@@ -7,11 +7,11 @@ from .super_cell import SuperCell
 
 class PostArgument(PreArgument):
     """
-    Post argument class to construct argument object during post-process.
+    Post argument class to construct an argument object during post-process.
     This child class is inherited from the PreArgument parent class.
-    The information about user arguments is stored in instance variables which are determined by
-    inherited 'set_user_argument' method.
-    The validity of arguments is checked by the inherited 'check_user_argument' and the 'check_match_argument' method.
+    The information about user arguments is stored in the instance variables of this class.
+    The instance variables are set by the inherited 'set_user_argument' method,
+    and their validity is checked by the inherited 'check_user_argument' method and the 'check_match_argument' method.
     """
     def __init__(self, displacement: float = None,
                  enlargement: np.ndarray = None,
@@ -20,7 +20,7 @@ class PostArgument(PreArgument):
         Constructor of PostArgument class.
 
         :param displacement: (float) Displacement length (unit: Angst).
-        :param enlargement: (np.ndarray[int]) Extension ratio along each a, b, c lattice.
+        :param enlargement: (np.ndarray[int]) Extension ratio along each a, b, c lattice direction.
         :param periodicity: (np.ndarray[bool]) Periodic (True) or not (False) along each a, b, c direction.
         """
         super(PostArgument, self).__init__(displacement,
@@ -29,8 +29,8 @@ class PostArgument(PreArgument):
 
     def check_match_argument(self, unit_cell: UnitCell, super_cell: SuperCell) -> None:
         """
-        Method of PostArgument class.
-        Check the consistency of arguments between pre- and post-processes.
+        Instance method of PostArgument class.
+        Check the consistency of user arguments between pre- and post-processes.
 
         usage:
         " >>> instance_of_PostArgument.check_match_argument(unit_cell=self.unit_cell, super_cell=self.super_cell)"

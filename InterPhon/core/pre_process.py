@@ -11,10 +11,13 @@ from .pre_check import PreArgument
 class PreProcess(object):
     """
     Pre process class to control pre-process.
-    The information required in pre-process is stored in instance variables which are determined by
-    'set_user_arg', 'set_unit_cell', and 'set_super_cell' methods.
+    After pre-process is successfully done, the files of displaced supercells and a pre-process record file (pre_process.yaml) will be generated.
+    The information required in pre-process is stored in the instance variables of this class.
+    The instance variables are set by the 'set_user_arg', 'set_unit_cell', and 'set_super_cell' methods.
     """
-    def __init__(self, user_arg=PreArgument(), unit_cell=UnitCell(), super_cell=SuperCell()):
+    def __init__(self, user_arg=PreArgument(),
+                 unit_cell=UnitCell(),
+                 super_cell=SuperCell()):
         """
         Constructor of PreProcess class.
 
@@ -65,13 +68,13 @@ class PreProcess(object):
 
     def set_user_arg(self, dict_args: Dict) -> None:
         """
-        Method of PreProcess class.
-        Process to set the PreArgument instance from the information given by user.
+        Instance method of PreProcess class.
+        Set a PreArgument instance from the information given by user.
 
         usage:
-        " >>> instance_of_PreProcess.set_user_argument(list_args=arguments)"
+        " >>> instance_of_PreProcess.set_user_argument(dict_args=arguments)"
 
-        :param dict_args: (Dict) Arguments given by user.
+        :param dict_args: (Dict) Argument dictionary given by user.
         :return: (None)
         """
         self.user_arg.set_user_argument(dict_args)
@@ -79,14 +82,14 @@ class PreProcess(object):
 
     def set_unit_cell(self, in_file: FilePath, code_name: str = 'vasp') -> None:
         """
-        Method of PreProcess class.
-        Process to set the variables of UnitCell instance by reading input file of DFT programs.
+        Instance method of PreProcess class.
+        Set a UnitCell instance by reading input file of DFT programs.
 
         usage:
-        " >>> instance_of_PreProcess.set_unit_cell(in_file='./POSCAR')"
+        " >>> instance_of_PreProcess.set_unit_cell(in_file='./POSCAR', code_name='vasp')"
 
-        :param in_file: (str) Path of the input file.
-        :param code_name: (str) Specification of the file-format.
+        :param in_file: (str) Path of DFT input file to read.
+        :param code_name: (str) Indicate a DFT program corresponding to the input file.
         :return: (None)
         """
         self.unit_cell.read_unit_cell(in_file, code_name=code_name)
@@ -94,17 +97,16 @@ class PreProcess(object):
     def set_super_cell(self, out_file: FilePath, comment: str = 'Supercell',
                        write_file: bool = True, code_name: str = 'vasp') -> File:
         """
-        Method of PreProcess class.
-        Process to set the variables of SuperCell instance from the information of UnitCell and UserArgument instances.
+        Instance method of PreProcess class.
+        Set a SuperCell instance from the information stored in its UnitCell and UserArgument instances.
 
         usage:
-        " >>> instance_of_PreProcess.set_super_cell(out_file='./SPOSCAR', comment='Supercell', write_file=True)"
+        " >>> instance_of_PreProcess.set_super_cell(out_file='./SPOSCAR', comment='Supercell', write_file=True, code_name='vasp')"
 
-        :param out_file: (str) Name of DFT input file.
-        :param comment: (str) Comment of DFT input file.
-        :param write_file: (bool) Write (True) the DFT input file from the information of SuperCell instance
-        or not (False)
-        :param code_name: (str) Specification of the file-format.
+        :param out_file: (str) Name of DFT input file to write.
+        :param comment: (str) Comment to be written in the DFT input file.
+        :param write_file: (bool) Write (True) or not (False) the DFT input file from the information stored in its SuperCell instance.
+        :param code_name: (str) Specification of the file-format by a DFT program.
         :return: (File)
         """
         self.super_cell.set_super_cell(self.unit_cell, self.user_arg)
@@ -114,15 +116,15 @@ class PreProcess(object):
 
     def write_displace_cell(self, out_file: FilePath, code_name: str = 'vasp', sym_flag: bool = True) -> File:
         """
-        Method of PreProcess class.
-        Process to write the displaced SuperCell instance into DFT input file format.
+        Instance method of PreProcess class.
+        Write displaced supercell files in a format of DFT input file.
 
         usage:
-        " >>> instance_of_PreProcess.write_displace_cell(out_file='./DPOSCAR')"
+        " >>> instance_of_PreProcess.write_displace_cell(out_file='./SPOSCAR', code_name='vasp')"
 
-        :param out_file: (str) Name of DFT input file.
-        :param code_name: (str) Specification of the file-format.
-        :param sym_flag: (str) Specify whether to use symmetry operation.
+        :param out_file: (str) Name of DFT input file to write.
+        :param code_name: (str) Specification of the file-format by a DFT program.
+        :param sym_flag: (bool) Specify whether to use symmetry operation.
         :return: (File)
         """
         _dis_super_cell = self.super_cell
