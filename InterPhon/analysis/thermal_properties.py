@@ -1,9 +1,23 @@
 import numpy as np
 from InterPhon import error
+from InterPhon.util import MatrixLike
 
 
 class ThermalProperty(object):
-    def __init__(self, process, temp=range(0, 1000, 10)):
+    """
+    ThermalProperty class to analyze the thermal properties determined by phonon dispersion.
+    Its instance variables contain an instance of PostProcess class storing the information on eigen-frequency and eigen-mode.
+    The given information is further refined to predict vibrational entropy and free energy.
+    The thermal properties are written to external data and graphic files using the 'write' and 'plot' methods, respectively.
+    """
+    def __init__(self, process,
+                 temp: MatrixLike = range(0, 1000, 10)):
+        """
+        Constructor of ThermalProperty class.
+
+        :param process: (instance) of PostProcess class.
+        :param temp: (MatrixLike) Temperatures to be studied.
+        """
         self.process = process
         self.temp = np.array(temp)
         self.free_energy = np.zeros(self.temp.shape)
@@ -11,6 +25,15 @@ class ThermalProperty(object):
         # self.heat_capacity = np.zeros(self.temp.shape)
 
     def set(self):
+        """
+        Instance method of ThermalProperty class.
+        Set the vibrational entropy and free energy in the range of temperatures.
+
+        usage:
+        " >>> instance_of_ThermalProperty.set()"
+
+        :return: (None)
+        """
         kb = 1.38 * 10 ** (-23) / (1.602 * 10 ** (-19))
         h = 6.626 * 10 ** (-34) / (1.602 * 10 ** (-19))
 
@@ -82,6 +105,16 @@ class ThermalProperty(object):
                 print("\nCaution: ", error.Thermal_Imaginary_Frequency())
 
     def write(self, out_folder='.'):
+        """
+        Instance method of ThermalProperty class.
+        Write thermal properties in the file name of thermal_properties.dat.
+
+        usage:
+        " >>> instance_of_ThermalProperty.write(out_folder='.')"
+
+        :param out_folder: (str) Folder path for total_dos.dat and projected_dos.dat to be stored.
+        :return: (File)
+        """
         with open(out_folder + '/thermal_properties.dat', 'w') as outfile:
             comment = "Thermal Properties / atom"
             outfile.write("%s" % comment + '\n')
@@ -95,6 +128,16 @@ class ThermalProperty(object):
                 outfile.write("%s" % line + '\n')
 
     def plot(self, legend_location='best'):
+        """
+        Instance method of ThermalProperty class.
+        Plot thermal properties in the file name of thermal_properties.png.
+
+        usage:
+        " >>> instance_of_ThermalProperty.plot()"
+
+        :param legend_location: (str) Location of DOS legend.
+        :return: (File)
+        """
         from matplotlib import pyplot as plt
 
         # plt.rcParams["font.family"] = "Arial"

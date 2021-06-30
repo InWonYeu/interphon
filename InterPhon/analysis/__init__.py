@@ -1,12 +1,12 @@
 """
-InterPhon analysis implementations.
+InterPhon analysis sub-package.
 
-This sub-package includes following four modules:
+This sub-package consists of following four modules:
 
-dos.py
-band.py
-mode.py
-thermal_properties.py
+dos.py -> dos class to analyze density of states.
+band.py -> band to analyze dispersion relation.
+mode.py -> mode class to analyze vibrational motions.
+thermal_properties.py -> thermal property class to analyze thermodynamic properties such as vibrational entropy.
 """
 
 from .dos import DOS

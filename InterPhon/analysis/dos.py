@@ -3,7 +3,22 @@ from InterPhon.util import tetrahedron_1d, tetrahedron_2d, tetrahedron_3d
 
 
 class DOS(object):
-    def __init__(self, process, sigma: float = 0.1, num_dos: int = 200):
+    """
+    DOS class to analyze the phonon dispersion.
+    Its instance variables contain an instance of PostProcess class storing the information on eigen-frequency and eigen-mode.
+    The given information is further refined to make density of states n(w) by sampling the k-point grids.
+    The dispersion is written to external data and graphic files using the 'write' and 'plot' methods, respectively.
+    """
+    def __init__(self, process,
+                 sigma: float = 0.1,
+                 num_dos: int = 200):
+        """
+        Constructor of DOS class.
+
+        :param process: (instance) of PostProcess class.
+        :param sigma: (float) Sigma of gaussian smearing (if 0.0: tetrahedron method is used instead).
+        :param num_dos: (int) The number of DOS points.
+        """
         self.process = process
         self.sigma = sigma
         self.num_dos = num_dos
@@ -29,6 +44,15 @@ class DOS(object):
         return self._tdos
 
     def set(self):
+        """
+        Instance method of DOS class.
+        Set the frequency points and corresponding density of states, n(w).
+
+        usage:
+        " >>> instance_of_DOS.set()"
+
+        :return: (None)
+        """
         if self.sigma == 0.0:
             # Linear Tetrahedron Method for Brillouin zone integration
             _ind_pbc = self.process.user_arg.periodicity.nonzero()[0]
@@ -80,6 +104,16 @@ class DOS(object):
             self._tdos = self._pdos.sum(axis=0)
 
     def write(self, out_folder='.'):
+        """
+        Instance method of DOS class.
+        Write total and projected DOSs in the file name of total_dos.dat and projected_dos.dat, respectively.
+
+        usage:
+        " >>> instance_of_DOS.write(out_folder='.')"
+
+        :param out_folder: (str) Folder path for total_dos.dat and projected_dos.dat to be stored.
+        :return: (File)
+        """
         with open(out_folder + '/total_dos.dat', 'w') as outfile:
             if self.sigma == 0.0:
                 comment = "Total phonon DOS by Linear Tetrahedron Method"
@@ -131,6 +165,28 @@ class DOS(object):
              bulk_option='fill',
              bulk_legend=None,
              proportion=1):
+        """
+        Instance method of DOS class.
+        Plot DOSs in the file name of dos.png.
+
+        usage:
+        " >>> instance_of_DOS.plot()"
+
+        :param plot_total: (bool) Plot total DOS (True) or not (False)
+        :param atoms: (List[int]) The Index of atoms to be projected in DOS plot.
+        :param elimit: (List[int]) Energy (unit: THz) limitation of DOS plot.
+        :param color: (str) The color of total DOS line.
+        :param option: (str) Option for DOS projection plot.
+        :param orientation: (str) Orientation of DOS plot.
+        :param label_position: (str) Y-axis label position (whether left or right) in vertical DOS plot.
+        :param legends: (List[str]) Legends for the projected DOS lines.
+        :param legend_location: (str) Location of DOS legend.
+        :param bulk_dos: (np.ndarray[float]) '(total number of frequency, 2) size' matrix for bulk phonon DOS.
+        :param bulk_option: (str) Option for bulk DOS plot.
+        :param bulk_legend: (str) Legends for the bulk DOS line.
+        :param proportion: (int) Constant to be multiplied to bulk DOS.
+        :return: (File)
+        """
 
         from matplotlib import pyplot as plt
 
