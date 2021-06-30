@@ -200,7 +200,7 @@ Density of state (DOS) option tags
 ---------------------------------------
 ::
 
-    help = Legends for the projected atoms
+    help = Legends for the projected DOS lines
     value type = str
 
     usage:
