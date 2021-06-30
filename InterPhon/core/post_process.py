@@ -13,27 +13,33 @@ class PostProcess(PreProcess):
     """
     Post process class to control post-process.
     This child class is inherited from the PreProcess parent class.
-    The information required in post-process is stored in instance variables which are determined by
-    'set_user_arg', 'set_reciprocal_lattice', 'set_force_constant', and 'set_k_points' methods.
-    From the variables, eigenfrequency and eigenmode are calculated using 'eval_phonon' method,
-    which are further analyzed 'write_dos', 'write_band', 'write_mode', and 'write_thermal_properties' methods.
+    The information required in post-process is stored in the instance variables of this class.
+    The instance variables are set by the 'set_user_arg', 'set_reciprocal_lattice', 'set_force_constant', and 'set_k_points' methods.
+    From the instance variables, eigen-frequency and eigen-mode are calculated using the 'eval_phonon' method,
+    which will be further analyzed by employing the modules in analysis sub-package.
     """
     num_figure = 0
 
-    def __init__(self, in_file_unit_cell: FilePath, in_file_super_cell: FilePath, code_name: str = 'vasp',
-                 user_arg=PostArgument(), unit_cell=UnitCell(), super_cell=SuperCell()):
+    def __init__(self, in_file_unit_cell: FilePath,
+                 in_file_super_cell: FilePath,
+                 code_name: str = 'vasp',
+                 user_arg=PostArgument(),
+                 unit_cell=UnitCell(),
+                 super_cell=SuperCell()):
         """
         Constructor of PostProcess class.
 
         :param in_file_unit_cell: (str) Path of unit cell input file.
         :param in_file_super_cell: (str) Path of super cell input file.
-        :param code_name: (str) Specification of the file-format.
-        :param user_arg: (instance) of PreArgument class.
+        :param code_name: (str) Specification of the file-format by a DFT program.
+        :param user_arg: (instance) of PostArgument class.
         :param unit_cell: (instance) of UnitCell class.
         :param super_cell: (instance) of SuperCell class.
         """
+        super(PostProcess, self).__init__(user_arg,
+                                          unit_cell,
+                                          super_cell)
 
-        super(PostProcess, self).__init__(user_arg, unit_cell, super_cell)
         self.unit_cell.read_unit_cell(in_file_unit_cell, code_name=code_name)
         self.unit_cell.set_mass_true()
         self.super_cell.read_unit_cell(in_file_super_cell, code_name=code_name)
@@ -54,13 +60,13 @@ class PostProcess(PreProcess):
 
     def set_user_arg(self, dict_args: Dict) -> None:
         """
-        Method of PostProcess class.
-        Process to set the PostArgument instance from the information given by user.
+        Instance method of PostProcess class.
+        Set a PostArgument instance from the information given by user.
 
         usage:
-        " >>> instance_of_PostProcess.set_user_argument(list_args=arguments)"
+        " >>> instance_of_PostProcess.set_user_argument(dict_args=arguments)"
 
-        :param dict_args: (Dict) Arguments given by user.
+        :param dict_args: (Dict) Argument dictionary given by user.
         :return: (None)
         """
         super(PostProcess, self).set_user_arg(dict_args)
@@ -69,8 +75,8 @@ class PostProcess(PreProcess):
 
     def set_reciprocal_lattice(self) -> None:
         """
-        Method of PostProcess class.
-        Process to set the instance variable (self.reciprocal_matrix).
+        Instance method of PostProcess class.
+        Set the instance variable (self.reciprocal_matrix).
 
         usage:
         " >>> instance_of_PostProcess.set_reciprocal_lattice()"
@@ -86,15 +92,15 @@ class PostProcess(PreProcess):
 
     def set_force_constant(self, force_files: FilePath, code_name: str = 'vasp', sym_flag: bool = True) -> None:
         """
-        Method of PostProcess class.
-        Process to set the instance variable (self.force_constant).
+        Instance method of PostProcess class.
+        Set the instance variable (self.force_constant).
 
         usage:
-        " >>> instance_of_PostProcess.set_force_constant(force_files='./DFT/FORCE-*/vasprun.xml')"
+        " >>> instance_of_PostProcess.set_force_constant(force_files='./FORCE-*/vasprun.xml', code_name='vasp')"
 
         :param force_files: (str) Path of DFT output files which contain atomic forces.
-        :param code_name: (str) Specification of the file-format.
-        :param sym_flag: (str) Specify whether to use symmetry operation.
+        :param code_name: (str) Specification of the file-format by a DFT program.
+        :param sym_flag: (bool) Specify whether to use symmetry operation.
         :return: (None)
         """
         if code_name == 'vasp':
@@ -336,16 +342,16 @@ class PostProcess(PreProcess):
 
     def set_k_points(self, k_file: FilePath) -> None:
         """
-        Method of PostProcess class.
-        Process to set the instance variable (self.k_points) for the k-points by reading KPOINTS file in VASP format.
-        The following three grid samplings are supported:
+        Instance method of PostProcess class.
+        Set the instance variable (self.k_points) by reading KPOINTS file given in VASP format.
+        The following four samplings of the wave vector k are available:
         1) Gamma-centered
         2) Monkhorst-Pack
-        3) Line generation (for band plot)
+        3) Line-path generation (for band plot)
+        4) Explicit designation.
 
         For more details, see the following reference:
-        Ref 1) The Basics of Electronic Structure Theory for Periodic Systems,
-        Frontiers in chemistry 7, 1 (2019).
+        Ref 1) The Basics of Electronic Structure Theory for Periodic Systems, Frontiers in chemistry 7, 1 (2019).
 
         usage:
         " >>> instance_of_PostProcess.set_k_points(k_file='./KPOINTS')"
@@ -375,7 +381,7 @@ class PostProcess(PreProcess):
             self.k_points, self.auto_k_points = k_points.monkhorst_pack(lines, _ind_pbc)
 
         elif lines[2].split()[0][0] in ('L', 'l'):
-            # Line-Path of k-points
+            # Line-path of k-points
             self.k_points = k_points.line_path(lines, _ind_pbc)
 
         elif lines[2].split()[0][0] in ('R', 'r'):
@@ -384,8 +390,8 @@ class PostProcess(PreProcess):
 
     def eval_phonon(self) -> None:
         """
-        Method of PostProcess class.
-        Process to set the instance variables, eigenfrequency (self.w_q) and corresponding eigenmode (self.v_q).
+        Instance method of PostProcess class.
+        Set the instance variables, eigen-frequency (self.w_q) and corresponding eigen-mode (self.v_q).
 
         usage:
         " >>> instance_of_PostProcess.eval_phonon()"

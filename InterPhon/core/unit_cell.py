@@ -47,10 +47,10 @@ def to_int_list(data):
 
 class UnitCell(object):
     """
-    Unit cell class to construct unit cell object in a unified single format.
-    The object interacts with input files of different DFT programs through the modules in inout sub-package.
+    Unit cell class to construct an unit cell object in a standardized format.
+    The information about atomic structure of interest is stored in the instance variables of this class.
+    This class interacts with input files of different DFT programs by employing the modules in inout sub-package.
     """
-
     def __init__(self, lattice_matrix: np.ndarray = None,
                  atom_type: AtomType = None,
                  num_atom: np.ndarray = None,
@@ -63,16 +63,15 @@ class UnitCell(object):
         """
         Constructor of UnitCell class.
 
-        :param lattice_matrix: (np.ndarray[float]) '(3, 3) size' matrix for the lattice of unit cell.
+        :param lattice_matrix: (np.ndarray[float]) '(3, 3) size' matrix for the lattice vectors of unit cell.
         :param atom_type: (AtomType) List of atom type in unit cell.
         :param num_atom: (np.ndarray[int]) Matrix of the number of atoms of each atom type.
         :param selective: (bool) Selective dynamics (True) or not (False)
         :param coordinate: (str) 'direct' or 'cartesian' coordinate.
-        :param atom_cart: (np.ndarray[float]) '(total number of atoms, 3) size'
-                                        matrix for atom positions in cartesian coordinate.
+        :param atom_cart: (np.ndarray[float]) '(total number of atoms, 3) size' matrix for atom positions in cartesian coordinate.
         :param atom_true: (SelectIndex) Index of selected atoms which are allowed to move.
-        :param xyz_true: (SelectIndex) Index of the atoms which are allowed to move for each x,y,z direction.
-        :param mass_true: (np.ndarray[float]) '(3 * number of selected atoms, ) size' matrix for mass.
+        :param xyz_true: (SelectIndex) Index of the atoms which are allowed to move for each x, y, z cartesian direction.
+        :param mass_true: (np.ndarray[float]) '(3 * number of selected atoms, ) size' matrix for mass of selected atoms.
         """
         self.__lattice_matrix = lattice_matrix
         self.__atom_type = atom_type
@@ -221,6 +220,14 @@ class UnitCell(object):
                                  "(3 * number of selected atoms, )")
 
     def initialization(self):
+        """
+        Initialize the instance variables.
+
+        usage:
+        " >>> instance_of_UnitCell.initialization()"
+
+        :return: (None)
+        """
         self.__lattice_matrix = None
         self.__atom_type = None
         self.__num_atom = None
@@ -233,14 +240,14 @@ class UnitCell(object):
 
     def read_unit_cell(self, in_file: FilePath, code_name: str = 'vasp') -> None:
         """
-        Method of UnitCell class.
+        Instance method of UnitCell class.
         Set the variables of UnitCell instance by reading input file of DFT programs.
 
         usage:
-        " >>> instance_of_UnitCell.read_unit_cell(in_file='./POSCAR')"
+        " >>> instance_of_UnitCell.read_unit_cell(in_file='./POSCAR', code_name='vasp')"
 
         :param in_file: (str) Path of DFT input file to read.
-        :param code_name: (str) Specification of the file-format.
+        :param code_name: (str) Indicate a DFT program corresponding to the input file.
         :return: (None)
         """
         self.initialization()
@@ -276,15 +283,15 @@ class UnitCell(object):
 
     def write_unit_cell(self, out_file: FilePath, comment: str = 'Unknown', code_name: str = 'vasp') -> File:
         """
-        Method of UnitCell class.
-        Write the input file of DFT programs from the information of UnitCell instance.
+        Instance method of UnitCell class.
+        Write the input file of DFT programs from the information stored in an UnitCell instance.
 
         usage:
-        " >>> instance_of_UnitCell.write_unit_cell(out_file='./POSCAR', comment='unknown system')"
+        " >>> instance_of_UnitCell.write_unit_cell(out_file='./POSCAR', comment='unknown system', code_name='vasp')"
 
         :param out_file: (str) Name of DFT input file to write.
-        :param comment: (str) Comment of DFT input file.
-        :param code_name: (str) Specification of the file-format.
+        :param comment: (str) Comment to be written in the DFT input file.
+        :param code_name: (str) Specification of the file-format by a DFT program.
         :return: (File)
         """
         if code_name == 'vasp':
@@ -304,8 +311,9 @@ class UnitCell(object):
 
     def set_mass_true(self) -> None:
         """
-        Method of UnitCell class.
-        Set the instance variable (self.mass_true) for selected atoms which are allowed to move in UnitCell instance.
+        Instance method of UnitCell class.
+        Set the instance variable (self.mass_true) for selected atoms which are allowed to move
+        by employing the get_atomic_weight fuction in util sub-package.
 
         usage:
         " >>> instance_of_UnitCell.set_mass_true()"

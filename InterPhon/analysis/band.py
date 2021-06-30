@@ -2,7 +2,18 @@ import numpy as np
 
 
 class Band(object):
+    """
+    Band class to analyze the phonon dispersion.
+    Its instance variables contain an instance of PostProcess class storing the information on eigen-frequency and eigen-mode.
+    The given information is further refined to make a dispersion relation w(k) along the k-point path connecting the high-symmetry points.
+    The dispersion is written to external data and graphic files using the 'write' and 'plot' (or 'plot_with_dos') methods, respectively.
+    """
     def __init__(self, process):
+        """
+        Constructor of Band class.
+
+        :param process: (instance) of PostProcess class.
+        """
         self.process = process
         self.k_points_length = np.zeros(len(self.process.k_points))
         self.projected_w = np.empty((len(self.process.k_points),
@@ -11,6 +22,15 @@ class Band(object):
         self.ind_high_sym = [0]
 
     def set(self):
+        """
+        Instance method of Band class.
+        Set the k-point path connecting the high-symmetry points and corresponding eigen-frequency, w(k).
+
+        usage:
+        " >>> instance_of_Band.set()"
+
+        :return: (None)
+        """
         for ind, kpt in enumerate(self.process.k_points[1:], 1):
             self.k_points_length[ind] = self.k_points_length[ind - 1] \
                                         + np.sqrt(np.dot(self.process.k_points[ind] - self.process.k_points[ind - 1],
@@ -27,6 +47,16 @@ class Band(object):
                         1 * (abs(self.process.v_q[ind_kpt, ind_freq, ind_mode]) ** 2)
 
     def write(self, out_folder='.'):
+        """
+        Instance method of Band class.
+        Write phonon Band in the file name of band.dat.
+
+        usage:
+        " >>> instance_of_Band.write(out_folder='.')"
+
+        :param out_folder: (str) Folder path for band.dat to be stored.
+        :return: (File)
+        """
         with open(out_folder + '/band.dat', 'w') as outfile:
             comment = "Phonon Band"
             outfile.write("%s" % comment + '\n')
@@ -49,6 +79,23 @@ class Band(object):
              cmap='jet',
              colorbar_label=None,
              colorbar_location='right'):
+        """
+        Instance method of Band class.
+        Plot phonon Band in the file name of band.png.
+
+        usage:
+        " >>> instance_of_Band.plot()"
+
+        :param k_labels: (List[str]) The label of high-symmetry k-points.
+        :param atoms: (List[int]) The Index of atoms to be projected in Band plot.
+        :param elimit: (List[int]) Energy (unit: THz) limitation of Band plot.
+        :param color: (str) The color of Band line.
+        :param option: (str) Option for Band projection plot.
+        :param cmap: (str) Colormaps accessible via matplotlib.
+        :param colorbar_label: (str) The label of colorbar for projection plot.
+        :param colorbar_location: (str) Location of colorbar.
+        :return: (File)
+        """
 
         from matplotlib import pyplot as plt
 
@@ -213,6 +260,32 @@ class Band(object):
                       bulk_option='fill',
                       bulk_legend=None,
                       proportion=1):
+        """
+        Instance method of Band class.
+        Plot phonon Band with associated DOS in the file name of band_dos.png.
+
+        usage:
+        " >>> instance_of_Band.plot_with_dos()"
+
+        :param k_labels: (List[str]) The label of high-symmetry k-points.
+        :param band_atoms: (List[int]) The Index of atoms to be projected in Band plot.
+        :param elimit: (List[int]) Energy (unit: THz) limitation of Band plot.
+        :param band_color: (str) The color of Band line.
+        :param band_option: (str) Option for Band projection plot.
+        :param cmap: (str) Colormaps accessible via matplotlib.
+        :param colorbar_label: (str) The label of colorbar for projection plot.
+        :param dos_object: (instance) of DOS class.
+        :param dos_atoms: (List[int]) The Index of atoms to be projected in DOS plot.
+        :param dos_color: (str) The color of total DOS line.
+        :param dos_option: (str) Option for DOS projection plot.
+        :param dos_legends: (List[str]) Legends for the projected DOS lines.
+        :param legend_location: (str) Location of DOS legend.
+        :param bulk_dos: (np.ndarray[float]) '(total number of frequency, 2) size' matrix for bulk phonon DOS.
+        :param bulk_option: (str) Option for bulk DOS plot.
+        :param bulk_legend: (str) Legends for the bulk DOS line.
+        :param proportion: (int) Constant to be multiplied to bulk DOS.
+        :return: (File)
+        """
 
         from matplotlib import pyplot as plt
 

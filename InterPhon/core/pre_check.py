@@ -18,9 +18,10 @@ def to_int_numpy(data):
 
 class PreArgument(object):
     """
-    Pre argument class to construct argument object during pre-process.
-    The information about user arguments is stored in instance variables which are determined by
-    'set_user_argument' method and validity is checked by 'check_user_argument' method.
+    Pre argument class to construct an argument object during pre-process.
+    The information about user arguments is stored in the instance variables of this class.
+    The instance variables are set by the 'set_user_argument' method,
+    and their validity is checked by the 'check_user_argument' method.
     """
     def __init__(self, displacement: float = None,
                  enlargement: np.ndarray = None,
@@ -29,7 +30,7 @@ class PreArgument(object):
         Constructor of PreArgument class.
 
         :param displacement: (float) Displacement length (unit: Angst).
-        :param enlargement: (np.ndarray[int]) Extension ratio along each a, b, c lattice.
+        :param enlargement: (np.ndarray[int]) Extension ratio along each a, b, c lattice direction.
         :param periodicity: (np.ndarray[bool]) Periodic (True) or not (False) along each a, b, c direction.
         """
         self.__displacement = displacement
@@ -86,19 +87,27 @@ class PreArgument(object):
             self.__periodicity = _periodicity
 
     def initialization(self):
+        """
+        Initialize the instance variables.
+
+        usage:
+        " >>> instance_of_PreArgument.initialization()"
+
+        :return: (None)
+        """
         self.__displacement = None
         self.__enlargement = None
         self.__periodicity = None
 
     def set_user_argument(self, dict_args: Dict) -> None:
         """
-        Method of PreArgument class.
+        Instance method of PreArgument class.
         Set the variables of PreArgument instance from the information given by user.
 
         usage:
-        " >>> instance_of_PreArgument.set_user_argument(list_args=arguments)"
+        " >>> instance_of_PreArgument.set_user_argument(dict_args=arguments)"
 
-        :param dict_args: (Dict) Arguments given by user.
+        :param dict_args: (Dict) Argument dictionary given by user.
         :return: (None)
         """
         self.initialization()
@@ -112,7 +121,7 @@ class PreArgument(object):
 
     def check_user_argument(self) -> None:
         """
-        Method of PreArgument class.
+        Instance method of PreArgument class.
         Check the validity of instance variable.
 
         usage:

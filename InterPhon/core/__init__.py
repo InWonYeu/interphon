@@ -1,7 +1,7 @@
 """
-InterPhon source code implementations.
+InterPhon core sub-package.
 
-This sub-package includes following six modules:
+This sub-package consists of following six modules:
 
 unit_cell.py -> unit cell class.
 super_cell.py -> super cell class.
@@ -18,4 +18,5 @@ from .post_check import PostArgument
 from .pre_process import PreProcess
 from .post_process import PostProcess
 
-__all__ = ["UnitCell", "SuperCell", "PreArgument", "PostArgument", "PreProcess", "PostProcess"]
+__all__ = ["unit_cell", "super_cell", "pre_check", "post_check", "pre_process", "post_process",
+           "UnitCell", "SuperCell", "PreArgument", "PostArgument", "PreProcess", "PostProcess"]
