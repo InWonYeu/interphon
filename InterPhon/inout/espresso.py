@@ -8,7 +8,7 @@ def read_input_lines(structure_file: str) -> tuple:
     Parser function to read Quantum ESPRESSO input file.
 
     :param structure_file: (str) Path of Quantum ESPRESSO input file.
-    :return: (tuple) A set of lattice_matrix, atom_type, coordinate, atom_cart, atom_true, xyz_true.
+    :return: (tuple) A standardized set of data that defines a crystal structure such as lattice_matrix and atom_type.
     """
     try:
         with open(structure_file, 'r') as infile:
@@ -132,7 +132,7 @@ def write_input_lines(unit_cell, comment: str) -> List[str]:
     Parser function to write Quantum ESPRESSO input file.
 
     :param unit_cell: (instance) of UnitCell class
-    :param comment: (str) Comment of Quantum ESPRESSO input file.
+    :param comment: (str) Comment to Quantum ESPRESSO input file.
     :return: (List[str]) List of each line of Quantum ESPRESSO input file.
     """
     lines = ["&CONTROL" + '\n' + "/\n"]
@@ -187,7 +187,7 @@ def read_output_lines(force_file: str, num_super_atom: int) -> np.ndarray:
 
     :param force_file: (str) Path of Quantum ESPRESSO output file.
     :param num_super_atom: (int) The number of atoms in super cell.
-    :return: _force_matrix
+    :return: (np.ndarray[float]) A standardized atomic forces, _force_matrix.
     """
     try:
         with open(force_file, 'r') as infile:
