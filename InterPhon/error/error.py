@@ -1,6 +1,6 @@
 class Insufficient_PBC_Error(Exception):
     """
-    Defined error class to guide for insufficient PBC arguments.
+    An error class defined to announce insufficient PBC arguments.
     """
     def __init__(self, value):
         self.value = value
@@ -16,7 +16,7 @@ class Insufficient_PBC_Error(Exception):
 
 class Insufficient_ENLARGE_Error(Exception):
     """
-    Defined error class to guide for insufficient ENLARGE arguments.
+    An error class defined to announce insufficient ENLARGE arguments.
     """
     def __init__(self, value):
         self.value = value
@@ -32,7 +32,7 @@ class Insufficient_ENLARGE_Error(Exception):
 
 class Mismatch_ENLARGE_and_PBC_Error(Exception):
     """
-    Defined error class to guide for inconsistency between ENLARGE and PBC arguments.
+    An error class defined to announce inconsistency between ENLARGE and PBC arguments.
     """
     def __init__(self, enlarge, pbc):
         self.enlarge = enlarge
@@ -50,7 +50,7 @@ class Mismatch_ENLARGE_and_PBC_Error(Exception):
 
 class Mismatch_ENLARGE_post_Error(Exception):
     """
-    Defined error class to guide for inconsistency between pre- and post- ENLARGE arguments.
+    An error class defined to announce inconsistency between pre- and post- ENLARGE arguments.
     """
     def __str__(self):
         """
@@ -63,7 +63,7 @@ class Mismatch_ENLARGE_post_Error(Exception):
 
 class Mismatch_Kpath_and_PBC_Error(Exception):
     """
-    Defined error class to guide for inconsistency between Kpath and PBC arguments.
+    An error class defined to announce inconsistency between K-path and PBC arguments.
     """
     def __init__(self, kpoint, pbc):
         self.kpoint = kpoint
@@ -71,7 +71,7 @@ class Mismatch_Kpath_and_PBC_Error(Exception):
 
     def __str__(self):
         """
-        Error message for inconsistency between Kpath and PBC arguments.
+        Error message for inconsistency between K-path and PBC arguments.
 
         :return: (str) Error message.
         """
@@ -81,7 +81,7 @@ class Mismatch_Kpath_and_PBC_Error(Exception):
 
 class Invalid_Line_Kpath_Error(Exception):
     """
-    Defined error class to guide for invalid k-points setting for line path of band plot.
+    An error class defined to announce invalid k-points setting for line path of band plot.
     """
     def __str__(self):
         """
@@ -94,7 +94,7 @@ class Invalid_Line_Kpath_Error(Exception):
 
 class Not_Specified_Kpath_Error(Exception):
     """
-    Defined error class to guide for the attempt to access unspecified k-points.
+    An error class defined to announce the attempt to access unspecified k-points.
     """
     def __init__(self, value):
         self.value = value
@@ -110,7 +110,7 @@ class Not_Specified_Kpath_Error(Exception):
 
 class Cannot_Search_Point_Group(Exception):
     """
-    Defined error class to notify that point group cannot be searched.
+    An error class defined to announce that point group cannot be searched.
     """
     def __init__(self, value):
         self.value = value
@@ -127,7 +127,7 @@ class Cannot_Search_Point_Group(Exception):
 
 class Thermal_Imaginary_Frequency(Exception):
     """
-    Defined error class to caution to an attempt to compute thermal properties with imaginary frequency.
+    An error class defined to warn against an attempt to compute thermal properties with imaginary frequency.
     """
     def __str__(self):
         """
@@ -136,4 +136,5 @@ class Thermal_Imaginary_Frequency(Exception):
         :return: (str) Error message.
         """
         return "Computation of thermal properties by imaginary frequency, which cannot be defined, is being attempted." \
-               "\nThermal properties will be calculated by neglecting the corresponding imaginary frequency. "
+               "\nThermal properties will be calculated by neglecting the corresponding imaginary frequency, " \
+               "\nBut please be careful when using the results. "
