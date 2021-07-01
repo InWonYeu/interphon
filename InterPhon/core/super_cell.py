@@ -7,9 +7,28 @@ from InterPhon.util import MatrixLike, AtomType, SelectIndex
 class SuperCell(UnitCell):
     """
     Super cell class to construct an super cell object in a standardized format.
-    This child class is inherited from the UnitCell parent class.
+    This child class is inherited from the :class:`core.UnitCell` parent class.
     The information about atomic structure of super cell is stored in the instance variables of this class.
-    The instance variables are set by the 'set_super_cell' and 'set_super_ind_true' methods.
+    The instance variables are set by the :class:`core.SuperCell.set_super_cell` and :class:`core.SuperCell.set_super_ind_true` methods.
+
+    :param lattice_matrix: '(3, 3) size' matrix for the lattice vectors of unit cell, defaults to None
+    :type lattice_matrix: np.ndarray[float]
+    :param atom_type: List of atom type in unit cell, defaults to None
+    :type atom_type: AtomType
+    :param num_atom: Matrix of the number of atoms of each atom type, defaults to None
+    :type num_atom: np.ndarray[int]
+    :param selective: Selective dynamics (True) or not (False), defaults to `False`
+    :type selective: bool
+    :param coordinate: 'direct' or 'cartesian' coordinate, defaults to None
+    :type coordinate: str
+    :param atom_cart: '(total number of atoms, 3) size' matrix for atom positions in cartesian coordinate, defaults to None
+    :type atom_cart: np.ndarray[float]
+    :param atom_true: Index of selected atoms which are allowed to move, defaults to None
+    :type atom_true: SelectIndex
+    :param xyz_true: (SelectIndex) Index of the atoms which are allowed to move for each x, y, z cartesian direction, defaults to None
+    :type xyz_true: SelectIndex
+    :param mass_true: '(3 * number of selected atoms, ) size' matrix for mass of selected atoms, defaults to None
+    :type mass_true: np.ndarray[float]
     """
     def __init__(self, lattice_matrix: np.ndarray = None,
                  atom_type: AtomType = None,
@@ -22,16 +41,6 @@ class SuperCell(UnitCell):
                  mass_true: np.ndarray = None):
         """
         Constructor of SuperCell class.
-
-        :param lattice_matrix: (np.ndarray[float]) '(3, 3) size' matrix for the lattice vectors of unit cell.
-        :param atom_type: (AtomType) List of atom type in unit cell.
-        :param num_atom: (np.ndarray[int]) Matrix of the number of atoms of each atom type.
-        :param selective: (bool) Selective dynamics (True) or not (False)
-        :param coordinate: (str) 'direct' or 'cartesian' coordinate.
-        :param atom_cart: (np.ndarray[float]) '(total number of atoms, 3) size' matrix for atom positions in cartesian coordinate.
-        :param atom_true: (SelectIndex) Index of selected atoms which are allowed to move.
-        :param xyz_true: (SelectIndex) Index of the atoms which are allowed to move for each x, y, z cartesian direction.
-        :param mass_true: (np.ndarray[float]) '(3 * number of selected atoms, ) size' matrix for mass of selected atoms.
         """
         super(SuperCell, self).__init__(lattice_matrix,
                                         atom_type,
@@ -43,17 +52,15 @@ class SuperCell(UnitCell):
                                         xyz_true,
                                         mass_true)
 
-    def set_super_cell(self, unit_cell: UnitCell, user_arg: PreArgument) -> None:
+    def set_super_cell(self, unit_cell: UnitCell,
+                       user_arg: PreArgument) -> None:
         """
-        Instance method of SuperCell class.
-        Set the variables of SuperCell instance from the information stored in given UnitCell and UserArgument instances.
+        Set the variables of **SuperCell** instance from the information stored in given **UnitCell** and **UserArgument** instances.
 
-        usage:
-        " >>> instance_of_SuperCell.set_super_cell(unit_cell=instance_of_UnitCell, user_arg=instance_of_UserArgument)"
-
-        :param unit_cell: (instance) of UnitCell class.
-        :param user_arg: (instance) of UserArgument class.
-        :return: (None)
+        :param unit_cell: Instance of UnitCell class
+        :type unit_cell: :class:`core.UnitCell`
+        :param user_arg: Instance of PreArgument class
+        :type user_arg: :class:`core.PreArgument`
         """
         self.lattice_matrix = np.asfarray([unit_cell.lattice_matrix[i, 0:3] * user_arg.enlargement[i] for i in range(3)])
 
@@ -84,17 +91,15 @@ class SuperCell(UnitCell):
             self.atom_cart[_enlarge * ind: _enlarge * (ind + 1), 0:3] = value + \
                                                                         np.dot(_super_direct, self.lattice_matrix)
 
-    def set_super_ind_true(self, unit_cell: UnitCell, user_arg: PreArgument) -> None:
+    def set_super_ind_true(self, unit_cell: UnitCell,
+                           user_arg: PreArgument) -> None:
         """
-        Instance method of SuperCell class.
-        Set the SuperCell index of selected atoms from the information stored in given UnitCell and UserArgument instances.
+        Set the **SuperCell** index of selected atoms from the information stored in given **UnitCell** and **UserArgument** instances.
 
-        usage:
-        " >>> instance_of_SuperCell.set_super_ind_true(unit_cell=instance_of_UnitCell, user_arg=instance_of_UserArgument)"
-
-        :param unit_cell: (instance) of UnitCell class.
-        :param user_arg: (instance) of UserArgument class.
-        :return: (None)
+        :param unit_cell: Instance of UnitCell class
+        :type unit_cell: :class:`core.UnitCell`
+        :param user_arg: Instance of PreArgument class
+        :type user_arg: :class:`core.PreArgument`
         """
         _enlarge = 1
         for ind, value in enumerate(user_arg.periodicity):
