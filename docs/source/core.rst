@@ -2,7 +2,7 @@
 core
 ====
 
-.. automodule:: core.unit_cell.UnitCell
+.. automodule:: core.unit_cell
     :members:
 
 .. automodule:: core.super_cell
