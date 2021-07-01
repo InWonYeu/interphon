@@ -12,4 +12,3 @@ The following tutorials explain the method of **InterPhon** usage.
    option_tags
    input_files
    output_files
-   modules
