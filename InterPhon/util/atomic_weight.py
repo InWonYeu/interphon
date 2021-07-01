@@ -1,7 +1,13 @@
 import numpy as np
 
 
-def get_atomic_weight(element):
+def get_atomic_weight(element: str):
+    """
+    Parser function to return atomic weight.
+
+    :param element: (str) Atomic number of name.
+    :return: (float) Atomic weight.
+    """
     _element = element.capitalize()
     mask = np.isin(periodic_table, _element)
     if np.any(mask):
@@ -10,7 +16,7 @@ def get_atomic_weight(element):
         raise NameError("A given element is not searchable. \n"
                         "The searchable types of name are: 'He', 'HE, 'he' or 'Helium', 'HELIUM','helium' or '2' "
                         "for the case of He atom. \n"
-                        "Check the name of elements")
+                        "Please check the name of elements.")
 
 
 periodic_table = np.array([
