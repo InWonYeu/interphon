@@ -14,11 +14,17 @@ inout
 ``espresso`` functions
 **********************
 
-.. automodule:: inout.espresso
-    :members:
+.. autofunction:: inout.espresso.read_input_lines
+
+.. autofunction:: inout.espresso.read_output_lines
+
+.. autofunction:: inout.espresso.write_input_lines
 
 ``vasp`` functions
 ******************
 
-.. automodule:: inout.vasp
-    :members:
+.. autofunction:: inout.vasp.read_input_lines
+
+.. autofunction:: inout.vasp.read_output_lines
+
+.. autofunction:: inout.vasp.write_input_lines
