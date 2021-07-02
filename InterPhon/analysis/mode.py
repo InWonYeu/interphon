@@ -20,15 +20,17 @@ def to_int_numpy(data):
 class Mode(object):
     """
     Mode class to analyze the phonon dispersion.
-    Its instance variables contain an instance of PostProcess class storing the information on eigen-frequency and eigen-mode.
+    Its instance variables contain an instance of :class:`core.PostProcess` class storing the information on eigen-frequency and eigen-mode.
     Based on the given information, phonon modes are visualized at a specified k-point.
-    The vibrational motions are written to external data and movie files using the 'write' and 'plot' methods, respectively.
+    The vibrational motions are written to external data and movie files using the :class:`analysis.Mode.write`
+    and :class:`analysis.Mode.plot` methods, respectively.
+
+    :param process: Instance of PostProcess class
+    :type process: :class:`core.PostProcess`
     """
     def __init__(self, process):
         """
         Constructor of Mode class.
-
-        :param process: (instance) of PostProcess class.
         """
         self.process = process
         self.__mode_inds = []
@@ -50,15 +52,12 @@ class Mode(object):
     def set(self, mode_inds: MatrixLike = (0,),
             k_point: MatrixLike = (0.0, 0.0, 0.0)):
         """
-        Instance method of Mode class.
         Set the k-point, mode index, and corresponding phonon mode.
 
-        usage:
-        " >>> instance_of_Mode.set(mode_inds=(0,), k_point=(0.0, 0.0, 0.0))"
-
-        :param mode_inds: (MatrixLike or int) The index of phonon mode(kpoint, index).
-        :param k_point: (MatrixLike) The k-point of phonon mode(kpoint, index).
-        :return: (None)
+        :param mode_inds: The index of phonon mode labeled by (k-point, index)
+        :type mode_inds: MatrixLike or int
+        :param k_point: The k-point of phonon mode labeled by (k-point, index)
+        :type k_point: MatrixLike
         """
         self.mode_inds = mode_inds
         self.k_point = np.array(k_point)
@@ -75,14 +74,10 @@ class Mode(object):
 
     def write(self, out_folder='.'):
         """
-        Instance method of Mode class.
-        Write phonon Mode in the file name of XDATCAR_phonon_mode.
+        Write phonon Mode in the file name of **XDATCAR_phonon_mode**.
 
-        usage:
-        " >>> instance_of_Mode.write(out_folder='.')"
-
-        :param out_folder: (str) Folder path for XDATCAR_phonon_mode to be stored.
-        :return: (File)
+        :param out_folder: Folder path for **XDATCAR_phonon_mode** to be stored, defaults to .
+        :type out_folder: str
         """
         from copy import deepcopy
 
@@ -113,16 +108,14 @@ class Mode(object):
              unit_cell='POSCAR',
              code_name='vasp'):
         """
-        Instance method of Mode class.
-        Visualize phonon Mode using modules of the Atomic Simulation Environment (ASE).
+        Visualize phonon Mode using modules of the `Atomic Simulation Environment (ASE) <https://wiki.fysik.dtu.dk/ase/index.html>`_.
 
-        usage:
-        " >>> instance_of_Mode.plot()"
-
-        :param out_folder: (str) Folder path for Trajectory.traj to be stored.
-        :param unit_cell: (str) Path of unit cell input file.
-        :param code_name: (str) Specification of the file-format by a DFT program.
-        :return: (File)
+        :param out_folder: Folder path for **Trajectory.traj** to be stored, defaults to .
+        :type out_folder: str
+        :param unit_cell: Path of unit cell input file, defaults to POSCAR
+        :type unit_cell: str
+        :param code_name: Specification of the file-format by a DFT program, defaults to vasp
+        :type code_name: str
         """
         try:
             from ase.io.trajectory import Trajectory
@@ -152,19 +145,17 @@ class Mode(object):
             view(atoms)
 
     def write_mode_displace(self, out_folder='.',
-                            amplitude=1.0,
+                            amplitude: float =1.0,
                             code_name: str = 'vasp'):
         """
-        Instance method of Mode class.
-        Write a supercell file which is commensurate with k-point and displaced along phonon Mode in the file name of MPOSCAR.
+        Write a supercell file which is commensurate with k-point and displaced along phonon Mode in the file name of **MPOSCAR**.
 
-        usage:
-        " >>> instance_of_Mode.write_mode_displace()"
-
-        :param out_folder: (str) Folder path for MPOSCAR to be stored.
-        :param amplitude: (float) Amplitude of vibrational motions.
-        :param code_name: (str) Specification of the file-format by a DFT program.
-        :return: (File)
+        :param out_folder: Folder path for **MPOSCAR** to be stored, defaults to .
+        :type out_folder: str
+        :param amplitude: Amplitude of vibrational motions, defaults to 1.0
+        :type amplitude: float
+        :param code_name: Specification of the file-format by a DFT program, defaults to vasp
+        :type code_name: str
         """
         # Make a supercell file with displacement along normal mode
         # The displaced supercell along an imaginary mode can be used for structure search

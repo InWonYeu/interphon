@@ -5,19 +5,23 @@ from InterPhon.util import tetrahedron_1d, tetrahedron_2d, tetrahedron_3d
 class DOS(object):
     """
     DOS class to analyze the phonon dispersion.
-    Its instance variables contain an instance of PostProcess class storing the information on eigen-frequency and eigen-mode.
+    Its instance variables contain an instance of :class:`core.PostProcess` class storing the information on eigen-frequency and eigen-mode.
     The given information is further refined to make density of states n(w) by sampling the k-point grids.
-    The dispersion is written to external data and graphic files using the 'write' and 'plot' methods, respectively.
+    The dispersion is written to external data and graphic files using the :class:`analysis.DOS.write`
+    and :class:`analysis.DOS.plot` methods, respectively.
+
+    :param process: Instance of PostProcess class
+    :type process: :class:`core.PostProcess`
+    :param sigma: Sigma of gaussian smearing (if 0.0: tetrahedron method is used instead), defaults to 0.1
+    :type sigma: float
+    :param num_dos: The number of DOS points, defaults to 200
+    :type num_dos: int
     """
     def __init__(self, process,
                  sigma: float = 0.1,
                  num_dos: int = 200):
         """
         Constructor of DOS class.
-
-        :param process: (instance) of PostProcess class.
-        :param sigma: (float) Sigma of gaussian smearing (if 0.0: tetrahedron method is used instead).
-        :param num_dos: (int) The number of DOS points.
         """
         self.process = process
         self.sigma = sigma
@@ -45,13 +49,7 @@ class DOS(object):
 
     def set(self):
         """
-        Instance method of DOS class.
         Set the frequency points and corresponding density of states, n(w).
-
-        usage:
-        " >>> instance_of_DOS.set()"
-
-        :return: (None)
         """
         if self.sigma == 0.0:
             # Linear Tetrahedron Method for Brillouin zone integration
@@ -105,14 +103,10 @@ class DOS(object):
 
     def write(self, out_folder='.'):
         """
-        Instance method of DOS class.
-        Write total and projected DOSs in the file name of total_dos.dat and projected_dos.dat, respectively.
+        Write total and projected DOSs in the file name of **total_dos.dat** and **projected_dos.dat**, respectively.
 
-        usage:
-        " >>> instance_of_DOS.write(out_folder='.')"
-
-        :param out_folder: (str) Folder path for total_dos.dat and projected_dos.dat to be stored.
-        :return: (File)
+        :param out_folder: Folder path for **total_dos.dat** and **projected_dos.dat** to be stored, defaults to .
+        :type out_folder: str
         """
         with open(out_folder + '/total_dos.dat', 'w') as outfile:
             if self.sigma == 0.0:
@@ -164,28 +158,36 @@ class DOS(object):
              bulk_dos=None,
              bulk_option='fill',
              bulk_legend=None,
-             proportion=1):
+             proportion=1.0):
         """
-        Instance method of DOS class.
-        Plot DOSs in the file name of dos.png.
+        Plot DOSs in the file name of **dos.png**.
 
-        usage:
-        " >>> instance_of_DOS.plot()"
-
-        :param plot_total: (bool) Plot total DOS (True) or not (False)
-        :param atoms: (List[int]) The Index of atoms to be projected in DOS plot.
-        :param elimit: (List[int]) Energy (unit: THz) limitation of DOS plot.
-        :param color: (str) The color of total DOS line.
-        :param option: (str) Option for DOS projection plot.
-        :param orientation: (str) Orientation of DOS plot.
-        :param label_position: (str) Y-axis label position (whether left or right) in vertical DOS plot.
-        :param legends: (List[str]) Legends for the projected DOS lines.
-        :param legend_location: (str) Location of DOS legend.
-        :param bulk_dos: (np.ndarray[float]) '(total number of frequency, 2) size' matrix for bulk phonon DOS.
-        :param bulk_option: (str) Option for bulk DOS plot.
-        :param bulk_legend: (str) Legends for the bulk DOS line.
-        :param proportion: (int) Constant to be multiplied to bulk DOS.
-        :return: (File)
+        :param plot_total: Plot total DOS (True) or not (False), defaults to `True`
+        :type plot_total: bool
+        :param atoms: The Index of atoms to be projected in DOS plot, defaults to None
+        :type atoms: List[int]
+        :param elimit: Energy (unit: THz) limitation of DOS plot, defaults to None
+        :type elimit: List[int]
+        :param color: The color of total DOS line, defaults to tab:orange
+        :type color: str
+        :param option: Option for DOS projection plot, defaults to plain
+        :type option: str
+        :param orientation: Orientation of DOS plot, defaults to horizontal
+        :type orientation: str
+        :param label_position: Y-axis label position (whether left or right) in vertical DOS plot, defaults to left
+        :type label_position: str
+        :param legends: Legends for the projected DOS lines, defaults to None
+        :type legends: List[str]
+        :param legend_location: Location of DOS legend, defaults to best
+        :type legend_location: str
+        :param bulk_dos: '(total number of frequency, 2) size' matrix for bulk phonon DOS, defaults to None
+        :type bulk_dos: np.ndarray[float]
+        :param bulk_option: Option for bulk DOS plot, defaults to fill
+        :type bulk_option: str
+        :param bulk_legend: Legends for the bulk DOS line, defaults to None
+        :type bulk_legend: str
+        :param proportion: Constant to be multiplied to bulk DOS, defaults to 1.0
+        :type proportion: float
         """
 
         from matplotlib import pyplot as plt
