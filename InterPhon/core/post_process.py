@@ -340,13 +340,13 @@ class PostProcess(PreProcess):
         """
         Set the instance variable (**self.k_points**) by reading **KPOINTS** file given in VASP format.
         The following four samplings of the wave vector k are available:
-        **1)** Gamma-centered
-        **2)** Monkhorst-Pack
-        **3)** Line-path generation (for band plot)
-        **4)** Explicit designation.
+        **1) Gamma-centered**
+        **2) Monkhorst-Pack**
+        **3) Line-path generation** (for band plot)
+        **4) Explicit designation**
 
         For more details, see the following reference:
-        **1)** The Basics of Electronic Structure Theory for Periodic Systems, Frontiers in chemistry 7, 1 (2019).
+        "The Basics of Electronic Structure Theory for Periodic Systems, Frontiers in chemistry 7, 1 (2019)".
 
         :param k_file: Path of KPOINTS file
         :type k_file: str
