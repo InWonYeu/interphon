@@ -1,5 +1,4 @@
 import numpy as np
-from typing import List, Dict
 from InterPhon.util import FilePath, File
 from InterPhon.util import Symmetry2D
 from InterPhon import error
@@ -11,19 +10,22 @@ from .pre_check import PreArgument
 class PreProcess(object):
     """
     Pre process class to control pre-process.
-    After pre-process is successfully done, the files of displaced supercells and a pre-process record file (pre_process.yaml) will be generated.
+    After pre-process is successfully done, the files of displaced supercells and a pre-process record file (**pre_process.yaml**) will be generated.
     The information required in pre-process is stored in the instance variables of this class.
-    The instance variables are set by the 'set_user_arg', 'set_unit_cell', and 'set_super_cell' methods.
+    The instance variables are set by the :class:`core.PreProcess.set_user_arg`, :class:`core.PreProcess.set_unit_cell`, and :class:`core.PreProcess.set_super_cell` methods.
+
+    :param user_arg: Instance of PreArgument class
+    :type user_arg: :class:`core.PreArgument`
+    :param unit_cell: Instance of UnitCell class
+    :type unit_cell: :class:`core.UnitCell`
+    :param super_cell: Instance of SuperCell class
+    :type super_cell: :class:`core.SuperCell`
     """
     def __init__(self, user_arg=PreArgument(),
                  unit_cell=UnitCell(),
                  super_cell=SuperCell()):
         """
         Constructor of PreProcess class.
-
-        :param user_arg: (instance) of PreArgument class.
-        :param unit_cell: (instance) of UnitCell class.
-        :param super_cell: (instance) of SuperCell class.
         """
         self.__user_arg = user_arg
         self.__unit_cell = unit_cell
@@ -66,66 +68,61 @@ class PreProcess(object):
             ValueError(
                 "'{0}' should be the instance of <class 'InterPhon.core.super_cell.SuperCell'>".format(_super_cell))
 
-    def set_user_arg(self, dict_args: Dict) -> None:
+    def set_user_arg(self, dict_args: dict) -> None:
         """
-        Instance method of PreProcess class.
-        Set a PreArgument instance from the information given by user.
+        Set a **PreArgument** instance from the information given by user.
 
-        usage:
-        " >>> instance_of_PreProcess.set_user_argument(dict_args=arguments)"
-
-        :param dict_args: (Dict) Argument dictionary given by user.
-        :return: (None)
+        :param dict_args: Argument dictionary given by user
+        :type dict_args: dict
         """
         self.user_arg.set_user_argument(dict_args)
         self.user_arg.check_user_argument()
 
-    def set_unit_cell(self, in_file: FilePath, code_name: str = 'vasp') -> None:
+    def set_unit_cell(self, in_file: FilePath,
+                      code_name: str = 'vasp') -> None:
         """
-        Instance method of PreProcess class.
-        Set a UnitCell instance by reading input file of DFT programs.
+        Set a **UnitCell** instance by reading input file of DFT programs.
 
-        usage:
-        " >>> instance_of_PreProcess.set_unit_cell(in_file='./POSCAR', code_name='vasp')"
-
-        :param in_file: (str) Path of DFT input file to read.
-        :param code_name: (str) Indicate a DFT program corresponding to the input file.
-        :return: (None)
+        :param in_file: Path of DFT input file to read
+        :type in_file: str
+        :param code_name: Indicate a DFT program corresponding to the input file, defaults to vasp
+        :type code_name: str
         """
         self.unit_cell.read_unit_cell(in_file, code_name=code_name)
 
-    def set_super_cell(self, out_file: FilePath, comment: str = 'Supercell',
-                       write_file: bool = True, code_name: str = 'vasp') -> File:
+    def set_super_cell(self, out_file: FilePath,
+                       comment: str = 'Supercell',
+                       write_file: bool = True,
+                       code_name: str = 'vasp') -> File:
         """
-        Instance method of PreProcess class.
-        Set a SuperCell instance from the information stored in its UnitCell and UserArgument instances.
+        Set a **SuperCell** instance from the information stored in its **UnitCell** and **UserArgument** instances.
 
-        usage:
-        " >>> instance_of_PreProcess.set_super_cell(out_file='./SPOSCAR', comment='Supercell', write_file=True, code_name='vasp')"
-
-        :param out_file: (str) Name of DFT input file to write.
-        :param comment: (str) Comment to be written in the DFT input file.
-        :param write_file: (bool) Write (True) or not (False) the DFT input file from the information stored in its SuperCell instance.
-        :param code_name: (str) Specification of the file-format by a DFT program.
-        :return: (File)
+        :param out_file: Name of DFT input file to write
+        :type out_file: str
+        :param comment: Comment to be written in the DFT input file, defaults to Supercell
+        :type comment: str
+        :param write_file: Write (`True`) or not (`False`) the DFT input file from the information stored in its SuperCell instance, defaults to `True`
+        :type write_file: bool
+        :param code_name: Specification of the file-format by a DFT program, defaults to vasp
+        :type code_name: str
         """
         self.super_cell.set_super_cell(self.unit_cell, self.user_arg)
         self.super_cell.set_super_ind_true(self.unit_cell, self.user_arg)
         if write_file is True:
             self.super_cell.write_unit_cell(out_file, comment=comment, code_name=code_name)
 
-    def write_displace_cell(self, out_file: FilePath, code_name: str = 'vasp', sym_flag: bool = True) -> File:
+    def write_displace_cell(self, out_file: FilePath,
+                            code_name: str = 'vasp',
+                            sym_flag: bool = True) -> File:
         """
-        Instance method of PreProcess class.
         Write displaced supercell files in a format of DFT input file.
 
-        usage:
-        " >>> instance_of_PreProcess.write_displace_cell(out_file='./SPOSCAR', code_name='vasp')"
-
-        :param out_file: (str) Name of DFT input file to write.
-        :param code_name: (str) Specification of the file-format by a DFT program.
-        :param sym_flag: (bool) Specify whether to use symmetry operation.
-        :return: (File)
+        :param out_file: Name of DFT input file to write
+        :type out_file: str
+        :param code_name: Specification of the file-format by a DFT program, defaults to vasp
+        :type code_name: str
+        :param sym_flag: Specify whether to use symmetry operation, defaults to `True`
+        :type sym_flag: bool
         """
         _dis_super_cell = self.super_cell
         _current_position = self.super_cell.atom_cart.copy()

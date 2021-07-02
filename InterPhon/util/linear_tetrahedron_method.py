@@ -1,27 +1,41 @@
 """
-For more details on the demonstrated formula below, see the following references:
+For more details on the demonstrated formula below, please find the following references:
 
 Ref 1) Extensions of the tetrahedron method for evaluating spectral properties of solids, 
 Journal of Physics C 12, 2991 (1979).
 Ref 2) FermiSurfer: Fermi-surface viewer providing multiple representation schemes,
-Computer Physics Communications 239, 197 (2019)
+Computer Physics Communications 239, 197 (2019).
 """
 import numpy as np
+from typing import List
 
 
-def tetrahedron_1d(_freq, _pdos, k_points, w_q, v_q, num_k_points, _ind_pbc):
+def tetrahedron_1d(_freq: np.ndarray,
+                   _pdos: np.ndarray,
+                   k_points: List[np.ndarray],
+                   w_q: np.ndarray,
+                   v_q: np.ndarray,
+                   num_k_points: List[int],
+                   _ind_pbc: np.ndarray) -> np.ndarray:
     """
-    1D version of linear tetrahedron method: the linear line method.
-    The detailed demonstration of the formula is written in Supplementary Information.
+    The 1D version of linear tetrahedron method: **linear line method**.
 
-    :param _freq: (np.ndarray[float]) '(num_dos,) size' frequencies where DOS will be evaluated.
-    :param _pdos: (np.ndarray[float]) '(num_mode, num_dos) size' partial DOS for each phonon mode.
-    :param k_points: (List[np.ndarray]) List of '(3,) size' k-point.
-    :param w_q: (np.ndarray[float]) '(num_k_points, num_mode) size' eigenfrequency.
-    :param v_q: (np.ndarray[float]) '(num_k_points, num_mode, num_mode) size' eigenmode.
-    :param num_k_points: (List[int]) '(3,) size' list for the number of automatic grid.
-    :param _ind_pbc: (np.ndarray[int]) Indices for the direction of periodic boundary.
-    :return: _pdos
+    :param _freq: '(num_dos,) size' frequencies where DOS will be evaluated
+    :type _freq: np.ndarray[float]
+    :param _pdos: '(num_mode, num_dos) size' partial DOS for each phonon mode
+    :type _pdos: np.ndarray[float]
+    :param k_points: List of '(3,) size' k-point
+    :type k_points: List[np.ndarray]
+    :param w_q: '(num_k_points, num_mode) size' eigen-frequency
+    :type w_q: np.ndarray[float]
+    :param v_q: '(num_k_points, num_mode, num_mode) size' eigen-mode
+    :type v_q: np.ndarray[float]
+    :param num_k_points: '(3,) size' list for the number of automatic grid
+    :type num_k_points: List[int]
+    :param _ind_pbc: Indices for the lattice direction of periodic boundary
+    :type _ind_pbc: np.ndarray[int]
+    :return: '(num_mode, num_dos) size' partial DOS for each phonon mode
+    :rtype: np.ndarray[float]
     """
     #  1st Brillouin Zone is segmented by line components connecting the sampled k-points grid.
     #  Integration is performed for each segmentation by linear interpolation.
@@ -64,19 +78,32 @@ def tetrahedron_1d(_freq, _pdos, k_points, w_q, v_q, num_k_points, _ind_pbc):
     return _pdos
 
 
-def tetrahedron_2d(_freq, _pdos, k_points, w_q, v_q, num_k_points, _ind_pbc):
+def tetrahedron_2d(_freq: np.ndarray,
+                   _pdos: np.ndarray,
+                   k_points: List[np.ndarray],
+                   w_q: np.ndarray,
+                   v_q: np.ndarray,
+                   num_k_points: List[int],
+                   _ind_pbc: np.ndarray) -> np.ndarray:
     """
-    2D version of linear tetrahedron method: the linear triangle method.
-    The detailed demonstration of the formula is written in Supplementary Information.
+    The 2D version of linear tetrahedron method: **linear triangle method**.
 
-    :param _freq: (np.ndarray[float]) '(num_dos,) size' frequencies where DOS will be evaluated.
-    :param _pdos: (np.ndarray[float]) '(num_mode, num_dos) size' partial DOS for each phonon mode.
-    :param k_points: (List[np.ndarray]) List of '(3,) size' k-point.
-    :param w_q: (np.ndarray[float]) '(num_k_points, num_mode) size' eigenfrequency.
-    :param v_q: (np.ndarray[float]) '(num_k_points, num_mode, num_mode) size' eigenmode.
-    :param num_k_points: (List[int]) '(3,) size' list for the number of automatic grid.
-    :param _ind_pbc: (np.ndarray[int]) Indices for the direction of periodic boundary.
-    :return: _pdos
+    :param _freq: '(num_dos,) size' frequencies where DOS will be evaluated
+    :type _freq: np.ndarray[float]
+    :param _pdos: '(num_mode, num_dos) size' partial DOS for each phonon mode
+    :type _pdos: np.ndarray[float]
+    :param k_points: List of '(3,) size' k-point
+    :type k_points: List[np.ndarray]
+    :param w_q: '(num_k_points, num_mode) size' eigen-frequency
+    :type w_q: np.ndarray[float]
+    :param v_q: '(num_k_points, num_mode, num_mode) size' eigen-mode
+    :type v_q: np.ndarray[float]
+    :param num_k_points: '(3,) size' list for the number of automatic grid
+    :type num_k_points: List[int]
+    :param _ind_pbc: Indices for the lattice direction of periodic boundary
+    :type _ind_pbc: np.ndarray[int]
+    :return: '(num_mode, num_dos) size' partial DOS for each phonon mode
+    :rtype: np.ndarray[float]
     """
     #  1st Brillouin Zone is segmented by triangle components connecting the sampled k-points grid.
     #  Integration is performed for each segmentation by linear interpolation.
@@ -194,19 +221,32 @@ def tetrahedron_2d(_freq, _pdos, k_points, w_q, v_q, num_k_points, _ind_pbc):
     return _pdos
 
 
-def tetrahedron_3d(_freq, _pdos, k_points, w_q, v_q, num_k_points, _ind_pbc):
+def tetrahedron_3d(_freq: np.ndarray,
+                   _pdos: np.ndarray,
+                   k_points: List[np.ndarray],
+                   w_q: np.ndarray,
+                   v_q: np.ndarray,
+                   num_k_points: List[int],
+                   _ind_pbc: np.ndarray) -> np.ndarray:
     """
-    3D version of linear tetrahedron method: the linear tetrahedron method.
-    The detailed demonstration of the formula is written in Supplementary Information.
+    The 3D version of linear tetrahedron method: **linear tetrahedron method**.
 
-    :param _freq: (np.ndarray[float]) '(num_dos,) size' frequencies where DOS will be evaluated.
-    :param _pdos: (np.ndarray[float]) '(num_mode, num_dos) size' partial DOS for each phonon mode.
-    :param k_points: (List[np.ndarray]) List of '(3,) size' k-point.
-    :param w_q: (np.ndarray[float]) '(num_k_points, num_mode) size' eigenfrequency.
-    :param v_q: (np.ndarray[float]) '(num_k_points, num_mode, num_mode) size' eigenmode.
-    :param num_k_points: (List[int]) '(3,) size' list for the number of automatic grid.
-    :param _ind_pbc: (np.ndarray[int]) Indices for the direction of periodic boundary.
-    :return: _pdos
+    :param _freq: '(num_dos,) size' frequencies where DOS will be evaluated
+    :type _freq: np.ndarray[float]
+    :param _pdos: '(num_mode, num_dos) size' partial DOS for each phonon mode
+    :type _pdos: np.ndarray[float]
+    :param k_points: List of '(3,) size' k-point
+    :type k_points: List[np.ndarray]
+    :param w_q: '(num_k_points, num_mode) size' eigen-frequency
+    :type w_q: np.ndarray[float]
+    :param v_q: '(num_k_points, num_mode, num_mode) size' eigen-mode
+    :type v_q: np.ndarray[float]
+    :param num_k_points: '(3,) size' list for the number of automatic grid
+    :type num_k_points: List[int]
+    :param _ind_pbc: Indices for the lattice direction of periodic boundary
+    :type _ind_pbc: np.ndarray[int]
+    :return: '(num_mode, num_dos) size' partial DOS for each phonon mode
+    :rtype: np.ndarray[float]
     """
     #  1st Brillouin Zone is segmented by tetrahedron components connecting the sampled k-points grid.
     #  Integration is performed for each segmentation by linear interpolation.

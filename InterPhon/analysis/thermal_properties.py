@@ -6,17 +6,20 @@ from InterPhon.util import MatrixLike
 class ThermalProperty(object):
     """
     ThermalProperty class to analyze the thermal properties determined by phonon dispersion.
-    Its instance variables contain an instance of PostProcess class storing the information on eigen-frequency and eigen-mode.
+    Its instance variables contain an instance of :class:`core.PostProcess` class storing the information on eigen-frequency and eigen-mode.
     The given information is further refined to predict vibrational entropy and free energy.
-    The thermal properties are written to external data and graphic files using the 'write' and 'plot' methods, respectively.
+    The thermal properties are written to external data and graphic files using the :class:`analysis.ThermalProperty.write`
+    and :class:`analysis.ThermalProperty.plot` methods, respectively.
+
+    :param process: Instance of PostProcess class
+    :type process: :class:`core.PostProcess`
+    :param temp: Temperatures to be studied, defaults to range(0, 1000, 10)
+    :type temp: MatrixLike
     """
     def __init__(self, process,
                  temp: MatrixLike = range(0, 1000, 10)):
         """
         Constructor of ThermalProperty class.
-
-        :param process: (instance) of PostProcess class.
-        :param temp: (MatrixLike) Temperatures to be studied.
         """
         self.process = process
         self.temp = np.array(temp)
@@ -26,13 +29,7 @@ class ThermalProperty(object):
 
     def set(self):
         """
-        Instance method of ThermalProperty class.
         Set the vibrational entropy and free energy in the range of temperatures.
-
-        usage:
-        " >>> instance_of_ThermalProperty.set()"
-
-        :return: (None)
         """
         kb = 1.38 * 10 ** (-23) / (1.602 * 10 ** (-19))
         h = 6.626 * 10 ** (-34) / (1.602 * 10 ** (-19))
@@ -106,14 +103,10 @@ class ThermalProperty(object):
 
     def write(self, out_folder='.'):
         """
-        Instance method of ThermalProperty class.
-        Write thermal properties in the file name of thermal_properties.dat.
+        Write thermal properties in the file name of **thermal_properties.dat**.
 
-        usage:
-        " >>> instance_of_ThermalProperty.write(out_folder='.')"
-
-        :param out_folder: (str) Folder path for total_dos.dat and projected_dos.dat to be stored.
-        :return: (File)
+        :param out_folder: Folder path for **thermal_properties.dat** to be stored, defaults to .
+        :type out_folder: str
         """
         with open(out_folder + '/thermal_properties.dat', 'w') as outfile:
             comment = "Thermal Properties / atom"
@@ -129,14 +122,10 @@ class ThermalProperty(object):
 
     def plot(self, legend_location='best'):
         """
-        Instance method of ThermalProperty class.
-        Plot thermal properties in the file name of thermal_properties.png.
+        Plot thermal properties in the file name of **thermal_properties.png**.
 
-        usage:
-        " >>> instance_of_ThermalProperty.plot()"
-
-        :param legend_location: (str) Location of DOS legend.
-        :return: (File)
+        :param legend_location: Location of DOS legend, defaults to best
+        :type legend_location: str
         """
         from matplotlib import pyplot as plt
 

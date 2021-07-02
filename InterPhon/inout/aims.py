@@ -6,8 +6,10 @@ def read_input_lines(structure_file: str) -> tuple:
     """
     Parser function to read FHI-aims input file.
 
-    :param structure_file: (str) Path of FHI-aims input file.
-    :return: (tuple) A set of lattice_matrix, atom_type, coordinate, atom_cart, atom_true, xyz_true.
+    :param structure_file: Path of FHI-aims input file
+    :type structure_file: str
+    :return: A standardized set of data that defines a crystal structure such as lattice_matrix and atom_type
+    :rtype: tuple
     """
     try:
         with open(structure_file, 'r') as infile:
@@ -107,13 +109,17 @@ def read_input_lines(structure_file: str) -> tuple:
     return lattice_matrix, __atom_type, num_atom, selective, coordinate, __atom_cart, __atom_true, xyz_true
 
 
-def write_input_lines(unit_cell, comment: str) -> List[str]:
+def write_input_lines(unit_cell,
+                      comment: str) -> List[str]:
     """
     Parser function to write FHI-aims input file.
 
-    :param unit_cell: (instance) of UnitCell class.
-    :param comment: (str) Comment of FHI-aims input file.
-    :return: (List[str]) List of each line of FHI-aims input file.
+    :param unit_cell: Instance of UnitCell class
+    :type unit_cell: :class:`core.UnitCell`
+    :param comment: Comment to display in FHI-aims input file
+    :type comment: str
+    :return: List of each line of FHI-aims input file
+    :rtype: List[str]
     """
     lines = []
     _line = ""
@@ -141,13 +147,17 @@ def write_input_lines(unit_cell, comment: str) -> List[str]:
     return lines
 
 
-def read_output_lines(force_file: str, num_super_atom: int) -> np.ndarray:
+def read_output_lines(force_file: str,
+                      num_super_atom: int) -> np.ndarray:
     """
     Parser function to read FHI-aims output file in which the atomic forces are written.
 
-    :param force_file: (str) Path of FHI-aims output file.
-    :param num_super_atom: (int) The number of atoms in super cell.
-    :return: _force_matrix
+    :param force_file: Path of FHI-aims output file
+    :type force_file: str
+    :param num_super_atom: The number of atoms in super cell
+    :type num_super_atom: int
+    :return: A standardized atomic forces, _force_matrix
+    :rtype: np.ndarray[float]
     """
     try:
         with open(force_file, 'r') as infile:

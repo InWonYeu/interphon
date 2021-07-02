@@ -130,7 +130,7 @@ Basic option tags
     $ interphon -sc SUPERCELL
 
 8. --symmetry_off, -sym_off
--------------------
+---------------------------
 ::
 
     help = Flag to the usage of symmetry operation

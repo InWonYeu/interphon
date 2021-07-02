@@ -52,7 +52,24 @@ W_candidate = [np.array([[0, 1],
 
 
 class Symmetry2D(object):
-    def __init__(self, unit_cell, super_cell, user_arg):
+    """
+    Symmetry class for searching and leveraging the 2D in-plane symmetry operations.
+    The symmetry of a given crystal structure is analyzed using the instance methods,
+    and resulting information is stored in the instance variables of this class.
+
+    :param unit_cell: Instance of UnitCell class
+    :type unit_cell: :class:`core.UnitCell`
+    :param super_cell: Instance of SuperCell class
+    :type super_cell: :class:`core.SuperCell`
+    :param user_arg: Instance of UserArgument class
+    :type user_arg: :class:`core.PreArgument` or :class:`core.PostArgument`
+    """
+    def __init__(self, unit_cell,
+                 super_cell,
+                 user_arg):
+        """
+        Constructor of Symmetry2D class.
+        """
         self.unit_cell = unit_cell
         self.super_cell = super_cell
         self.user_arg = user_arg
@@ -112,6 +129,16 @@ class Symmetry2D(object):
     #             "'{0}' should be the instance of <class 'InterPhon.core.super_cell.SuperCell'>".format(_super_cell))
 
     def search_point_group(self):
+        """
+        Search point group operations of its instance crystal structure (**self.unit_cell**).
+        This instance method returns:
+        **1) self.W_select**: rotation part of an affine mapping (W, w) belonging to symmetry operations of the crystal.
+        **2) self.w_select**: translation part of an affine mapping (W, w) belonging to symmetry operations of the crystal.
+        **3) self.same_index_select**: index of image atoms mapped onto by applying an (W, w) to atoms in unit cell.
+
+        :return: **self.W_select**, **self.w_select**, **self.same_index_select**
+        :rtype: tuple
+        """
         # metric tensor
         G_metric = np.dot(self.unit_cell.lattice_matrix.copy()[np.ix_(self.user_arg.periodicity.nonzero()[0],
                                                                       self.user_arg.periodicity.nonzero()[0])],
@@ -252,6 +279,17 @@ class Symmetry2D(object):
         return self.W_select, self.w_select, self.same_index_select
 
     def search_image_atom(self):
+        """
+        Search index of image atoms transformed by the point group operations of its instance crystal structure (**self.unit_cell**).
+        This instance method returns:
+        **1) self.point_group_ind**: index of point group operation W belonging to symmetry operations of the crystal.
+        **2) self.require_atom**: index of atoms in unit cell to which displacements are required.
+        **3) self.not_require_atom**: index of atoms in unit cell to which displacements are not required.
+        **4) self.same_supercell_index_select**: index of image atoms mapped onto by applying an (W, w) to atoms in super cell.
+
+        :return: **self.point_group_ind**, **self.require_atom**, **self.not_require_atom**, **self.same_supercell_index_select**
+        :rtype: tuple
+        """
         for _ind, _ in enumerate(self.unit_cell.atom_true):
             if self.require_atom:
                 found_flag = False
@@ -272,7 +310,20 @@ class Symmetry2D(object):
 
         return self.point_group_ind, self.require_atom, self.not_require_atom, self.same_supercell_index_select
 
-    def search_cell_image_index(self, W_direct, cell):
+    def search_cell_image_index(self, W_direct,
+                                cell):
+        """
+        Search index of image atoms, in the given cell, transformed by the given point group operation.
+        This instance method returns:
+        **1) _same_cell_index**: index of image atoms mapped onto by applying the given point group operation to atoms in the given cell.
+
+        :param W_direct: Point group operation W represented in direct coordinates
+        :type W_direct: np.ndarray[int]
+        :param cell: Instance of UnitCell or SuperCell class
+        :type cell: :class:`core.UnitCell` or :class:`core.SuperCell`
+        :return: Index of image atoms mapped onto by applying an (W, w) to atoms in the given cell
+        :rtype: List[int]
+        """
         # conserving the image index in primitive cell
         _enlarge = int(len(cell.atom_type) / len(self.unit_cell.atom_type))
         W_ind = self.find_point_group_index(W_direct)
@@ -309,6 +360,9 @@ class Symmetry2D(object):
         return _same_cell_index
 
     def search_self_image_atom(self):
+        """
+        Search index of point group operation by which atoms in **self.require_atom** are mapped onto the identical atoms.
+        """
         for _require in self.require_atom:
             _sym_point_for_require = []
             for _W_ind, _same_index_select in enumerate(self.same_index_select):
@@ -317,6 +371,10 @@ class Symmetry2D(object):
             self.point_group_for_self_require_atom.append(_sym_point_for_require)
 
     def search_independent_displacement(self):
+        """
+        Set independent displacement vectors by applying the point group operations to an arbitrary displacement vector.
+        To generate a force constant matrix, three linearly independent displacement vectors are required for each atom in unit cell.
+        """
         _original_basis = np.transpose(self.unit_cell.lattice_matrix.copy())
         to_cart_coord = _original_basis / np.linalg.norm(_original_basis, axis=0)
         to_direct_coord = np.linalg.inv(to_cart_coord)
@@ -370,6 +428,9 @@ class Symmetry2D(object):
             self.independent_by_single_displacement_cart.append(_require_displacement_cart)
 
     def gen_additional_displacement(self):
+        """
+        Set additional displacement vectors to make a total of three linearly independent displacement vectors.
+        """
         for _independent_by_single_displacement_cart in self.independent_by_single_displacement_cart:
             _independent_additional_displacement_cart = []
             additional_displacement_candidate = [np.array([0, 1, 1]) / np.linalg.norm(np.array([0, 1, 1])),
@@ -400,6 +461,16 @@ class Symmetry2D(object):
             self.independent_additional_displacement_cart.append(_independent_additional_displacement_cart)
 
     def find_point_group_index(self, W_direct):
+        """
+        Search index of point group operation of the given point group operation.
+        This instance method returns:
+        **1) _W_ind**: index of point group operation.
+
+        :param W_direct: Point group operation W represented in direct
+        :type W_direct: np.ndarray[int]
+        :return: Index of point group operation
+        :rtype: int
+        """
         found_flag = False
         for _W_ind, _W_select in enumerate(self.W_select):
             if np.allclose(_W_select, W_direct, atol=1e-06):
