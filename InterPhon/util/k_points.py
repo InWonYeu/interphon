@@ -4,13 +4,17 @@ from InterPhon.util import KptPath
 from InterPhon import error
 
 
-def gamma_centered(k_file_lines: List[str], _ind_pbc) -> tuple:
+def gamma_centered(k_file_lines: List[str],
+                   _ind_pbc: np.ndarray) -> tuple:
     """
     Automatic k-point grid generation by Gamma-centered scheme.
 
-    :param k_file_lines: (List[str]) List of each line of the KPOINTS file in VASP format.
-    :param _ind_pbc: (np.ndarray[int]) Indices for the lattice direction of periodic boundary.
-    :return: (tuple) A set of k_points and auto_k_points.
+    :param k_file_lines: List of each line of the KPOINTS file in VASP format
+    :type k_file_lines: List[str]
+    :param _ind_pbc: Indices for the lattice direction of periodic boundary
+    :type _ind_pbc: np.ndarray[int]
+    :return: A set of k_points and auto_k_points
+    :rtype: tuple
     """
     k_points = []
     auto_k_points = [int(num_k_point) for num_k_point in k_file_lines[3].split()[0:3]]
@@ -172,13 +176,17 @@ def gamma_centered(k_file_lines: List[str], _ind_pbc) -> tuple:
     return k_points, auto_k_points
 
 
-def monkhorst_pack(k_file_lines: List[str], _ind_pbc) -> tuple:
+def monkhorst_pack(k_file_lines: List[str],
+                   _ind_pbc: np.ndarray) -> tuple:
     """
     Automatic k-point grid generation by Monkhorst-Pack scheme.
 
-    :param k_file_lines: (List[str]) List of each line of the KPOINTS file in VASP format.
-    :param _ind_pbc: (np.ndarray[int]) Indices for the lattice direction of periodic boundary.
-    :return: (tuple) A set of k_points and auto_k_points.
+    :param k_file_lines: List of each line of the KPOINTS file in VASP format
+    :type k_file_lines: List[str]
+    :param _ind_pbc: Indices for the lattice direction of periodic boundary
+    :type _ind_pbc: np.ndarray[int]
+    :return: A set of k_points and auto_k_points
+    :rtype: tuple
     """
     k_points = []
     auto_k_points = [int(num_k_point) for num_k_point in k_file_lines[3].split()[0:3]]
@@ -251,13 +259,17 @@ def monkhorst_pack(k_file_lines: List[str], _ind_pbc) -> tuple:
     return k_points, auto_k_points
 
 
-def line_path(k_file_lines: List[str], _ind_pbc) -> KptPath:
+def line_path(k_file_lines: List[str],
+              _ind_pbc: np.ndarray) -> KptPath:
     """
     Generation of k-path line connecting the high symmetry k-points by line-segmentation.
 
-    :param k_file_lines: (List[str]) List of each line of the KPOINTS file in VASP format.
-    :param _ind_pbc: (np.ndarray[int]) Indices for the lattice direction of periodic boundary.
-    :return: (KptPath) K-points along the line path.
+    :param k_file_lines: List of each line of the KPOINTS file in VASP format
+    :type k_file_lines: List[str]
+    :param _ind_pbc: Indices for the lattice direction of periodic boundary
+    :type _ind_pbc: np.ndarray[int]
+    :return: K-points along the line path
+    :rtype: KptPath
     """
     k_points = []
     num_per_segment = int(k_file_lines[1].split()[0])
@@ -285,8 +297,10 @@ def explicit_reciprocal(k_file_lines: List[str]) -> KptPath:
     """
     Explicit designation of k-points in reciprocal coordinates.
 
-    :param k_file_lines: (List[str]) List of each line of the KPOINTS file in VASP format.
-    :return: (KptPath) K-points.
+    :param k_file_lines: List of each line of the KPOINTS file in VASP format
+    :type k_file_lines: List[str]
+    :return: K-points
+    :rtype: KptPath
     """
     num_k_points = int(k_file_lines[1].split()[0])
     k_points = [np.asfarray(k_point.split()[0:3]) for k_point in k_file_lines[3:3+num_k_points] if k_point.split()]

@@ -5,8 +5,10 @@ def get_atomic_weight(element: str):
     """
     Parser function to return atomic weight.
 
-    :param element: (str) Atomic number of name.
-    :return: (float) Atomic weight.
+    :param element: Atomic number of name
+    :type element: str
+    :return: Atomic weight
+    :rtype: float
     """
     _element = element.capitalize()
     mask = np.isin(periodic_table, _element)
