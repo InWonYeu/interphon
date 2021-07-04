@@ -5,27 +5,27 @@ analysis
 ``Band`` class
 **************
 
-.. automodule:: analysis.Band
+.. autoclass:: analysis.Band
     :members:
     :member-order: groupwise
 
 ``DOS`` class
 *************
 
-.. automodule:: analysis.DOS
+.. autoclass:: analysis.DOS
     :members:
     :member-order: groupwise
 
 ``Mode`` class
 **************
 
-.. automodule:: analysis.Mode
+.. autoclass:: analysis.Mode
     :members:
     :member-order: groupwise
 
 ``ThermalProperty`` class
 *************************
 
-.. automodule:: analysis.ThermalProperty
+.. autoclass:: analysis.ThermalProperty
     :members:
     :member-order: groupwise
