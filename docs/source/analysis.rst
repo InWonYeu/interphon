@@ -6,8 +6,6 @@ analysis
 **************
 
 .. autoclass:: analysis.Band
-    :members:
-    :member-order: groupwise
 
 ``DOS`` class
 *************
