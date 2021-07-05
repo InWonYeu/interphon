@@ -6,9 +6,6 @@ core
 ******************
 
 .. automodule:: core.unit_cell
-    :members:
-    :undoc-members:
-    :show-interitance:
 
 ``SuperCell`` class
 *******************
