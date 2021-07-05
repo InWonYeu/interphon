@@ -436,3 +436,25 @@ phonon mode option tags
 
 .. caution::
    The k-point given by the option –kpt_mode should be included in k-points of band line path.
+
+4. ––displacement_mode, –disp_mode
+----------------------------------
+::
+
+    help = Flag to whether to write a supercell file with displacement along normal mode
+    value type = bool
+    default = False
+
+    usage:
+    $ interphon -disp_mode
+
+5. ––displacement_amplitude_mode, –disp_amp_mode
+------------------------------------------------
+::
+
+    help = Amplitude of displacement along normal mode (unit: Angst)
+    value type = float
+    default = 1.0
+
+    usage:
+    $ interphon -disp_amp_mode 1.0
