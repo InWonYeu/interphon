@@ -125,6 +125,7 @@ class PreProcess(object):
         :type sym_flag: bool
         """
         _dis_super_cell = self.super_cell
+        _dis_super_cell.selective = False
         _current_position = self.super_cell.atom_cart.copy()
 
         _enlarge = 1

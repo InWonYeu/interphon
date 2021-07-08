@@ -106,6 +106,8 @@ class SuperCell(UnitCell):
             if value:
                 _enlarge = _enlarge * user_arg.enlargement[ind]
 
+        self.selective = True
+
         self.atom_true = []
         for ind_true in unit_cell.atom_true:
             self.atom_true.extend([ind_true * _enlarge + ind for ind in range(_enlarge)])
