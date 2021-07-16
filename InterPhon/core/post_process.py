@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import numpy as np
 from InterPhon.util import MatrixLike, AtomType, SelectIndex, FilePath, File, KptPath
 from InterPhon.util import k_points, Symmetry2D

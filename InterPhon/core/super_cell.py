@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import numpy as np
 from .unit_cell import UnitCell
 from .pre_check import PreArgument
