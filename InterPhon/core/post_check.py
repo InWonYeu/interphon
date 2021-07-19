@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import numpy as np
 from InterPhon import error
 from .pre_check import PreArgument
