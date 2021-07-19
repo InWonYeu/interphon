@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """
 InterPhon core sub-package.
 
