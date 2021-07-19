@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import numpy as np
 from InterPhon.util import FilePath, File
 from InterPhon.util import Symmetry2D
