@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import numpy as np
 from InterPhon.util import get_atomic_weight
 from InterPhon.util import MatrixLike, AtomType, SelectIndex, FilePath, File
