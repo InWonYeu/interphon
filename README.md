@@ -5,7 +5,7 @@ If you have used ***InterPhon***, please cite the following article (<https://do
 ```
 "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", 
 In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, 
-Computer Physics Communications (2021), doi: https://doi.org/10.1016/j.cpc.2021.108089
+Computer Physics Communications 268, 108089 (2021)
 ```
 
 The description below is a basic usage guide.
