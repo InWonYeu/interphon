@@ -15,7 +15,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../../InterPhon/'))
 
 import mock
-MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot']
+MOCK_MODULES = ['numpy', 'matplotlib', 'matplotlib.pyplot']
 
 # -- Project information -----------------------------------------------------
 
@@ -24,7 +24,7 @@ copyright = '2020, In Won Yeu'
 author = 'In Won Yeu'
 
 # The full version, including alpha/beta/rc tags
-release = '1.4.1'
+release = '1.4.2'
 
 
 # -- General configuration ---------------------------------------------------
