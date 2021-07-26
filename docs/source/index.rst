@@ -23,6 +23,7 @@ If you have any questions or issues, please contact:
 Version report
 **************
 
+* `InterPhon version 1.4.2 <https://github.com/InWonYeu/interphon/tree/v1.4.2>`_ released (26 July 2021)
 * `InterPhon version 1.4.0 <https://github.com/InWonYeu/interphon/tree/v1.4.0>`_ released (02 July 2021)
 * `InterPhon version 1.3.0 <https://github.com/InWonYeu/interphon/tree/v1.3.0>`_ released (29 April 2021)
 * `InterPhon version 1.1.0 <https://github.com/InWonYeu/interphon/tree/v1.1.0>`_ released (20 April 2021)
