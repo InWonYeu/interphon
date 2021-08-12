@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('../../InterPhon/'))
 
 # import mock
 # MOCK_MODULES = ['numpy', 'matplotlib', 'matplotlib.pyplot']
-autodoc_mock_imports = ['numpy', 'matplotlib', 'matplotlib.pyplot', 'sys']
+autodoc_mock_imports = ['numpy', 'matplotlib', 'matplotlib.pyplot', 'InterPhon']
 
 # -- Project information -----------------------------------------------------
 
