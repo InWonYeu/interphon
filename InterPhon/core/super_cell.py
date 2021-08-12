@@ -1,6 +1,6 @@
 import numpy as np
-from .unit_cell import UnitCell
-from .pre_check import PreArgument
+from InterPhon.core.unit_cell import UnitCell
+from InterPhon.core.pre_check import PreArgument
 from InterPhon.util import MatrixLike, AtomType, SelectIndex
 
 
