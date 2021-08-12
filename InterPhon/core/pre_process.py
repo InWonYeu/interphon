@@ -2,9 +2,9 @@ import numpy as np
 from InterPhon.util import FilePath, File
 from InterPhon.util import Symmetry2D
 from InterPhon import error
-from .unit_cell import UnitCell
-from .super_cell import SuperCell
-from .pre_check import PreArgument
+from InterPhon.core.unit_cell import UnitCell
+from InterPhon.core.super_cell import SuperCell
+from InterPhon.core.pre_check import PreArgument
 
 
 class PreProcess(object):
