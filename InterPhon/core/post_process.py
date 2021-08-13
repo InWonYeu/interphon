@@ -1,10 +1,10 @@
 import numpy as np
 from InterPhon.util import MatrixLike, AtomType, SelectIndex, FilePath, File, KptPath
 from InterPhon.util import k_points, Symmetry2D
-from InterPhon.core.unit_cell import UnitCell
-from InterPhon.core.super_cell import SuperCell
-from InterPhon.core.post_check import PostArgument
-from InterPhon.core.pre_process import PreProcess
+from InterPhon.core import UnitCell
+from InterPhon.core import SuperCell
+from InterPhon.core import PostArgument
+from InterPhon.core import PreProcess
 from InterPhon.inout import vasp, aims, espresso
 
 
