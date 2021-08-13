@@ -1,8 +1,8 @@
 import numpy as np
 from InterPhon import error
-from InterPhon.core.pre_check import PreArgument
-from InterPhon.core.unit_cell import UnitCell
-from InterPhon.core.super_cell import SuperCell
+from InterPhon.core import PreArgument
+from InterPhon.core import UnitCell
+from InterPhon.core import SuperCell
 
 
 class PostArgument(PreArgument):
