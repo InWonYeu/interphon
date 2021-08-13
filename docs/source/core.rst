@@ -7,12 +7,16 @@ core
 
 .. autoclass:: core.UnitCell
     :members:
+    :show-inheritance:
+    :inherited-members:
 
 ``SuperCell`` class
 *******************
 
 .. autoclass:: core.SuperCell
     :members:
+    :show-inheritance:
+    :inherited-members:
 
 ``PreArgument`` class
 *********************
