@@ -5,47 +5,35 @@ core
 ``UnitCell`` class
 ******************
 
-.. automodule:: core.unit_cell
+.. autoclass:: core.UnitCell
     :members:
-    :undoc-members:
-    :show-interitance:
 
 ``SuperCell`` class
 *******************
 
-.. automodule:: core.super_cell
+.. autoclass:: core.SuperCell
     :members:
-    :undoc-members:
-    :show-interitance:
 
 ``PreArgument`` class
 *********************
 
-.. automodule:: core.pre_check
+.. autoclass:: core.PreArgument
     :members:
-    :undoc-members:
-    :show-interitance:
 
 ``PostArgument`` class
 **********************
 
-.. automodule:: core.post_check
+.. autoclass:: core.PostArgument
     :members:
-    :undoc-members:
-    :show-interitance:
 
 ``PreProcess`` class
 ********************
 
-.. automodule:: core.pre_process
+.. autoclass:: core.PreProcess
     :members:
-    :undoc-members:
-    :show-interitance:
 
 ``PostProcess`` class
 *********************
 
-.. automodule:: core.post_process
+.. autoclass:: core.PostProcess
     :members:
-    :undoc-members:
-    :show-interitance:

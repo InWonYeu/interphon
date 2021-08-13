@@ -13,10 +13,15 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../InterPhon/'))
+# sys.path.insert(0, os.path.abspath('../../InterPhon/analysis/'))
+# sys.path.insert(0, os.path.abspath('../../InterPhon/core/'))
+# sys.path.insert(0, os.path.abspath('../../InterPhon/error/'))
+# sys.path.insert(0, os.path.abspath('../../InterPhon/inout/'))
+# sys.path.insert(0, os.path.abspath('../../InterPhon/util/'))
 
 import mock
-MOCK_MODULES = ['numpy', 'matplotlib', 'matplotlib.pyplot']
-autodoc_mock_imports = ['numpy', 'matplotlib', 'matplotlib.pyplot', 'sys']
+MOCK_MODULES = ['numpy', 'matplotlib', 'matplotlib.pyplot', 'InterPhon']
+autodoc_mock_imports = ['numpy', 'matplotlib', 'matplotlib.pyplot', 'InterPhon']
 
 # -- Project information -----------------------------------------------------
 

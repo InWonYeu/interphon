@@ -5,7 +5,8 @@ util
 ``atomic_weight``
 *****************
 
-.. autofunction:: util.atomic_weight.get_atomic_weight
+.. automodule:: util.atomic_weight
+    :members:
 
 ``k_points`` functions
 **********************
@@ -23,10 +24,4 @@ util
 ******************
 
 .. automodule:: util.symmetry
-    :members:
-
-``typing`` type
-***************
-
-.. automodule:: util.typing
     :members:
