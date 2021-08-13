@@ -5,23 +5,23 @@ analysis
 ``Band`` class
 **************
 
-.. autoclass:: analysis.Band
+.. automodule:: analysis.Band
     :members:
 
 ``DOS`` class
 *************
 
-.. autoclass:: analysis.DOS
+.. automodule:: analysis.DOS
     :members:
 
 ``Mode`` class
 **************
 
-.. autoclass:: analysis.Mode
+.. automodule:: analysis.Mode
     :members:
 
 ``ThermalProperty`` class
 *************************
 
-.. autoclass:: analysis.ThermalProperty
+.. automodule:: analysis.ThermalProperty
     :members:
