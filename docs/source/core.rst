@@ -5,35 +5,35 @@ core
 ``UnitCell`` class
 ******************
 
-.. automodule:: core.unit_cell
+.. autoclass:: core.UnitCell
     :members:
 
 ``SuperCell`` class
 *******************
 
-.. automodule:: core.super_cell
+.. autoclass:: core.SuperCell
     :members:
 
 ``PreArgument`` class
 *********************
 
-.. automodule:: core.pre_check
+.. autoclass:: core.PreArgument
     :members:
 
 ``PostArgument`` class
 **********************
 
-.. automodule:: core.post_check
+.. autoclass:: core.PostArgument
     :members:
 
 ``PreProcess`` class
 ********************
 
-.. automodule:: core.pre_process
+.. autoclass:: core.PreProcess
     :members:
 
 ``PostProcess`` class
 *********************
 
-.. automodule:: core.post_process
+.. autoclass:: core.PostProcess
     :members:
