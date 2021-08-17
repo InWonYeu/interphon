@@ -1,20 +1,61 @@
-# InterPhon
-**A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework.**  
-If you have used ***InterPhon***, please cite the following article (<https://doi.org/10.1016/j.cpc.2021.108089>):
+# Table of Contents
+* [Introduction](#introduction)
+* [InterPhon framework](#interphon-framework)
+* [How to cite](#how-to-cite)
+* [Documentation](#documentation)
+* [Installation](#installation)
+* [Basic usage in conjunction with VASP](#basic-usage)
+* [Important files](#important-files)
 
-```
-"InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", 
-In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, 
-Computer Physics Communications 268, 108089 (2021)
-```
 
-The description below is a basic usage guide.
-If you want to learn more about ***InterPhon***, please find the user manual at <https://interphon.readthedocs.io/>
+<a name="introduction"></a>
+# Introduction
+The interfacial region introduces different kinds of vibrations originating from the different stoichiometry and bonding geometry compared to the bulk environment. However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) density functional theory (DFT) framework representing interfacial systems by supercells as shown in **Figure 1**.
+
+![Representative_systems](docs/source/images/Representative_systems.png)
+<div align='center'><strong>Figure 1. Representative systems to which <i>InterPhon</i> can be applied. Within <i>InterPhon</i>, phonon evaluation proceeds only on the selected atoms in the vicinity of the interface, which are shown in green and orange. The atoms embedded in bulk are shown in gray.</strong></div>
 <br />
+
+
+Although the main obstacles are unavoidable, distinct interfacial phonons are confined to the vicinity of the interface (green and orange atoms in **Figure 1**). By limiting the range of phonon calculations to user-defined interfacial region, the enormous computational cost can be mitigated.
+
+<a name="interphon-framework"></a>
+# InterPhon framework
+The above strategy is efficiently implemented in a Python library, called Interfacial Phonons (***InterPhon***), capable of calculation setup, evaluation, analysis, and visualization for arbitrary interfacial systems in conjunction with any 3D DFT code.
+
+Currently supports:
+
+1. **VASP**
+2. **Quantum ESPRESSO**
+3. **FHI-aims**
+
+![Graphical_abstracts](docs/source/images/Graphical_abstracts.png)
+<div align='center'><strong>Figure 2. Schematic overview of <i>InterPhon</i> operation.</strong></div>
 <br />
 
 
-## Installation
+![InterPhon_workflow](docs/source/images/InterPhon_workflow.png)
+<div align='center'><strong>Figure 3. Schematic overview of <i>InterPhon</i> workflow.</strong></div>
+<br />
+
+<a name="how-to-cite"></a>
+# How to cite
+If you have used ***InterPhon***, please cite: 
+
+[In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", Computer Physics Communications 268, 108089 (2021)](https://doi.org/10.1016/j.cpc.2021.108089)
+
+Thank you for your interest.
+
+<a name="documentation"></a>
+# Documentation
+If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/).
+
+Or please contact: ```In Won Yeu, yiw0121@snu.ac.kr```
+
+The description below is a simple tutorial.
+
+<a name="installation"></a>
+# Installation
 Latest version in development:
 
 ```
@@ -26,9 +67,9 @@ Previous stable version:
 ```
 $ pip install interphon
 ```
-<br />
 
-## Basic usage in conjunction with VASP
+<a name="basic-usage"></a>
+# Basic usage in conjunction with VASP
 ***InterPhon*** supports a range of options to manage phonon computations and plotting styles.  
 In order to see all of the available options and their default values:
 
@@ -68,9 +109,9 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 ```
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 ```
-<br />
 
-## Important files
+<a name="important-files"></a>
+# Important files
 ### 1. DFT input file
 ***InterPhon*** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface and phonon evaluation proceeds only in the selected atoms. The interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
 See below example of Cu(111) surface where the top three layers are selected as the surface region.
