@@ -10,10 +10,10 @@
 
 <a name="introduction"></a>
 # Introduction
-The interface possesses diverse atomic structures and lattice vibrations, which are distinct from the bulk. However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) DFT framework representing interfacial systems by supercells.
+The interfacial region introduces different kinds of vibrations originating from the different stoichiometry and bonding geometry compared to the bulk environment. However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) density functional theory (DFT) framework representing interfacial systems by supercells as shown in **Figure 1**.
 
 ![Representative_systems](docs/source/images/Representative_systems.png)
-<div align='center'><strong>Figure 1. Representative systems to which <i>InterPhon</i> can be applied. Phonon evaluation proceeds only on the selected atoms in the vicinity of the interface, which are shown in green and orange. The atoms embedded in bulk are shown in gray.</strong></div>
+<div align='center'><strong>Figure 1. Representative systems to which <i>InterPhon</i> can be applied. Within <i>InterPhon</i>, phonon evaluation proceeds only on the selected atoms in the vicinity of the interface, which are shown in green and orange. The atoms embedded in bulk are shown in gray.</strong></div>
 <br />
 
 
@@ -21,7 +21,7 @@ Although the main obstacles are unavoidable, distinct interfacial phonons are co
 
 <a name="interphon-framework"></a>
 # InterPhon framework
-The strategy is efficiently implemented in a Python library, called Interfacial Phonons (***InterPhon***), capable of calculation setup, evaluation, analysis, and visualization for arbitrary interfacial systems in conjunction with any 3D DFT code.
+The above strategy is efficiently implemented in a Python library, called Interfacial Phonons (***InterPhon***), capable of calculation setup, evaluation, analysis, and visualization for arbitrary interfacial systems in conjunction with any 3D DFT code.
 
 Currently supports:
 
@@ -50,7 +50,7 @@ Thank you for your interest.
 # Documentation
 If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/).
 
-Or please contact: ```In Won Yeu, yeuiw@kist.re.kr```
+Or please contact: ```In Won Yeu, yiw0121@snu.ac.kr```
 
 The description below is a simple tutorial.
 
