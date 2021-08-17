@@ -30,7 +30,7 @@ Currently supports:
 
 
 # How to cite
-If you have used ***InterPhon***, please cite 
+If you have used ***InterPhon***, please cite: 
 
 [In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", Computer Physics Communications 268, 108089 (2021)](https://doi.org/10.1016/j.cpc.2021.108089)
 
@@ -40,9 +40,10 @@ Thank you for your interest.
 
 # Documentation
 If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/).
-Or please contact ```In Won Yeu, (<yeuiw@kist.re.kr>)```.
 
-The description below is a basic usage guide.
+Or please contact: ```In Won Yeu, yeuiw@kist.re.kr```.
+
+The description below is a simple tutorial.
 <br />
 
 
