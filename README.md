@@ -5,7 +5,7 @@
 * [Documentation](#documentation)
 * [Installation](#installation)
 * [Basic usage in conjunction with VASP](#basic-usage)
-* [Important files](#important files)
+* [Important files](#important-files)
 
 
 <a name="introduction"></a>
@@ -110,7 +110,7 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 ```
 
-<a name="important files"></a>
+<a name="important-files"></a>
 # Important files
 ### 1. DFT input file
 ***InterPhon*** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface and phonon evaluation proceeds only in the selected atoms. The interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
