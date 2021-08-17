@@ -6,14 +6,14 @@ The interfacial region introduces different kinds of vibrations originating from
 and bonding geometry compared to the bulk environment. However, there has been a limitation in applying
 *ab initio* phonon calculations to interfaces due to the excessive computational cost, introduced by
 their large number of atoms and broken symmetry. The problems are intrinsically inevitable within
-a 3D DFT framework representing interfacial region by supercells in a 3D periodic cell, as shown in following figure.
+a 3D DFT framework representing interfacial region by supercells having 3D periodicity, as shown in the following figure.
 Here, atoms in the vicinity of the interface are shown in green and orange. The atoms embedded in bulk are shown in gray.
 
 .. image:: images/Representative_systems.png
 
 Among all of these atoms, however, the bonding environment of most atoms located far from the interface is similar to
-that of the bulk atoms, presenting the same vibrations as the ideal bulk (gray atoms in above figure).
-Deviation of vibrations from bulk occurs only on the atoms in the vicinity of the interface (green and orange atoms in above figure).
+that of the bulk atoms, presenting the same vibrations as the ideal bulk (gray atoms in the above figure).
+Deviation of vibrations from bulk occurs only on the atoms in the vicinity of the interface (green and orange atoms in the above figure).
 
 Overview
 ********
@@ -26,14 +26,14 @@ The following figure illustrates the schematic overview of **InterPhon** operati
 
 In contrast to conventional phonon codes for 3D bulk systems such as Phonopy_ and PHON_,
 **InterPhon** calculation proceeds with an interfacial region that is smaller than the full simulation box,
-such that the phonons are calculated only for the atoms in the interface region.
+such that the phonons are calculated only for the atoms in the user-defined interface region.
 In addition, it allows users to define the dimension of periodicity, not limited to 3D.
 
 .. _Phonopy: https://phonopy.github.io/phonopy/
 .. _PHON: https://www.sciencedirect.com/science/article/pii/S0010465509001064
 
 Consequently, **InterPhon** enables the efficient extraction of interfacial phonons at arbitrary wave vectors in 1D or 2D
-reciprocal space, the corresponding real space being a 1D or in-plane 2D periodic system,
+reciprocal space, the corresponding real space being a atomic configuration with 1D or in-plane 2D periodicity,
 by automatically processing the information obtained by 3D-based DFT codes.
 
 Strategy
@@ -41,17 +41,17 @@ Strategy
 
 **InterPhon** operation is based on direct approach using the finite displacement method (FDM).
 The input required for the program execution are only a :ref:`label_dft_structure_file` representing the atomic structure of interest
-and the corresponding :ref:`label_dft_force_file` providing the forces acting on each atom, in any DFT code format as shown in following figure.
+and the corresponding :ref:`label_dft_force_file` providing the forces acting on each atom, in any DFT code format as shown in the following figure.
 
 .. image:: images/InterPhon_workflow.png
 
 The output is given as :ref:`data files and graphics <label_post_process_property_file>` printing the phonon properties,
-such as the density of states (DOS), band, vibrational motions (phonon mode), and thermal properties (vibrational entropy and free energy)
+including the density of states (DOS), band, vibrational motions (phonon mode), and thermal properties (vibrational entropy and free energy).
 
 Architecture
 ************
 
-The **InterPhon** package consists of following five sub-packages:
+The **InterPhon** package consists of the following five sub-packages:
 
 - ``error`` sub-package includes error modules defined by developer to guide users.
 
@@ -63,4 +63,4 @@ The **InterPhon** package consists of following five sub-packages:
 
 - ``analysis`` sub-package includes analysis modules to characterize phonon properties.
 
-The detailed architecture of the package and interrelation among the sub-packages can be found in :ref:`modules <label_architecture>`
+The detailed architecture of the package and interrelation among the sub-packages can be found in :ref:`modules <label_architecture>`.

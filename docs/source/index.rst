@@ -10,7 +10,7 @@ The Interfacial Phonons (**InterPhon**) is an open-source Python package designe
 
 This program calculates phonons of user-defined interfacial regions, in conjunction with 3D DFT codes.
 
-Currently supported DFT codes:
+Currently supported DFT codes are:
 
 1. **VASP**
 2. **Quantum ESPRESSO**
