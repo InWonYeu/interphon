@@ -1,23 +1,33 @@
 # InterPhon
-The interface possesses diverse atomic structures and lattice vibrations, which are distinct from the bulk.
+The interface possesses diverse atomic structures and lattice vibrations, which are distinct from the bulk. However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) DFT framework representing interfacial systems by supercells.
 
 ![Representative_systems](docs/source/images/Representative_systems.png)
-<div align='center'><strong>Figure 1. Representative systems to which <i>InterPhon</i> can be applied.</strong></div>
+<div align='center'><strong>Figure 1. Representative systems to which <i>InterPhon</i> can be applied. Phonon evaluation proceeds only on the selected atoms in the vicinity of the interface, which are shown in green and orange. The atoms embedded in bulk are shown in gray.</strong></div>
+<br />
 
-However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) DFT framework representing interfacial systems by supercells.
-
-Although the main obstacles are unavoidable, distinct interfacial phonons are confined to the vicinity of the interface. By limiting the range of phonon calculations to user-defined interfacial region, the enormous computational cost is mitigated.
+Although the main obstacles are unavoidable, distinct interfacial phonons are confined to the vicinity of the interface (green and orange atoms in **Figure 1**). By limiting the range of phonon calculations to user-defined interfacial region, the enormous computational cost is mitigated.
 
 ![Graphical_abstracts](docs/source/images/Graphical_abstracts.png)
-![InterPhon_workflow](docs/source/images/InterPhon_workflow.png)
 <div align='center'><strong>Figure 2. Schematic overview of <i>InterPhon</i> operation.</strong></div>
+<br />
+
+![InterPhon_workflow](docs/source/images/InterPhon_workflow.png)
+<div align='center'><strong>Figure 3. Schematic overview of <i>InterPhon</i> workflow.</strong></div>
+
+The strategy is efficiently implemented in a Python library, called Interfacial Phonons (***InterPhon***), capable of calculation setup, evaluation, analysis, and visualization for arbitrary interfacial systems in conjunction with any 3D DFT code.
+
+Currently supports:
+
+1. VASP
+2. Quantum ESPRESSO
+3. FHI-aims
+<br />
 
 ## Documentation
 The description below is a basic usage guide.
 If you want to learn more about ***InterPhon***, please find the user manual at <https://interphon.readthedocs.io/>
 
 ## How to cite
-**A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework.**  
 If you have used ***InterPhon***, please cite the following article (<https://doi.org/10.1016/j.cpc.2021.108089>):
 
 ```
@@ -25,6 +35,12 @@ If you have used ***InterPhon***, please cite the following article (<https://do
 In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, 
 Computer Physics Communications 268, 108089 (2021)
 ```
+<br />
+
+## Documentation
+If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/)
+The description below is a basic usage guide.
+<br />
 
 ## Installation
 Latest version in development:
