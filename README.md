@@ -5,14 +5,18 @@ The interface possesses diverse atomic structures and lattice vibrations, which 
 <div align='center'><strong>Figure 1. Representative systems to which <i>InterPhon</i> can be applied. Phonon evaluation proceeds only on the selected atoms in the vicinity of the interface, which are shown in green and orange. The atoms embedded in bulk are shown in gray.</strong></div>
 <br />
 
+
 Although the main obstacles are unavoidable, distinct interfacial phonons are confined to the vicinity of the interface (green and orange atoms in **Figure 1**). By limiting the range of phonon calculations to user-defined interfacial region, the enormous computational cost is mitigated.
 
 ![Graphical_abstracts](docs/source/images/Graphical_abstracts.png)
 <div align='center'><strong>Figure 2. Schematic overview of <i>InterPhon</i> operation.</strong></div>
 <br />
 
+
 ![InterPhon_workflow](docs/source/images/InterPhon_workflow.png)
 <div align='center'><strong>Figure 3. Schematic overview of <i>InterPhon</i> workflow.</strong></div>
+<br />
+
 
 The strategy is efficiently implemented in a Python library, called Interfacial Phonons (***InterPhon***), capable of calculation setup, evaluation, analysis, and visualization for arbitrary interfacial systems in conjunction with any 3D DFT code.
 
@@ -23,24 +27,17 @@ Currently supports:
 3. FHI-aims
 <br />
 
-## Documentation
-The description below is a basic usage guide.
-If you want to learn more about ***InterPhon***, please find the user manual at <https://interphon.readthedocs.io/>
 
 ## How to cite
-If you have used ***InterPhon***, please cite the following article (<https://doi.org/10.1016/j.cpc.2021.108089>):
-
-```
-"InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", 
-In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, 
-Computer Physics Communications 268, 108089 (2021)
-```
+If you have used ***InterPhon***, please cite [In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", Computer Physics Communications 268, 108089 (2021)](https://doi.org/10.1016/j.cpc.2021.108089)
 <br />
+
 
 ## Documentation
 If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/)
 The description below is a basic usage guide.
 <br />
+
 
 ## Installation
 Latest version in development:
@@ -55,6 +52,7 @@ Previous stable version:
 $ pip install interphon
 ```
 <br />
+
 
 ## Basic usage in conjunction with VASP
 ***InterPhon*** supports a range of options to manage phonon computations and plotting styles.  
@@ -97,6 +95,7 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 ```
 <br />
+
 
 ## Important files
 ### 1. DFT input file
