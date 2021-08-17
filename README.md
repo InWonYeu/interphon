@@ -1,4 +1,22 @@
 # InterPhon
+The interface possesses diverse atomic structures and lattice vibrations, which are distinct from the bulk.
+
+![Representative_systems](docs/source/images/Representative_systems.png)
+<div align='center'><strong>Figure 1. Representative systems to which <i>InterPhon</i> can be applied.</strong></div>
+
+However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) DFT framework representing interfacial systems by supercells.
+
+Although the main obstacles are unavoidable, distinct interfacial phonons are confined to the vicinity of the interface. By limiting the range of phonon calculations to user-defined interfacial region, the enormous computational cost is mitigated.
+
+![Graphical_abstracts](docs/source/images/Graphical_abstracts.png)
+![InterPhon_workflow](docs/source/images/InterPhon_workflow.png)
+<div align='center'><strong>Figure 2. Schematic overview of <i>InterPhon</i> operation.</strong></div>
+
+## Documentation
+The description below is a basic usage guide.
+If you want to learn more about ***InterPhon***, please find the user manual at <https://interphon.readthedocs.io/>
+
+## How to cite
 **A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework.**  
 If you have used ***InterPhon***, please cite the following article (<https://doi.org/10.1016/j.cpc.2021.108089>):
 
@@ -7,12 +25,6 @@ If you have used ***InterPhon***, please cite the following article (<https://do
 In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, 
 Computer Physics Communications 268, 108089 (2021)
 ```
-
-The description below is a basic usage guide.
-If you want to learn more about ***InterPhon***, please find the user manual at <https://interphon.readthedocs.io/>
-<br />
-<br />
-
 
 ## Installation
 Latest version in development:
