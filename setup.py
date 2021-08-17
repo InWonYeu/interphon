@@ -36,7 +36,7 @@ if __name__ == '__main__':
           description='A Python Package for Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework',
           url='https://github.com/inwonyeu/interphon',
           author='In Won Yeu',
-          author_email='yeuiw@kist.re.kr',
+          author_email='yiw0121@snu.ac.kr',
           license='LGPLv2.1',
           packages=packages_interphon,
           install_requires=install_requires,  # The package written here will be installed with the current package.
