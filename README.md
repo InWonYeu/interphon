@@ -1,4 +1,4 @@
-# InterPhon
+# InterPhonIntroduction
 The interface possesses diverse atomic structures and lattice vibrations, which are distinct from the bulk. However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) DFT framework representing interfacial systems by supercells.
 
 ![Representative_systems](docs/source/images/Representative_systems.png)
@@ -6,7 +6,18 @@ The interface possesses diverse atomic structures and lattice vibrations, which 
 <br />
 
 
-Although the main obstacles are unavoidable, distinct interfacial phonons are confined to the vicinity of the interface (green and orange atoms in **Figure 1**). By limiting the range of phonon calculations to user-defined interfacial region, the enormous computational cost is mitigated.
+Although the main obstacles are unavoidable, distinct interfacial phonons are confined to the vicinity of the interface (green and orange atoms in **Figure 1**). By limiting the range of phonon calculations to user-defined interfacial region, the enormous computational cost can be mitigated.
+<br />
+
+
+# InterPhon framework
+The strategy is efficiently implemented in a Python library, called Interfacial Phonons (***InterPhon***), capable of calculation setup, evaluation, analysis, and visualization for arbitrary interfacial systems in conjunction with any 3D DFT code.
+
+Currently supports:
+
+1. VASP
+2. Quantum ESPRESSO
+3. FHI-aims
 
 ![Graphical_abstracts](docs/source/images/Graphical_abstracts.png)
 <div align='center'><strong>Figure 2. Schematic overview of <i>InterPhon</i> operation.</strong></div>
@@ -18,28 +29,22 @@ Although the main obstacles are unavoidable, distinct interfacial phonons are co
 <br />
 
 
-The strategy is efficiently implemented in a Python library, called Interfacial Phonons (***InterPhon***), capable of calculation setup, evaluation, analysis, and visualization for arbitrary interfacial systems in conjunction with any 3D DFT code.
+# How to cite
+If you have used ***InterPhon***, please cite 
 
-Currently supports:
+[In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", Computer Physics Communications 268, 108089 (2021)](https://doi.org/10.1016/j.cpc.2021.108089)
 
-1. VASP
-2. Quantum ESPRESSO
-3. FHI-aims
+Thank you for your interest.
 <br />
 
 
-## How to cite
-If you have used ***InterPhon***, please cite [In Won Yeu, Gyuseung Han, Kun Hee Ye, Cheol Seong Hwang, and Jung-Hae Choi, "InterPhon: Ab initio Interface Phonon Calculations within a 3D Electronic Structure Framework", Computer Physics Communications 268, 108089 (2021)](https://doi.org/10.1016/j.cpc.2021.108089)
-<br />
-
-
-## Documentation
+# Documentation
 If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/)
 The description below is a basic usage guide.
 <br />
 
 
-## Installation
+# Installation
 Latest version in development:
 
 ```
@@ -54,7 +59,7 @@ $ pip install interphon
 <br />
 
 
-## Basic usage in conjunction with VASP
+# Basic usage in conjunction with VASP
 ***InterPhon*** supports a range of options to manage phonon computations and plotting styles.  
 In order to see all of the available options and their default values:
 
@@ -62,7 +67,7 @@ In order to see all of the available options and their default values:
 $ interphon --help
 ```
 
-### 1. Pre-process
+## 1. Pre-process
 In the ***InterPhon*** pre-process, a file of supercell (`SUPERCELL`) and files of displaced supercells (`POSCAR-0*`) are generated:
 
 ```
@@ -72,7 +77,7 @@ $ interphon -enlarge "2 2 1" -pbc "1 1 0"
 -> (2×2×1) supercell and displaced supercells  
 -> Periodic boundary conditions (1 or True) along the a<sub>1</sub>, a<sub>2</sub> lattice directions and open (0 or False) along the a<sub>3</sub> direction
 
-### 2. Post-process
+## 2. Post-process
 After the DFT force calculations for the displaced supercells (`POSCAR-0*`) are finished in each `FORCE-0*` folder, the evaluation of interfacial phonons can be executed by the following ways:
 
 - ***Density of states (DOS):***
@@ -97,8 +102,8 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 <br />
 
 
-## Important files
-### 1. DFT input file
+# Important files
+## 1. DFT input file
 ***InterPhon*** focuses on the interfacial atoms by allowing users to easily select atoms to be considered as the interface and phonon evaluation proceeds only in the selected atoms. The interfacial region is supposed to be defined through the statement of constraints on atom movements (selective dynamics).
 See below example of Cu(111) surface where the top three layers are selected as the surface region.
 
@@ -122,7 +127,7 @@ Cartesian
    0.0000000000000000    0.0000000000000000   18.9121107990000006   T   T   T
 ```
 
-### 2. K-points file
+## 2. K-points file
 The abovementioned arguments of `KPOINTS_dos` and `KPOINTS_band` files, which are supported in VASP format (<https://www.vasp.at/wiki/index.php/KPOINTS>), are used for the mesh sampling of k-points.
 
 **KPOINTS_dos (file name is arbitrary):**
