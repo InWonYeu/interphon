@@ -1,8 +1,8 @@
+.. _label_architecture:
+
 =======
 Modules
 =======
-
-.. _label_architecture:
 
 The following figure illustrates the **InterPhon** architecture and relationships between the constituent objects.
 Here, the boxes underneath represent object types. The thick/solid arrows indicate the inheritance relationship.

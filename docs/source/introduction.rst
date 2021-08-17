@@ -33,7 +33,7 @@ In addition, it allows users to define the dimension of periodicity, not limited
 .. _PHON: https://www.sciencedirect.com/science/article/pii/S0010465509001064
 
 Consequently, **InterPhon** enables the efficient extraction of interfacial phonons at arbitrary wave vectors in 1D or 2D
-reciprocal space, the corresponding real space being a atomic configuration with 1D or in-plane 2D periodicity,
+reciprocal space, the corresponding real space being an atomic configuration with 1D or in-plane 2D periodicity,
 by automatically processing the information obtained by 3D-based DFT codes.
 
 Strategy
