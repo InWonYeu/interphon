@@ -6,7 +6,7 @@
 Welcome to InterPhon's documentation!
 =====================================
 
-The Interfacial Phonons (**InterPhon**) is an open-source Python package designed to automize the evaluation of interfacial phonons within a 3D electronic structure framework. 
+The Interfacial Phonons (**InterPhon**) is an open-source Python package designed to automize the evaluation of interfacial phonons within a three-dimensional (3D) density functional theory (DFT) electronic structure framework. 
 
 This program calculates phonons of user-defined interfacial regions, in conjunction with 3D DFT codes.
 
