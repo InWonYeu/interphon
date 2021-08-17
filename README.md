@@ -15,9 +15,9 @@ The strategy is efficiently implemented in a Python library, called Interfacial 
 
 Currently supports:
 
-1. VASP
-2. Quantum ESPRESSO
-3. FHI-aims
+**1. VASP**
+**2. Quantum ESPRESSO**
+**3. FHI-aims**
 
 ![Graphical_abstracts](docs/source/images/Graphical_abstracts.png)
 <div align='center'><strong>Figure 2. Schematic overview of <i>InterPhon</i> operation.</strong></div>
@@ -39,7 +39,8 @@ Thank you for your interest.
 
 
 # Documentation
-If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/)
+If you want to learn more about ***InterPhon***, please find the [user manual](https://interphon.readthedocs.io/).
+Or please contact ```In Won Yeu, yeuiw@kist.re.kr```
 The description below is a basic usage guide.
 <br />
 
@@ -56,7 +57,6 @@ Previous stable version:
 ```
 $ pip install interphon
 ```
-<br />
 
 
 # Basic usage in conjunction with VASP
@@ -99,7 +99,6 @@ $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band
 ```
 $ interphon FORCE-0*/vasprun.xml -kband KPOINTS_band -mode
 ```
-<br />
 
 
 # Important files
