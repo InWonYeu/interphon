@@ -1,4 +1,4 @@
-# InterPhonIntroduction
+# Introduction
 The interface possesses diverse atomic structures and lattice vibrations, which are distinct from the bulk. However, there has been a limitation in applying ab initio phonon calculations to interfaces due to the excessive computational cost, introduced by their large number of atoms and broken symmetry. The problems are intrinsically inevitable within a three-dimensional (3D) DFT framework representing interfacial systems by supercells.
 
 ![Representative_systems](docs/source/images/Representative_systems.png)
