@@ -11,22 +11,21 @@ Here, atoms in the vicinity of the interface are shown in green and orange. The 
 
 .. image:: images/Representative_systems.png
 
-Among all of these atoms, however, the bonding environment of most atoms located far from the interface is similar to
-that of the bulk atoms, presenting the same vibrations as the ideal bulk (gray atoms in the above figure).
-Deviation of vibrations from bulk occurs only on the atoms in the vicinity of the interface (green and orange atoms in the above figure).
-
-Overview
+Strategy
 ********
 
-Although the main obstacles are unavoidable, the enormous computational cost can be mitigated
-by limiting the range of phonon calculations to user-defined interfacial region.
+Among all of these atoms, however, the bonding environment of most atoms located far from the interface is similar to
+that of the bulk atoms, presenting the same vibrations as the ideal bulk (gray atoms in the above and below figures).
+Deviation of vibrations from bulk occurs only on the atoms in the vicinity of the interface (green and orange atoms in the above and below figures).
+
+Therefore, the enormous computational cost can be mitigated by limiting the range of phonon calculations to user-defined interfacial region.
 The following figure illustrates the schematic overview of **InterPhon** operation.
 
 .. image:: images/Graphical_abstracts.png
 
 In contrast to conventional phonon codes for 3D bulk systems such as Phonopy_ and PHON_,
 **InterPhon** calculation proceeds with an interfacial region that is smaller than the full simulation box,
-such that the phonons are calculated only for the atoms in the user-defined interface region.
+such that the phonons are calculated only for the atoms in the user-defined interfacial region.
 In addition, it allows users to define the dimension of periodicity, not limited to 3D.
 
 .. _Phonopy: https://phonopy.github.io/phonopy/
@@ -36,12 +35,12 @@ Consequently, **InterPhon** enables the efficient extraction of interfacial phon
 reciprocal space, the corresponding real space being an atomic configuration with 1D or in-plane 2D periodicity,
 by automatically processing the information obtained by 3D-based DFT codes.
 
-Strategy
+Overview
 ********
 
 **InterPhon** operation is based on direct approach using the finite displacement method (FDM).
 The input required for the program execution are only a :ref:`label_dft_structure_file` representing the atomic structure of interest
-and the corresponding :ref:`label_dft_force_file` providing the forces acting on each atom, in any DFT code format as shown in the following figure.
+and the corresponding :ref:`label_dft_force_file` providing the forces acting on each atom, in any DFT code format as shown in the following figure of **InterPhon** workflow.
 
 .. image:: images/InterPhon_workflow.png
 
