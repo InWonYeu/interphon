@@ -675,22 +675,10 @@ def main(force_files, option_file, process,
                                + '{{{0:0>4}..}}'.format(1)
         print('Writing displaced supercells... ---> {0}'.format(_displaced_supercell))
 
-        _ind_pbc = pre.user_arg.periodicity.nonzero()[0]
-        if sym:
-            if _ind_pbc.shape[0] != 2:
-                print('Caution:')
-                print('Current version supports symmetry functionality only for 2D periodic systems.')
-                print('"symmetry usage" is changed from "{0}" to "False".'.format(sym))
-                sym = False
-            pre.write_displace_cell(out_file=files.get('unit_cell_file'),
-                                    code_name=user_args.get('dft_code'),
-                                    sym_flag=sym)
-            print('Point group = {0}'.format(pre.sym.point_group))
-        else:
-            pre.write_displace_cell(out_file=files.get('unit_cell_file'),
-                                    code_name=user_args.get('dft_code'),
-                                    sym_flag=sym)
-            print('Point group = {0}'.format(pre.sym.point_group))
+        pre.write_displace_cell(out_file=files.get('unit_cell_file'),
+                                code_name=user_args.get('dft_code'),
+                                sym_flag=sym)
+        print('Point group = {0}'.format(pre.sym.point_group))
 
         # Record this pre-process
         serialized_yaml_pre_process = [{'unit_cell_file': os.path.basename(files.get('unit_cell_file'))},
@@ -731,32 +719,16 @@ def main(force_files, option_file, process,
 
             # construct Born-von Karman force constants
             print('Setting force constants...')
-            _ind_pbc = post.user_arg.periodicity.nonzero()[0]
-            if sym:
-                if _ind_pbc.shape[0] != 2:
-                    print('Caution:')
-                    print('Current version supports symmetry functionality only for 2D periodic systems.')
-                    print('"-sym" is changed from "{0}" to "False".'.format(sym))
-                    sym = False
-                check_file_order(post,
-                                 os.path.basename(files.get('unit_cell_file')),
-                                 files.get('force_file'),
-                                 user_args.get('dft_code'),
-                                 sym_flag=sym)
-                post.set_force_constant(force_files=files.get('force_file'),
-                                        code_name=user_args.get('dft_code'),
-                                        sym_flag=sym)
-                print('Point group = {0}'.format(post.sym.point_group))
-            else:
-                check_file_order(post,
-                                 os.path.basename(files.get('unit_cell_file')),
-                                 files.get('force_file'),
-                                 user_args.get('dft_code'),
-                                 sym_flag=sym)
-                post.set_force_constant(force_files=files.get('force_file'),
-                                        code_name=user_args.get('dft_code'),
-                                        sym_flag=sym)
-                print('Point group = {0}'.format(post.sym.point_group))
+
+            check_file_order(post,
+                             os.path.basename(files.get('unit_cell_file')),
+                             files.get('force_file'),
+                             user_args.get('dft_code'),
+                             sym_flag=sym)
+            post.set_force_constant(force_files=files.get('force_file'),
+                                    code_name=user_args.get('dft_code'),
+                                    sym_flag=sym)
+            print('Point group = {0}'.format(post.sym.point_group))
 
             # set k-points
             print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_dos'))))
@@ -816,34 +788,17 @@ def main(force_files, option_file, process,
 
             # construct Born-von Karman force constants
             print('Setting force constants...')
-            _ind_pbc = post_band.user_arg.periodicity.nonzero()[0]
-            if sym:
-                if _ind_pbc.shape[0] != 2:
-                    print('Caution:')
-                    print('Current version supports symmetry functionality only for 2D periodic systems.')
-                    print('"-sym" is changed from "{0}" to "False".'.format(sym))
-                    sym = False
-                check_file_order(post_band,
-                                 os.path.basename(files.get('unit_cell_file')),
-                                 files.get('force_file'),
-                                 user_args.get('dft_code'),
-                                 sym_flag=sym)
-                post_band.set_force_constant(force_files=files.get('force_file'),
-                                             code_name=user_args.get('dft_code'),
-                                             sym_flag=sym)
-                if not dos_args.get('flag', False):
-                    print('Point group = {0}'.format(post_band.sym.point_group))
-            else:
-                check_file_order(post_band,
-                                 os.path.basename(files.get('unit_cell_file')),
-                                 files.get('force_file'),
-                                 user_args.get('dft_code'),
-                                 sym_flag=sym)
-                post_band.set_force_constant(force_files=files.get('force_file'),
-                                             code_name=user_args.get('dft_code'),
-                                             sym_flag=sym)
-                if not dos_args.get('flag', False):
-                    print('Point group = {0}'.format(post_band.sym.point_group))
+
+            check_file_order(post_band,
+                             os.path.basename(files.get('unit_cell_file')),
+                             files.get('force_file'),
+                             user_args.get('dft_code'),
+                             sym_flag=sym)
+            post_band.set_force_constant(force_files=files.get('force_file'),
+                                         code_name=user_args.get('dft_code'),
+                                         sym_flag=sym)
+            if not dos_args.get('flag', False):
+                print('Point group = {0}'.format(post_band.sym.point_group))
 
             # set k-points
             print('Setting k-points from {0}...'.format(os.path.basename(files.get('k_point_file_band'))))
