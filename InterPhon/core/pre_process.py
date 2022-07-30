@@ -133,6 +133,14 @@ class PreProcess(object):
             if value:
                 _enlarge = _enlarge * self.user_arg.enlargement[ind]
 
+        _ind_pbc = self.user_arg.periodicity.nonzero()[0]
+        if sym_flag:
+            if _ind_pbc.shape[0] != 2:
+                print('Caution:')
+                print('Current version supports symmetry functionality only for 2D periodic systems.')
+                print('"symmetry usage" is changed from "{0}" to "False".'.format(sym_flag))
+                sym_flag = False
+
         try:
             if sym_flag:
                 self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)

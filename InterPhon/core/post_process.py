@@ -99,6 +99,14 @@ class PostProcess(PreProcess):
         :param sym_flag: Specify whether to use symmetry operation, defaults to `True`
         :type sym_flag: bool
         """
+        _ind_pbc = self.user_arg.periodicity.nonzero()[0]
+        if sym_flag:
+            if _ind_pbc.shape[0] != 2:
+                print('Caution:')
+                print('Current version supports symmetry functionality only for 2D periodic systems.')
+                print('"-sym" is changed from "{0}" to "False".'.format(sym_flag))
+                sym_flag = False
+
         if code_name == 'vasp':
             if sym_flag:
                 self.sym = Symmetry2D(self.unit_cell, self.super_cell, self.user_arg)
