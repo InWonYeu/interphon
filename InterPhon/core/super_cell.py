@@ -62,6 +62,7 @@ class SuperCell(UnitCell):
         :param user_arg: Instance of PreArgument class
         :type user_arg: :class:`core.PreArgument`
         """
+        self.initialization()
         self.lattice_matrix = np.asfarray([unit_cell.lattice_matrix[i, 0:3] * user_arg.enlargement[i] for i in range(3)])
 
         _enlarge = 1
